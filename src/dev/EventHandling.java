@@ -1,6 +1,5 @@
-package dev.controls;
+package dev;
 
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;

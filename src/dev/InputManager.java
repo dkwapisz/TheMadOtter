@@ -1,26 +1,33 @@
-package dev.controls;
+package dev;
 
 import javafx.scene.input.KeyCode;
+import model.hero.Hero;
+import model.hero.HeroDirections;
 
 import java.util.List;
 
 public class InputManager {
 
+    public static Hero hero = new Hero(100, 100);
 
     public static void handlePlayerActions() {
         List keyboardInput = EventHandling.getInputList();
 
         if(keyboardInput.contains(KeyCode.W)){
-            // Poruszanie gracza - góra
+            hero.setCurrentDirection(HeroDirections.UP);
+            hero.move();
         }
         if(keyboardInput.contains(KeyCode.S)){
-            // Poruszanie gracza - dół
+            hero.setCurrentDirection(HeroDirections.DOWN);
+            hero.move();
         }
         if(keyboardInput.contains(KeyCode.A)){
-            // Poruszanie gracza - lewo
+            hero.setCurrentDirection(HeroDirections.LEFT);
+            hero.move();
         }
         if(keyboardInput.contains(KeyCode.D)){
-            // Poruszanie gracza - prawo
+            hero.setCurrentDirection(HeroDirections.RIGHT);
+            hero.move();
         }
 
         if(keyboardInput.contains(KeyCode.UP)){
@@ -37,7 +44,8 @@ public class InputManager {
         }
 
         if(!keyboardInput.contains(KeyCode.W) && !keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.S) && !keyboardInput.contains(KeyCode.D)) {
-            // Ustaw prędkość gracza na 0
+            hero.setVelX(0);
+            hero.setVelY(0);
         }
 
 
