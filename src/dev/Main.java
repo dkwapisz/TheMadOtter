@@ -22,7 +22,9 @@ public class Main extends Application {
         primaryStage.setTitle("123");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        primaryStage.getScene().getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
         hero = new Hero(100,100,root);
+        primaryStage.setResizable(false);
         inputManager = new InputManager(hero);
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e->run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -33,6 +35,7 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
+        System.out.println(hero.getX());
     }
 
 

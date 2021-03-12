@@ -10,7 +10,7 @@ public class Hero extends Physics {
 
 
     public Hero(double x, double y, Pane layer) {
-        super(x, y, "file:graphics/hero/heroStatic.png", layer);
+        super(x, y, "/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer);
         currentDirection = HeroDirections.UP;
     }
 
@@ -48,4 +48,5 @@ public class Hero extends Physics {
     public void setCurrentDirection(HeroDirections currentDirection) {
         this.currentDirection = currentDirection;
     }
+
 }

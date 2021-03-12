@@ -1,0 +1,4 @@
+.root {
+    -fx-background-image:url('/graphics/plansza.png');
+    -fx-background-size: 100% 100%;
+}

@@ -15,11 +15,15 @@ public abstract class Physics {
     private Dimension2D dimension;
     private Pane layer;
     private ImageView imageView;
+    private Image imageStatic;
+    private Image imageMoving;
 
-    public Physics(double x, double y, String path, Pane mainLayer) {
+    public Physics(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
         setLocation(x, y);
         layer = mainLayer;
-        loadImage(path);
+        loadImage(pathStatic);
+        imageStatic = new Image(pathStatic);
+        imageMoving = new Image(pathMoving);
     }
 
     public void setLocation(double x, double y) {
@@ -30,6 +34,13 @@ public abstract class Physics {
     public void updateLocation() {
         x = x + velX;
         y = y + velY;
+        imageView.relocate(x,y);
+        rotation();
+        if (velX != 0 || velY != 0){
+            imageView.setImage(imageMoving);
+        }else{
+            imageView.setImage(imageStatic);
+        }
     }
 
 
@@ -105,9 +116,22 @@ public abstract class Physics {
     }
 
     private void loadImage(String path) {
-        imageView = new ImageView(path);
+        imageView = new ImageView(new Image(path));
         this.imageView.relocate(this.getX(), this.getY());
         this.addToLayer();
+    }
+
+    public void rotation(){
+        if(velX > 0){
+            imageView.setRotate(90);
+        }else if (velX < 0){
+            imageView.setRotate(-90);
+        }else if (velY < 0){
+            imageView.setRotate(0);
+        }else if (velY > 0){
+            imageView.setRotate(180);
+        }
+
     }
 
 
