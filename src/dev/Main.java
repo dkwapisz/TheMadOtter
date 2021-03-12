@@ -9,9 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.hero.Hero;
 
 
 public class Main extends Application {
+    private Hero hero;
+    private InputManager inputManager;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -19,7 +22,8 @@ public class Main extends Application {
         primaryStage.setTitle("123");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
+        hero = new Hero(100,100,root);
+        inputManager = new InputManager(hero);
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e->run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -27,8 +31,8 @@ public class Main extends Application {
     }
 
     private void run() {
-        InputManager.handlePlayerActions();
-        InputManager.hero.updateLocation();
+        inputManager.handlePlayerActions();
+        inputManager.hero.updateLocation();
     }
 
 

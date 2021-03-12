@@ -1,6 +1,7 @@
 package dev;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import model.hero.Hero;
 import model.hero.HeroDirections;
 
@@ -8,9 +9,13 @@ import java.util.List;
 
 public class InputManager {
 
-    public static Hero hero = new Hero(100, 100);
+    public Hero hero;
 
-    public static void handlePlayerActions() {
+    public InputManager(Hero hero) {
+        this.hero = hero;
+    }
+
+    public void handlePlayerActions() {
         List keyboardInput = EventHandling.getInputList();
 
         if(keyboardInput.contains(KeyCode.W)){

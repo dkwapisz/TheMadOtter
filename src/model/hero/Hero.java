@@ -1,5 +1,6 @@
 package model.hero;
 
+import javafx.scene.layout.Pane;
 import model.Physics;
 
 public class Hero extends Physics {
@@ -8,8 +9,8 @@ public class Hero extends Physics {
     private HeroDirections currentDirection;
 
 
-    public Hero(double x, double y) {
-        super(x, y);
+    public Hero(double x, double y, Pane layer) {
+        super(x, y, "file:graphics/hero/heroStatic.png", layer);
         currentDirection = HeroDirections.UP;
     }
 
