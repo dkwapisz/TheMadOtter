@@ -48,9 +48,11 @@ public class InputManager {
             // Strzelanie - prawo
         }
 
-        if(!keyboardInput.contains(KeyCode.W) && !keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.S) && !keyboardInput.contains(KeyCode.D)) {
-            hero.setVelX(0);
+        if(!keyboardInput.contains(KeyCode.W) && !keyboardInput.contains(KeyCode.S) ) {
             hero.setVelY(0);
+        }
+        if(!keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.D)) {
+            hero.setVelX(0);
         }
 
 

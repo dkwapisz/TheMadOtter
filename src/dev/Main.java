@@ -18,15 +18,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("123");
+        Pane root = FXMLLoader.load(getClass().getResource("mainStage.fxml"));
+        primaryStage.setTitle("TheGame");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         primaryStage.getScene().getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
-        hero = new Hero(100,100,root);
         primaryStage.setResizable(false);
+
+        hero = new Hero(100, 100, root);
         inputManager = new InputManager(hero);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e->run()));
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e->run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         EventHandling.addEventHandlers(primaryStage.getScene());
@@ -35,7 +37,6 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
-        System.out.println(hero.getX());
     }
 
 

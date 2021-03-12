@@ -1,6 +1,5 @@
 package model;
 
-import dev.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -8,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.awt.geom.Dimension2D;
 
-public abstract class Physics {
+public abstract class ObjectsBehaviour {
 
     private double x, y;
     private double velX, velY;
@@ -18,7 +17,7 @@ public abstract class Physics {
     private Image imageStatic;
     private Image imageMoving;
 
-    public Physics(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
+    public ObjectsBehaviour(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
         setLocation(x, y);
         layer = mainLayer;
         loadImage(pathStatic);
@@ -32,87 +31,21 @@ public abstract class Physics {
     }
 
     public void updateLocation() {
-        x = x + velX;
-        y = y + velY;
-        imageView.relocate(x,y);
+
+        if(!(x + velX < 32 || x + velX > 768 || y + velY < 32 || y + velY > 768 )) {
+            x = x + velX;
+            y = y + velY;
+        }
+
+        imageView.relocate(x, y);
         rotation();
+
         if (velX != 0 || velY != 0){
             imageView.setImage(imageMoving);
-        }else{
+        } else {
             imageView.setImage(imageStatic);
         }
-    }
 
-
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getVelX() {
-        return velX;
-    }
-
-    public void setVelX(double velX) {
-        this.velX = velX;
-    }
-
-    public double getVelY() {
-        return velY;
-    }
-
-    public void setVelY(double velY) {
-        this.velY = velY;
-    }
-
-    public Pane getLayer() {
-        return layer;
-    }
-
-    public void setLayer(Pane layer) {
-        this.layer = layer;
-    }
-
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
-    }
-
-    public Dimension2D getDimension() {
-        return dimension;
-    }
-
-    public void setDimension(Dimension2D dimension) {
-        this.dimension = dimension;
-    }
-
-    public Rectangle getBounds() {
-        return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight());
-    }
-
-    //adding imageView to the class
-    public void addToLayer() {
-        this.layer.getChildren().add(this.imageView);
-    }
-
-    //removing imageView to the class
-    public void removeFromLayer() {
-        this.layer.getChildren().remove(this.imageView);
     }
 
     private void loadImage(String path) {
@@ -131,7 +64,66 @@ public abstract class Physics {
         }else if (velY > 0){
             imageView.setRotate(180);
         }
+    }
 
+    public void addToLayer() {
+        this.layer.getChildren().add(this.imageView);
+    }
+    public void removeFromLayer() {
+        this.layer.getChildren().remove(this.imageView);
+    }
+
+    public double getX() {
+        return x;
+    }
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getVelX() {
+        return velX;
+    }
+    public void setVelX(double velX) {
+        this.velX = velX;
+    }
+
+    public double getVelY() {
+        return velY;
+    }
+    public void setVelY(double velY) {
+        this.velY = velY;
+    }
+
+    public Pane getLayer() {
+        return layer;
+    }
+    public void setLayer(Pane layer) {
+        this.layer = layer;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    public Dimension2D getDimension() {
+        return dimension;
+    }
+    public void setDimension(Dimension2D dimension) {
+        this.dimension = dimension;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight());
     }
 
 

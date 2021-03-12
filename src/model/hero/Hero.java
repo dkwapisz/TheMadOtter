@@ -1,9 +1,9 @@
 package model.hero;
 
 import javafx.scene.layout.Pane;
-import model.Physics;
+import model.ObjectsBehaviour;
 
-public class Hero extends Physics {
+public class Hero extends ObjectsBehaviour {
 
     private int remainingLives;
     private HeroDirections currentDirection;
@@ -36,7 +36,6 @@ public class Hero extends Physics {
     public int getRemainingLives() {
         return remainingLives;
     }
-
     public void setRemainingLives(int remainingLives) {
         this.remainingLives = remainingLives;
     }
@@ -44,7 +43,6 @@ public class Hero extends Physics {
     public HeroDirections getCurrentDirection() {
         return currentDirection;
     }
-
     public void setCurrentDirection(HeroDirections currentDirection) {
         this.currentDirection = currentDirection;
     }
