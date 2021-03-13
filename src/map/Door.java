@@ -24,8 +24,8 @@ public class Door extends ObjectsBehaviour {
     public boolean isClosedDoors() {
         return closedDoors;
     }
-
     public void setClosedDoors(boolean closedDoors) {
         this.closedDoors = closedDoors;
     }
+
 }

@@ -6,7 +6,9 @@ import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.hero.Hero;
@@ -16,6 +18,7 @@ public class Main extends Application {
     private Hero hero;
     private InputManager inputManager;
     private int checkRoom = 12;
+    private Label label;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -26,8 +29,13 @@ public class Main extends Application {
         primaryStage.getScene().getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
         primaryStage.setResizable(false);
 
-        hero = new Hero(100, 100, root);
+        hero = new Hero(360, 360, root);
         inputManager = new InputManager(hero);
+
+        label = new Label();
+        label.setStyle("-fx-font: 18 arial;");
+        label.setTextFill(Color.WHITE);
+        root.getChildren().add(label);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e->run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -38,6 +46,7 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
+        label.setText(Integer.toString(hero.getActualRoom().getRoomId()));
         swapRoom();
 
 //        System.out.println("Room: " + checkRoom);

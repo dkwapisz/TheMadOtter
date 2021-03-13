@@ -32,7 +32,7 @@ public abstract class ObjectsBehaviour {
 
     public void updateLocation() {
 
-        if(!(x + velX < 32 || x + velX > 768-imageStatic.getHeight() || y + velY < 32 || y + velY > 768- imageStatic.getHeight() )) {
+        if(!(x + velX < 30 || x + velX > 770 - imageStatic.getHeight() || y + velY < 30 || y + velY > 770 - imageStatic.getHeight())) {
             x = x + velX;
             y = y + velY;
         }

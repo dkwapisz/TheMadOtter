@@ -28,7 +28,7 @@ public class Hero extends ObjectsBehaviour {
 
 
     public void move() {
-        int vel = 7;
+        int vel = 5;
         doorCollision();
         if(currentDirection == HeroDirections.UP) {
             setVelY(-vel);
@@ -55,26 +55,26 @@ public class Hero extends ObjectsBehaviour {
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
                     checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 1);
-                    setX(350);
-                    setY(350);
+                    setX(360);
+                    setY(700);
                 }
                 if (door.getDoorId() == 2 && !door.isClosedDoors()) {
                     checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 5), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 5);
-                    setX(350);
-                    setY(350);
+                    setX(700);
+                    setY(360);
                 }
                 if (door.getDoorId() == 3 && !door.isClosedDoors()) {
                     checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 1);
-                    setX(350);
-                    setY(350);
+                    setX(360);
+                    setY(40);
                 }
                 if (door.getDoorId() == 4 && !door.isClosedDoors()) {
                     checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + 5), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 5);
-                    setX(350);
-                    setY(350);
+                    setX(40);
+                    setY(360);
                 }
             }
         }

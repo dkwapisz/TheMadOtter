@@ -15,10 +15,10 @@ public class MapGenerator {
 
     public MapGenerator(int nrOfRooms, Pane layer) {
         this.nrOfRooms = nrOfRooms;
-        door1 = new Door(360, 0, "/graphics/door.png", "/graphics/door.png", layer, 1);     // góra
-        door2 = new Door(0, 360, "/graphics/door.png", "/graphics/door.png", layer, 2);     // prawo
-        door3 = new Door(360, 720, "/graphics/door.png", "/graphics/door.png",  layer, 3);  // dół
-        door4 = new Door(720, 360, "/graphics/door.png", "/graphics/door.png",  layer, 4);  // lewo
+        door1 = new Door(360, 0, "/graphics/doorH.png", "/graphics/doorH.png", layer, 1);         // góra
+        door2 = new Door(0, 360, "/graphics/doorV.png", "/graphics/doorV.png", layer, 2);        // lewo
+        door3 = new Door(360, 768, "/graphics/doorH.png", "/graphics/doorH.png",  layer, 3);        // dół
+        door4 = new Door(768, 360, "/graphics/doorV.png", "/graphics/doorV.png",  layer, 4);     // prawo
         generateMap();
     }
 
