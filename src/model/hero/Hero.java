@@ -53,23 +53,25 @@ public class Hero extends ObjectsBehaviour {
             Rectangle doorBounds = door.getBounds();
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
-//                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 1));
+                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 1);
                     setX(350);
                     setY(350);
                 }
                 if (door.getDoorId() == 2 && !door.isClosedDoors()) {
-//                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 5));
+                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 5), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 5);
                     setX(350);
                     setY(350);
                 }
                 if (door.getDoorId() == 3 && !door.isClosedDoors()) {
+                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 1);
                     setX(350);
                     setY(350);
                 }
                 if (door.getDoorId() == 4 && !door.isClosedDoors()) {
+                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + 5), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 5);
                     setX(350);
                     setY(350);
@@ -79,29 +81,51 @@ public class Hero extends ObjectsBehaviour {
     }
 
 
-//    private void checkNumberOfDoors(Room nextRoom) {
-//
-//        if (nextRoom.getDoor().size() != 4) {
-//            if (nextRoom.getDoor().size() == 3) {
-//                for(int i=0; i<3; i++) {
-//                    //System.out.println(nextRoom.getDoor().get(i).getDoorId());
-//                    if (nextRoom.getDoor().get(i).getDoorId() == 1) {
-//                        map.getDoor1().removeFromLayer();
-//                        map.getDoor1().setClosedDoors(true);
-//                    }
-//                    else if (nextRoom.getDoor().get(i).getDoorId() == 2) {
-//                        map.getDoor2().removeFromLayer();
-//                        map.getDoor2().setClosedDoors(true);
-//                    }
-//                }
-//
-//
-//            } else if (nextRoom.getDoor().size() == 2) {
-//
-//
-//            }
-//        }
-//    }
+    private void checkNumberOfDoors(Room nextRoom, Room actualRoom) {
+        ArrayList<Integer> tempNextRemove = new ArrayList<>();
+        ArrayList<Integer> tempNextAdd = new ArrayList<>();
+        for (int i = 0; i < nextRoom.getDoor().size(); i++) {
+            tempNextRemove.add(nextRoom.getDoor().get(i).getDoorId());
+        }
+        if (nextRoom.getDoor().size() < actualRoom.getDoor().size()) {
+            if (!tempNextRemove.contains(1)) {
+                map.getDoor1().removeFromLayer();
+                map.getDoor1().setClosedDoors(true);
+            }
+            if (!tempNextRemove.contains(2)) {
+                map.getDoor2().removeFromLayer();
+                map.getDoor2().setClosedDoors(true);
+            }
+            if (!tempNextRemove.contains(3)) {
+                map.getDoor3().removeFromLayer();
+                map.getDoor3().setClosedDoors(true);
+            }
+            if (!tempNextRemove.contains(4)) {
+                map.getDoor4().removeFromLayer();
+                map.getDoor4().setClosedDoors(true);
+            }
+        } else {
+            for (int i = 0; i < actualRoom.getDoor().size(); i++) {
+                tempNextAdd.add(actualRoom.getDoor().get(i).getDoorId());
+            }
+            if (tempNextRemove.contains(1) && !tempNextAdd.contains(1)) {
+                map.getDoor1().addToLayer();
+                map.getDoor1().setClosedDoors(false);
+            }
+            if (tempNextRemove.contains(2) && !tempNextAdd.contains(2)) {
+                map.getDoor2().addToLayer();
+                map.getDoor2().setClosedDoors(false);
+            }
+            if (tempNextRemove.contains(3) && !tempNextAdd.contains(3)) {
+                map.getDoor3().addToLayer();
+                map.getDoor3().setClosedDoors(false);
+            }
+            if (tempNextRemove.contains(4) && !tempNextAdd.contains(4)) {
+                map.getDoor4().addToLayer();
+                map.getDoor4().setClosedDoors(false);
+            }
+        }
+    }
 
 
 

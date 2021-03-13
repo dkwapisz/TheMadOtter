@@ -39,6 +39,7 @@ public class Main extends Application {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
         swapRoom();
+
 //        System.out.println("Room: " + checkRoom);
 //        System.out.println("Door: " + inputManager.hero.getActualRoom().getDoor());
 

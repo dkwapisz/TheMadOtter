@@ -30,20 +30,49 @@ public class MapGenerator {
                 ArrayList<Door> doors = new ArrayList<>();
                 if((i == 0 || i == nrOfRooms-1) || (j == 0 || j == nrOfRooms-1)) {
                     if((i == 0 || i == nrOfRooms-1) && (j == 0 || j == nrOfRooms-1)) {
-                        doors.add(door1);
-                        doors.add(door2);
-                        roomList.add(new Room(doors, false, k));
+                        if(i == 0 && j == 0) {
+                            doors.add(door3);
+                            doors.add(door4);
+                            roomList.add(new Room(doors, false, k));
+                        }
+                        else if(i == nrOfRooms-1 && j == 0) {
+                            doors.add(door2);
+                            doors.add(door3);
+                            roomList.add(new Room(doors, false, k));
+                        }
+                        else if(i == 0 && j == nrOfRooms-1) {
+                            doors.add(door1);
+                            doors.add(door4);
+                            roomList.add(new Room(doors, false, k));
+                        }
+                        else if(i == nrOfRooms-1 && j == nrOfRooms-1) {
+                            doors.add(door1);
+                            doors.add(door2);
+                            roomList.add(new Room(doors, false, k));
+                        }
                     } else {
-                        if((i == 0 || i == nrOfRooms-1)) {
+                        if(i == 0) {
+                            doors.add(door1);
+                            doors.add(door3);
+                            doors.add(door4);
+                            roomList.add(new Room(doors, false, k));
+                        }
+                        else if(i == nrOfRooms - 1) {
+                            doors.add(door1);
+                            doors.add(door2);
+                            doors.add(door3);
+                            roomList.add(new Room(doors, false, k));
+                        }
+                        else if(j == 0) {
                             doors.add(door2);
                             doors.add(door3);
                             doors.add(door4);
                             roomList.add(new Room(doors, false, k));
                         }
-                        else if((j == 0 || j == nrOfRooms-1)) {
+                        else if(j == nrOfRooms-1) {
                             doors.add(door1);
                             doors.add(door2);
-                            doors.add(door3);
+                            doors.add(door4);
                             roomList.add(new Room(doors, false, k));
                         }
                     }
