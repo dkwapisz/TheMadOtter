@@ -15,6 +15,7 @@ import model.hero.Hero;
 public class Main extends Application {
     private Hero hero;
     private InputManager inputManager;
+    private int checkRoom = 12;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,10 +38,21 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
+        swapRoom();
+//        System.out.println("Room: " + checkRoom);
+//        System.out.println("Door: " + inputManager.hero.getActualRoom().getDoor());
+
+    }
+
+    private void swapRoom() {
+        if(!hero.checkWhichRoom(checkRoom)) {
+            checkRoom = hero.getActualRoom().getRoomId();
+        }
     }
 
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }

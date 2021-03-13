@@ -1,17 +1,16 @@
 package model;
 
+import javafx.geometry.Dimension2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.geom.Dimension2D;
-
 public abstract class ObjectsBehaviour {
 
     private double x, y;
     private double velX, velY;
-    private Dimension2D dimension;
+    private javafx.geometry.Dimension2D dimension;
     private Pane layer;
     private ImageView imageView;
     private Image imageStatic;
@@ -23,6 +22,7 @@ public abstract class ObjectsBehaviour {
         loadImage(pathStatic);
         imageStatic = new Image(pathStatic);
         imageMoving = new Image(pathMoving);
+        dimension = new javafx.geometry.Dimension2D(imageStatic.getWidth(), imageStatic.getHeight());
     }
 
     public void setLocation(double x, double y) {
@@ -115,7 +115,7 @@ public abstract class ObjectsBehaviour {
         this.imageView = imageView;
     }
 
-    public Dimension2D getDimension() {
+    public javafx.geometry.Dimension2D getDimension() {
         return dimension;
     }
     public void setDimension(Dimension2D dimension) {
