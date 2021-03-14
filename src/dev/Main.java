@@ -11,14 +11,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.enemy.Enemy;
 import model.hero.Hero;
+
+import java.util.ArrayList;
 
 
 public class Main extends Application {
     private Hero hero;
     private InputManager inputManager;
-    private int checkRoom = 12;
     private Label label;
+    private Pane layer;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -46,18 +49,14 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
+        inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
+        inputManager.hero.getActualRoom().OpenDoor();
         label.setText(Integer.toString(hero.getActualRoom().getRoomId()));
-        swapRoom();
+
 
 //        System.out.println("Room: " + checkRoom);
 //        System.out.println("Door: " + inputManager.hero.getActualRoom().getDoor());
 
-    }
-
-    private void swapRoom() {
-        if(!hero.checkWhichRoom(checkRoom)) {
-            checkRoom = hero.getActualRoom().getRoomId();
-        }
     }
 
 

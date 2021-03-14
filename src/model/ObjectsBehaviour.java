@@ -126,8 +126,21 @@ public abstract class ObjectsBehaviour {
         return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight());
     }
 
+    public Image getImageStatic() {
+        return imageStatic;
+    }
 
+    public void setImageStatic(Image imageStatic) {
+        this.imageStatic = imageStatic;
+    }
 
+    public Image getImageMoving() {
+        return imageMoving;
+    }
+
+    public void setImageMoving(Image imageMoving) {
+        this.imageMoving = imageMoving;
+    }
 }
 
 

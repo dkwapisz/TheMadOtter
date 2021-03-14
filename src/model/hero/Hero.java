@@ -125,11 +125,16 @@ public class Hero extends ObjectsBehaviour {
                 map.getDoor4().setClosedDoors(false);
             }
         }
+        actualRoom.removeEnemies();
+        nextRoom.drawEnemies();
+        if (!nextRoom.getEnemies().isEmpty()){
+            for (Door door:nextRoom.getDoor()) {
+                door.removeFromLayer();
+                door.setClosedDoors(true);
+            }
+        }
     }
 
-    public boolean checkWhichRoom(int room1) {
-        return room1 == actualRoom.getRoomId();
-    }
 
     public int getRemainingLives() {
         return remainingLives;
