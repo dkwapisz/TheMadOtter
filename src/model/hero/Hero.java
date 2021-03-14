@@ -21,8 +21,8 @@ public class Hero extends ObjectsBehaviour {
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer);
-        map = new MapGenerator(5, layer);
-        actualRoom = map.getRoomList().get(12);
+        map = new MapGenerator(5, layer);  //nrOfRooms musi być nieparzyste (!!!)
+        actualRoom = map.getRoomList().get((map.getNrOfRooms()*map.getNrOfRooms()-1)/2);
         currentDirection = HeroDirections.UP;
     }
 
@@ -59,8 +59,8 @@ public class Hero extends ObjectsBehaviour {
                     setY(700);
                 }
                 if (door.getDoorId() == 2 && !door.isClosedDoors()) {
-                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 5), actualRoom);
-                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 5);
+                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms()), actualRoom);
+                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms());
                     setX(700);
                     setY(360);
                 }
@@ -71,8 +71,8 @@ public class Hero extends ObjectsBehaviour {
                     setY(40);
                 }
                 if (door.getDoorId() == 4 && !door.isClosedDoors()) {
-                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + 5), actualRoom);
-                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 5);
+                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms()), actualRoom);
+                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms());
                     setX(40);
                     setY(360);
                 }
@@ -127,23 +127,9 @@ public class Hero extends ObjectsBehaviour {
         }
     }
 
-
-
-//        Rectangle door1Bounds = map.getDoor1().getBounds();
-//        Rectangle door2Bounds = map.getDoor2().getBounds();
-//        Rectangle door3Bounds = map.getDoor3().getBounds();
-//        Rectangle door4Bounds = map.getDoor4().getBounds();
-//        if(heroBounds.intersects(door1Bounds.getBoundsInParent())) {
-//            actualRoom = map.getRoomList().get(actualRoom.getRoomId()-1);
-//            setX(360);
-//            setY(700);
-//        }
-//    }
-
     public boolean checkWhichRoom(int room1) {
         return room1 == actualRoom.getRoomId();
     }
-
 
     public int getRemainingLives() {
         return remainingLives;
