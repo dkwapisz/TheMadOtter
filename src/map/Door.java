@@ -14,6 +14,7 @@ public class Door extends ObjectsBehaviour {
         this.doorId = doorId;
     }
 
+
     public int getDoorId() {
         return doorId;
     }

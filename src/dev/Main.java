@@ -11,10 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.enemy.Enemy;
 import model.hero.Hero;
-
-import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -36,7 +33,7 @@ public class Main extends Application {
         inputManager = new InputManager(hero);
 
         label = new Label();
-        label.setStyle("-fx-font: 18 arial;");
+        label.setStyle("-fx-font: 20 arial;");
         label.setTextFill(Color.WHITE);
         root.getChildren().add(label);
 
@@ -50,7 +47,6 @@ public class Main extends Application {
         inputManager.handlePlayerActions();
         inputManager.hero.updateLocation();
         inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
-        inputManager.hero.getActualRoom().OpenDoor();
         label.setText(Integer.toString(hero.getActualRoom().getRoomId()));
 
 

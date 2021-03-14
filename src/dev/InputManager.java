@@ -36,7 +36,7 @@ public class InputManager {
         }
 
         if(keyboardInput.contains(KeyCode.UP)){
-            
+            // Strzelanie - górę
         }
         if(keyboardInput.contains(KeyCode.DOWN)){
             // Strzelanie - dół

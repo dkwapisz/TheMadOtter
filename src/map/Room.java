@@ -20,21 +20,20 @@ public class Room {
     }
 
     public void drawEnemies(){
-        for (Enemy enemy:enemies) {
+        for (Enemy enemy : enemies) {
             enemy.addToLayer();
         }
     }
 
     public void removeEnemies(){
-        for (Enemy enemy:enemies) {
+        for (Enemy enemy : enemies) {
             enemy.removeFromLayer();
         }
     }
 
-    public void OpenDoor(){
-
-        for (Door door:door) {
-            if (enemies.isEmpty()  && door.isClosedDoors()) {
+    public void openDoor(){
+        for (Door door : door) {
+            if (enemies.isEmpty() && door.isClosedDoors()) {
                 door.setClosedDoors(false);
                 door.addToLayer();
             }
@@ -66,8 +65,8 @@ public class Room {
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
-
     public void setEnemies(ArrayList<Enemy> enemies) {
         this.enemies = enemies;
     }
+
 }

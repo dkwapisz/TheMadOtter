@@ -42,8 +42,6 @@ public class Hero extends ObjectsBehaviour {
         if(currentDirection == HeroDirections.LEFT) {
             setVelX(-vel);
         }
-
-
     }
 
     public void doorCollision() {
@@ -128,7 +126,7 @@ public class Hero extends ObjectsBehaviour {
         actualRoom.removeEnemies();
         nextRoom.drawEnemies();
         if (!nextRoom.getEnemies().isEmpty()){
-            for (Door door:nextRoom.getDoor()) {
+            for (Door door : nextRoom.getDoor()) {
                 door.removeFromLayer();
                 door.setClosedDoors(true);
             }
@@ -153,7 +151,6 @@ public class Hero extends ObjectsBehaviour {
     public Room getActualRoom() {
         return actualRoom;
     }
-
     public void setActualRoom(Room actualRoom) {
         this.actualRoom = actualRoom;
     }
@@ -161,7 +158,6 @@ public class Hero extends ObjectsBehaviour {
     public MapGenerator getMap() {
         return map;
     }
-
     public void setMap(MapGenerator map) {
         this.map = map;
     }

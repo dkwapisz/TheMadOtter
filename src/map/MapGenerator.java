@@ -5,6 +5,7 @@ import model.enemy.Enemy;
 import model.enemy.EnemyTest;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MapGenerator {
 
@@ -14,6 +15,7 @@ public class MapGenerator {
     private Door door2;
     private Door door3;
     private Door door4;
+    private Random random = new Random();
 
     public MapGenerator(int nrOfRooms, Pane layer) {
         this.nrOfRooms = nrOfRooms;
@@ -75,7 +77,7 @@ public class MapGenerator {
                             doors.add(door1);
                             doors.add(door2);
                             doors.add(door4);
-                            roomList.add(new Room(doors, false, k,enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
                         }
                     }
                 } else {
@@ -95,20 +97,12 @@ public class MapGenerator {
         }
     }
 
-    private ArrayList<Enemy> enemiesGenerator(Pane layer){
-        ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(new EnemyTest(200,200,"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
-        enemies.add(new EnemyTest(600,600,"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
-
-
-        return enemies;
-    }
 
     private ArrayList<Enemy> enemiesGeneratorTest(Pane layer){
         ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(new EnemyTest(400,400,"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
-        enemies.add(new EnemyTest(100,100,"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
 
+        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
+        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
 
         return enemies;
     }
@@ -117,21 +111,18 @@ public class MapGenerator {
         if (!actualRoom.getEnemies().isEmpty()) {
             for (Enemy enemy : actualRoom.getEnemies()) {
                 if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()){
-                    enemy.setVelX( -enemy.getVelX());
+                    enemy.setVelX(-enemy.getVelX());
                 }
                 enemy.updateLocation();
             }
         }
-
+        actualRoom.openDoor();
     }
-
-
 
 
     public ArrayList<Room> getRoomList() {
         return roomList;
     }
-
     public void setRoomList(ArrayList<Room> roomList) {
         this.roomList = roomList;
     }
@@ -139,7 +130,6 @@ public class MapGenerator {
     public int getNrOfRooms() {
         return nrOfRooms;
     }
-
     public void setNrOfRooms(int nrOfRooms) {
         this.nrOfRooms = nrOfRooms;
     }
@@ -147,7 +137,6 @@ public class MapGenerator {
     public Door getDoor1() {
         return door1;
     }
-
     public void setDoor1(Door door1) {
         this.door1 = door1;
     }
@@ -155,7 +144,6 @@ public class MapGenerator {
     public Door getDoor2() {
         return door2;
     }
-
     public void setDoor2(Door door2) {
         this.door2 = door2;
     }
@@ -163,7 +151,6 @@ public class MapGenerator {
     public Door getDoor3() {
         return door3;
     }
-
     public void setDoor3(Door door3) {
         this.door3 = door3;
     }
@@ -171,7 +158,6 @@ public class MapGenerator {
     public Door getDoor4() {
         return door4;
     }
-
     public void setDoor4(Door door4) {
         this.door4 = door4;
     }

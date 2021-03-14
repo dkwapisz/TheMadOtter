@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import model.hero.HeroDirections;
 
 public abstract class ObjectsBehaviour {
 
@@ -16,9 +17,9 @@ public abstract class ObjectsBehaviour {
     private Image imageStatic;
     private Image imageMoving;
 
-    public ObjectsBehaviour(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
+    public ObjectsBehaviour(double x, double y, String pathStatic, String pathMoving, Pane layer) {
         setLocation(x, y);
-        layer = mainLayer;
+        this.layer = layer;
         loadImage(pathStatic);
         imageStatic = new Image(pathStatic);
         imageMoving = new Image(pathMoving);
@@ -31,7 +32,6 @@ public abstract class ObjectsBehaviour {
     }
 
     public void updateLocation() {
-
         if(!(x + velX < 30 || x + velX > 770 - imageStatic.getHeight() || y + velY < 30 || y + velY > 770 - imageStatic.getHeight())) {
             x = x + velX;
             y = y + velY;
@@ -45,7 +45,6 @@ public abstract class ObjectsBehaviour {
         } else {
             imageView.setImage(imageStatic);
         }
-
     }
 
     private void loadImage(String path) {
@@ -122,14 +121,11 @@ public abstract class ObjectsBehaviour {
         this.dimension = dimension;
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight());
-    }
+    public Rectangle getBounds() { return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight()); }
 
     public Image getImageStatic() {
         return imageStatic;
     }
-
     public void setImageStatic(Image imageStatic) {
         this.imageStatic = imageStatic;
     }
@@ -137,10 +133,10 @@ public abstract class ObjectsBehaviour {
     public Image getImageMoving() {
         return imageMoving;
     }
-
     public void setImageMoving(Image imageMoving) {
         this.imageMoving = imageMoving;
     }
+
 }
 
 
