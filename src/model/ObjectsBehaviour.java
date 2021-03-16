@@ -1,6 +1,7 @@
 package model;
 
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -42,6 +43,7 @@ public abstract class ObjectsBehaviour {
 
         if (velX != 0 || velY != 0){
             imageView.setImage(imageMoving);
+
         } else {
             imageView.setImage(imageStatic);
         }
