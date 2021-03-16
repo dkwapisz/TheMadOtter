@@ -101,8 +101,8 @@ public class MapGenerator {
     private ArrayList<Enemy> enemiesGeneratorTest(Pane layer){
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
-        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer));
+        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
+        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
 
         return enemies;
     }
@@ -110,7 +110,7 @@ public class MapGenerator {
     public void updateEnemy(Room actualRoom){
         if (!actualRoom.getEnemies().isEmpty()) {
             for (Enemy enemy : actualRoom.getEnemies()) {
-                if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()){
+                if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
                     enemy.setVelX(-enemy.getVelX());
                 }
                 enemy.updateLocation();

@@ -6,7 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import model.hero.HeroDirections;
+
+import java.util.ArrayList;
 
 public abstract class ObjectsBehaviour {
 
@@ -17,14 +18,16 @@ public abstract class ObjectsBehaviour {
     private ImageView imageView;
     private Image imageStatic;
     private Image imageMoving;
+    private final ArrayList<Rectangle2D> frame = new ArrayList<>();
 
     public ObjectsBehaviour(double x, double y, String pathStatic, String pathMoving, Pane layer) {
         setLocation(x, y);
         this.layer = layer;
+        loadFrames();
         loadImage(pathStatic);
         imageStatic = new Image(pathStatic);
         imageMoving = new Image(pathMoving);
-        dimension = new javafx.geometry.Dimension2D(imageStatic.getWidth(), imageStatic.getHeight());
+        dimension = new javafx.geometry.Dimension2D(imageStatic.getWidth(), imageStatic.getHeight()/4);
     }
 
     public void setLocation(double x, double y) {
@@ -32,38 +35,45 @@ public abstract class ObjectsBehaviour {
         setY(y);
     }
 
+    private void loadFrames() {
+        for(int i=0; i<4; i++) {
+            frame.add(new Rectangle2D(0, 64*i, 64, 64));
+        }
+    }
+
     public void updateLocation() {
-        if(!(x + velX < 30 || x + velX > 770 - imageStatic.getHeight() || y + velY < 30 || y + velY > 770 - imageStatic.getHeight())) {
+        if(!(x + velX < 30 || x + velX > 770 - imageStatic.getHeight()/4 || y + velY < 30 || y + velY > 770 - imageStatic.getHeight()/4)) {
             x = x + velX;
             y = y + velY;
         }
 
         imageView.relocate(x, y);
-        rotation();
 
         if (velX != 0 || velY != 0){
             imageView.setImage(imageMoving);
-
+            directions();
         } else {
             imageView.setImage(imageStatic);
+            imageView.setViewport(frame.get(0));
         }
     }
 
     private void loadImage(String path) {
         imageView = new ImageView(new Image(path));
+        imageView.setViewport(frame.get(0));
         this.imageView.relocate(this.getX(), this.getY());
         this.addToLayer();
     }
 
-    public void rotation(){
+    public void directions(){
         if(velX > 0){
-            imageView.setRotate(90);
+            imageView.setViewport(frame.get(2)); // PRAWO
         }else if (velX < 0){
-            imageView.setRotate(-90);
+            imageView.setViewport(frame.get(3)); // LEWO
         }else if (velY < 0){
-            imageView.setRotate(0);
+            imageView.setViewport(frame.get(1)); // GÓRA
         }else if (velY > 0){
-            imageView.setRotate(180);
+            imageView.setViewport(frame.get(0)); // DÓŁ
         }
     }
 

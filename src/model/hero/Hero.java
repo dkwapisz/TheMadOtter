@@ -20,7 +20,7 @@ public class Hero extends ObjectsBehaviour {
 
 
     public Hero(double x, double y, Pane layer) {
-        super(x, y, "/graphics/hero/heroStatic.png","/graphics/hero/heroMove.gif", layer);
+        super(x, y, "/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer);
         map = new MapGenerator(5, layer);  //nrOfRooms musi być nieparzyste (!!!)
         actualRoom = map.getRoomList().get((map.getNrOfRooms()*map.getNrOfRooms()-1)/2);
         currentDirection = HeroDirections.UP;
