@@ -45,7 +45,7 @@ public class Main extends Application {
 
     private void run() {
         inputManager.handlePlayerActions();
-        inputManager.hero.updateLocation();
+        inputManager.hero.updateHero();
         inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
         label.setText(Integer.toString(hero.getActualRoom().getRoomId()));
 

@@ -1,16 +1,14 @@
 package dev;
 
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
 import model.hero.Hero;
-import model.hero.HeroDirections;
+import model.hero.HeroActions;
 
 import java.util.List;
 
 public class InputManager {
-
+    private boolean shooting;
     public Hero hero;
-
     public InputManager(Hero hero) {
         this.hero = hero;
     }
@@ -19,44 +17,55 @@ public class InputManager {
         List keyboardInput = EventHandling.getInputList();
 
         if(keyboardInput.contains(KeyCode.W)){
-            hero.setCurrentDirection(HeroDirections.UP);
+            hero.setCurrentAction(HeroActions.UP);
             hero.move();
         }
         if(keyboardInput.contains(KeyCode.S)){
-            hero.setCurrentDirection(HeroDirections.DOWN);
+            hero.setCurrentAction(HeroActions.DOWN);
             hero.move();
         }
         if(keyboardInput.contains(KeyCode.A)){
-            hero.setCurrentDirection(HeroDirections.LEFT);
+            hero.setCurrentAction(HeroActions.LEFT);
             hero.move();
         }
         if(keyboardInput.contains(KeyCode.D)){
-            hero.setCurrentDirection(HeroDirections.RIGHT);
+            hero.setCurrentAction(HeroActions.RIGHT);
             hero.move();
         }
 
         if(keyboardInput.contains(KeyCode.UP)){
-            // Strzelanie - górę
+            hero.setShooting(true);
+            hero.setCurrentAction(HeroActions.SHOTUP);
+            hero.shot(0, -10);
         }
         if(keyboardInput.contains(KeyCode.DOWN)){
-            // Strzelanie - dół
+            hero.setShooting(true);
+            hero.setCurrentAction(HeroActions.SHOTDOWN);
+            hero.shot(0, 10);
         }
         if(keyboardInput.contains(KeyCode.LEFT)){
-            // Strzelanie - lewo
+            hero.setShooting(true);
+            hero.setCurrentAction(HeroActions.SHOTLEFT);
+            hero.shot(-10, 0);
         }
         if(keyboardInput.contains(KeyCode.RIGHT)){
-            // Strzelanie - prawo
+            hero.setShooting(true);
+            hero.setCurrentAction(HeroActions.SHOTRIGHT);
+            hero.shot(10, 0);
         }
 
-        if(!keyboardInput.contains(KeyCode.W) && !keyboardInput.contains(KeyCode.S) ) {
-            hero.setVelY(0);
-        }
         if(!keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.D)) {
             hero.setVelX(0);
         }
+        if(!keyboardInput.contains(KeyCode.W) && !keyboardInput.contains(KeyCode.S)) {
+            hero.setVelY(0);
+        }
 
-
+        if(!keyboardInput.contains(KeyCode.UP) && !keyboardInput.contains(KeyCode.DOWN) && !keyboardInput.contains(KeyCode.LEFT) && !keyboardInput.contains(KeyCode.RIGHT)) {
+            hero.setShooting(false);
+        }
     }
+
 
 
 }

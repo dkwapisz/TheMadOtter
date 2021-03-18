@@ -1,9 +1,9 @@
 package model.enemy;
 
 import javafx.scene.layout.Pane;
-import model.ObjectsBehaviour;
+import model.MovingObjects;
 
-public class Enemy extends ObjectsBehaviour {
+public abstract class Enemy extends MovingObjects {
 
     private int remainingLives;
 

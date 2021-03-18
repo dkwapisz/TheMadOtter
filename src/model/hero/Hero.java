@@ -1,48 +1,90 @@
 package model.hero;
 
-import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import map.Door;
 import map.MapGenerator;
 import map.Room;
-import model.ObjectsBehaviour;
+import model.Bullet;
+import model.MovingObjects;
+import model.item.Item;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-public class Hero extends ObjectsBehaviour {
+public class Hero extends MovingObjects {
 
+    private boolean shooting;
     private int remainingLives;
-    private HeroDirections currentDirection;
+    private HeroActions currentAction;
     private Room actualRoom;
     private MapGenerator map;
-
+    private long lastShot = 0;
+    private long cooldownShot = 500;
+    private ArrayList<Item> equipment = new ArrayList<>();
+    private Item actualGun;
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer);
         map = new MapGenerator(5, layer);  //nrOfRooms musi być nieparzyste (!!!)
         actualRoom = map.getRoomList().get((map.getNrOfRooms()*map.getNrOfRooms()-1)/2);
-        currentDirection = HeroDirections.UP;
+        currentAction = HeroActions.UP;
+        actualRoom.makeHeroBulletList();
     }
 
+    public void updateHero() {
+        updateLocation();
+        setShootingStatus(shooting);
+        actualRoom.itemCollision(this);
+        System.out.println(currentAction);
+        ArrayList<Bullet> toBeRemoved = new ArrayList<>();
+        if(actualRoom.getHeroBullets() != null) {
+            for(Bullet bullet : actualRoom.getHeroBullets()) {
+                bullet.updateLocation();
+                if (bullet.removeBullets()) {
+                    toBeRemoved.add(bullet);
+                }
+            }
+            actualRoom.removeBullets(toBeRemoved);
+        }
+    }
+
+    public void shot(int velX, int velY) {
+        if(currentAction == HeroActions.SHOTUP) {
+            getImageView().setViewport(getFrame().get(1));
+        }
+        else if (currentAction == HeroActions.SHOTDOWN) {
+            getImageView().setViewport(getFrame().get(0));
+        }
+        else if (currentAction == HeroActions.SHOTLEFT) {
+            getImageView().setViewport(getFrame().get(3));
+        }
+        else if (currentAction == HeroActions.SHOTRIGHT) {
+            getImageView().setViewport(getFrame().get(2));
+        }
+        long time = System.currentTimeMillis();
+        if (time > lastShot + cooldownShot) {
+            lastShot = time;
+            actualRoom.getHeroBullets().add(new Bullet(getX()+32, getY()+32, velX, velY, "graphics/bullet.png", "graphics/bullet.png", getLayer()));
+        }
+    }
 
     public void move() {
         int vel = 5;
         doorCollision();
-        if(currentDirection == HeroDirections.UP) {
+        if(currentAction == HeroActions.UP) {
             setVelY(-vel);
         }
-        if(currentDirection == HeroDirections.DOWN) {
+        if(currentAction == HeroActions.DOWN) {
             setVelY(vel);
         }
-        if(currentDirection == HeroDirections.RIGHT) {
+        if(currentAction == HeroActions.RIGHT) {
             setVelX(vel);
         }
-        if(currentDirection == HeroDirections.LEFT) {
+        if(currentAction == HeroActions.LEFT) {
             setVelX(-vel);
         }
     }
+
 
     public void doorCollision() {
         Rectangle heroBounds = getBounds();
@@ -50,6 +92,7 @@ public class Hero extends ObjectsBehaviour {
         for (Door door : doors) {
             Rectangle doorBounds = door.getBounds();
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
+                actualRoom.eraseBullets();
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
                     checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 1);
@@ -123,8 +166,12 @@ public class Hero extends ObjectsBehaviour {
                 map.getDoor4().setClosedDoors(false);
             }
         }
-        actualRoom.removeEnemies();
+        actualRoom.eraseEnemies();
+        actualRoom.eraseItems();
+
+        nextRoom.drawItems();
         nextRoom.drawEnemies();
+        nextRoom.makeHeroBulletList();
         if (!nextRoom.getEnemies().isEmpty()){
             for (Door door : nextRoom.getDoor()) {
                 door.removeFromLayer();
@@ -141,11 +188,11 @@ public class Hero extends ObjectsBehaviour {
         this.remainingLives = remainingLives;
     }
 
-    public HeroDirections getCurrentDirection() {
-        return currentDirection;
+    public HeroActions getCurrentAction() {
+        return currentAction;
     }
-    public void setCurrentDirection(HeroDirections currentDirection) {
-        this.currentDirection = currentDirection;
+    public void setCurrentAction(HeroActions currentAction) {
+        this.currentAction = currentAction;
     }
 
     public Room getActualRoom() {
@@ -160,5 +207,13 @@ public class Hero extends ObjectsBehaviour {
     }
     public void setMap(MapGenerator map) {
         this.map = map;
+    }
+
+    public boolean isShooting() {
+        return shooting;
+    }
+
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
     }
 }

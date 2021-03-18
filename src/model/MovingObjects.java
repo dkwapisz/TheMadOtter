@@ -1,5 +1,6 @@
 package model;
 
+import dev.InputManager;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -9,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
-public abstract class ObjectsBehaviour {
+public abstract class MovingObjects {
 
     private double x, y;
     private double velX, velY;
@@ -18,12 +19,12 @@ public abstract class ObjectsBehaviour {
     private ImageView imageView;
     private Image imageStatic;
     private Image imageMoving;
+    private boolean shootingStatus = false;
     private final ArrayList<Rectangle2D> frame = new ArrayList<>();
 
-    public ObjectsBehaviour(double x, double y, String pathStatic, String pathMoving, Pane layer) {
+    public MovingObjects(double x, double y, String pathStatic, String pathMoving, Pane layer) {
         setLocation(x, y);
         this.layer = layer;
-        loadFrames();
         loadImage(pathStatic);
         imageStatic = new Image(pathStatic);
         imageMoving = new Image(pathMoving);
@@ -36,8 +37,9 @@ public abstract class ObjectsBehaviour {
     }
 
     private void loadFrames() {
+        int width = (int) imageView.getImage().getWidth();
         for(int i=0; i<4; i++) {
-            frame.add(new Rectangle2D(0, 64*i, 64, 64));
+            frame.add(new Rectangle2D(0, width*i, width, width));
         }
     }
 
@@ -51,29 +53,36 @@ public abstract class ObjectsBehaviour {
 
         if (velX != 0 || velY != 0){
             imageView.setImage(imageMoving);
-            directions();
+            directions(shootingStatus);
         } else {
             imageView.setImage(imageStatic);
-            imageView.setViewport(frame.get(0));
+            if (shootingStatus) {
+                directions(shootingStatus);
+            } else {
+                imageView.setViewport(frame.get(0));
+            }
         }
     }
 
     private void loadImage(String path) {
         imageView = new ImageView(new Image(path));
+        loadFrames();
         imageView.setViewport(frame.get(0));
         this.imageView.relocate(this.getX(), this.getY());
         this.addToLayer();
     }
 
-    public void directions(){
-        if(velX > 0){
-            imageView.setViewport(frame.get(2)); // PRAWO
-        }else if (velX < 0){
-            imageView.setViewport(frame.get(3)); // LEWO
-        }else if (velY < 0){
-            imageView.setViewport(frame.get(1)); // GÓRA
-        }else if (velY > 0){
-            imageView.setViewport(frame.get(0)); // DÓŁ
+    public void directions(boolean shooting){
+        if(!shooting) {
+            if(velX > 0){
+                imageView.setViewport(frame.get(2)); // PRAWO
+            }else if (velX < 0){
+                imageView.setViewport(frame.get(3)); // LEWO
+            }else if (velY < 0){
+                imageView.setViewport(frame.get(1)); // GÓRA
+            }else if (velY > 0){
+                imageView.setViewport(frame.get(0)); // DÓŁ
+            }
         }
     }
 
@@ -149,6 +158,17 @@ public abstract class ObjectsBehaviour {
         this.imageMoving = imageMoving;
     }
 
+    public ArrayList<Rectangle2D> getFrame() {
+        return frame;
+    }
+
+    public boolean isShootingStatus() {
+        return shootingStatus;
+    }
+
+    public void setShootingStatus(boolean shootingStatus) {
+        this.shootingStatus = shootingStatus;
+    }
 }
 
 

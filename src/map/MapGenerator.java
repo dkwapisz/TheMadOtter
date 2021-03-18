@@ -3,6 +3,8 @@ package map;
 import javafx.scene.layout.Pane;
 import model.enemy.Enemy;
 import model.enemy.EnemyTest;
+import model.item.Item;
+import model.item.Pistol;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,18 +18,23 @@ public class MapGenerator {
     private Door door3;
     private Door door4;
     private Random random = new Random();
+    private Pane layer;
 
     public MapGenerator(int nrOfRooms, Pane layer) {
         this.nrOfRooms = nrOfRooms;
-        door1 = new Door(360, 0, "/graphics/doorH.png", "/graphics/doorH.png", layer, 1);         // góra
-        door2 = new Door(0, 360, "/graphics/doorV.png", "/graphics/doorV.png", layer, 2);        // lewo
-        door3 = new Door(360, 768, "/graphics/doorH.png", "/graphics/doorH.png",  layer, 3);        // dół
-        door4 = new Door(768, 360, "/graphics/doorV.png", "/graphics/doorV.png",  layer, 4);     // prawo
-        generateMap(layer);
+        this.layer = layer;
+
+        door1 = new Door(360, 0, "/graphics/doorH.png",  layer, 1);         // góra
+        door2 = new Door(0, 360, "/graphics/doorV.png",  layer, 2);        // lewo
+        door3 = new Door(360, 768, "/graphics/doorH.png",   layer, 3);        // dół
+        door4 = new Door(768, 360, "/graphics/doorV.png",   layer, 4);     // prawo
+        door3.getImageView().setRotate(180);
+        door4.getImageView().setRotate(180);
+        generateMap();
     }
 
 
-    private void generateMap(Pane layer) {
+    private void generateMap() {
         int k = 0;
         for(int i=0; i < nrOfRooms; i++) {
             for(int j=0; j < nrOfRooms; j++) {
@@ -37,47 +44,47 @@ public class MapGenerator {
                         if(i == 0 && j == 0) {
                             doors.add(door3);
                             doors.add(door4);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                         else if(i == nrOfRooms-1 && j == 0) {
                             doors.add(door2);
                             doors.add(door3);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                         else if(i == 0 && j == nrOfRooms-1) {
                             doors.add(door1);
                             doors.add(door4);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                         else if(i == nrOfRooms-1 && j == nrOfRooms-1) {
                             doors.add(door1);
                             doors.add(door2);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                     } else {
                         if(i == 0) {
                             doors.add(door1);
                             doors.add(door3);
                             doors.add(door4);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                         else if(i == nrOfRooms - 1) {
                             doors.add(door1);
                             doors.add(door2);
                             doors.add(door3);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                         else if(j == 0) {
                             doors.add(door2);
                             doors.add(door3);
                             doors.add(door4);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                         else if(j == nrOfRooms-1) {
                             doors.add(door1);
                             doors.add(door2);
                             doors.add(door4);
-                            roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                            roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                         }
                     }
                 } else {
@@ -86,10 +93,10 @@ public class MapGenerator {
                     doors.add(door3);
                     doors.add(door4);
                     if(k == (nrOfRooms*nrOfRooms-1)/2) {
-                        roomList.add(new Room(doors, true, k, new ArrayList<>()));
+                        roomList.add(new Room(doors, true, k, new ArrayList<>(), itemsGenerator()));
 
                     } else {
-                        roomList.add(new Room(doors, false, k, enemiesGeneratorTest(layer)));
+                        roomList.add(new Room(doors, false, k, enemiesGenerator(), new ArrayList<>()));
                     }
                 }
                 k++;
@@ -97,12 +104,19 @@ public class MapGenerator {
         }
     }
 
+    private ArrayList<Item> itemsGenerator() {
+        ArrayList<Item> items = new ArrayList<>();
 
-    private ArrayList<Enemy> enemiesGeneratorTest(Pane layer){
+        items.add(new Pistol(600, 600, layer));
+
+        return items;
+    }
+
+    private ArrayList<Enemy> enemiesGenerator(){
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
-        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
+        //enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
+        //enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
 
         return enemies;
     }
@@ -160,5 +174,12 @@ public class MapGenerator {
     }
     public void setDoor4(Door door4) {
         this.door4 = door4;
+    }
+
+    public Pane getLayer() {
+        return layer;
+    }
+    public void setLayer(Pane layer) {
+        this.layer = layer;
     }
 }
