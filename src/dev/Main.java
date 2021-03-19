@@ -18,7 +18,6 @@ public class Main extends Application {
     private Hero hero;
     private InputManager inputManager;
     private Label label;
-    private Pane layer;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -47,11 +46,9 @@ public class Main extends Application {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
         inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
-        label.setText(" Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + (hero.getActualGun().getAmmo()) + ", Actual Room: " + Integer.toString(hero.getActualRoom().getRoomId()));
+        label.setText("   Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + hero.getActualGun().getAmmo() + ", Actual Room: " + hero.getActualRoom().getRoomId());
 
 
-//        System.out.println("Room: " + checkRoom);
-//        System.out.println("Door: " + inputManager.hero.getActualRoom().getDoor());
 
     }
 
