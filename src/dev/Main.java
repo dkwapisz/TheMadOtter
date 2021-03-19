@@ -47,9 +47,6 @@ public class Main extends Application {
         inputManager.hero.updateHero();
         inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
         label.setText("   Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + hero.getActualGun().getAmmo() + ", Actual Room: " + hero.getActualRoom().getRoomId());
-
-
-
     }
 
 
