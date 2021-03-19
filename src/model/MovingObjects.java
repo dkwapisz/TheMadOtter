@@ -144,6 +144,10 @@ public abstract class MovingObjects {
 
     public Rectangle getBounds() { return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight()); }
 
+    public Rectangle getSmallerBounds(){
+        return new Rectangle((int) x+velX+16,(int) y+velY+32, dimension.getWidth()/2, dimension.getHeight()/2);
+    }
+
     public Image getImageStatic() {
         return imageStatic;
     }

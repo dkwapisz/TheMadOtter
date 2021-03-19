@@ -20,4 +20,12 @@ public class Bullet extends MovingObjects {
         }
         return false;
     }
+
+    public int getDmg() {
+        return dmg;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
+    }
 }

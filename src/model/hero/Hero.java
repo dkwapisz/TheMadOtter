@@ -7,9 +7,8 @@ import map.MapGenerator;
 import map.Room;
 import model.Bullet;
 import model.MovingObjects;
-import model.item.Gun;
-import model.item.Item;
-import model.item.Pistol;
+import model.item.guns.Gun;
+import model.item.guns.Pistol;
 
 import java.util.ArrayList;
 
@@ -35,13 +34,14 @@ public class Hero extends MovingObjects {
         equipment.add(new Pistol(layer));
         actualGun = equipment.get(0);
         cooldownShot = actualGun.getCooldownShot();
+        remainingLives = 20;
+        getImageView().toFront();
     }
 
     public void updateHero() {
-        updateLocation();
         setShootingStatus(shooting);
-        actualRoom.itemCollision(this);
-        ArrayList<Bullet> toBeRemoved = new ArrayList<>();
+        actualRoom.checkCollision(this);
+        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         if(actualRoom.getHeroBullets() != null) {
             for(Bullet bullet : actualRoom.getHeroBullets()) {
                 bullet.updateLocation();
@@ -49,8 +49,9 @@ public class Hero extends MovingObjects {
                     toBeRemoved.add(bullet);
                 }
             }
-            actualRoom.removeBullets(toBeRemoved);
+            actualRoom.removeMovingObjects(toBeRemoved);
         }
+        updateLocation();
     }
 
     public void shot(int velX, int velY) {
@@ -176,9 +177,11 @@ public class Hero extends MovingObjects {
         }
         actualRoom.eraseEnemies();
         actualRoom.eraseItems();
+        actualRoom.eraseBlocks();
 
         nextRoom.drawItems();
         nextRoom.drawEnemies();
+        nextRoom.drawBlocks();
         nextRoom.makeHeroBulletList();
         if (!nextRoom.getEnemies().isEmpty()){
             for (Door door : nextRoom.getDoor()) {

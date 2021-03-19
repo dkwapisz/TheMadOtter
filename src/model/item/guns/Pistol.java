@@ -1,4 +1,4 @@
-package model.item;
+package model.item.guns;
 
 import javafx.scene.layout.Pane;
 

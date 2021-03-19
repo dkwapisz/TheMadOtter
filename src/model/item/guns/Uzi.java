@@ -1,4 +1,4 @@
-package model.item;
+package model.item.guns;
 
 import javafx.scene.layout.Pane;
 
@@ -9,7 +9,7 @@ public class Uzi extends Gun {
         setAmmo(30);
         setBulletVel(10);
         setCooldownShot(150);
-        setDmg(1);
+        setDmg(3);
         setGunName("Uzi");
     }
 

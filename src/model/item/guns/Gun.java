@@ -1,9 +1,10 @@
-package model.item;
+package model.item.guns;
 
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import model.item.Item;
+import model.item.guns.Uzi;
 
-public abstract class Gun extends Item{
+public abstract class Gun extends Item {
 
     private int bulletVel;
     private long cooldownShot;
