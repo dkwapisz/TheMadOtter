@@ -33,7 +33,7 @@ public class Main extends Application {
         inputManager = new InputManager(hero);
 
         label = new Label();
-        label.setStyle("-fx-font: 20 arial;");
+        label.setStyle("-fx-font: 16 verdana;");
         label.setTextFill(Color.WHITE);
         root.getChildren().add(label);
 
@@ -47,7 +47,7 @@ public class Main extends Application {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
         inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
-        label.setText(Integer.toString(hero.getActualRoom().getRoomId()));
+        label.setText(" Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + (hero.getActualGun().getAmmo()) + ", Actual Room: " + Integer.toString(hero.getActualRoom().getRoomId()));
 
 
 //        System.out.println("Room: " + checkRoom);

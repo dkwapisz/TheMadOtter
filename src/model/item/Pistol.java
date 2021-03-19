@@ -2,10 +2,18 @@ package model.item;
 
 import javafx.scene.layout.Pane;
 
-public class Pistol extends Item {
+public class Pistol extends Gun {
 
-    public Pistol(double x, double y, Pane layer) {
-        super(x, y, "graphics/items/pistol.png", layer);
+    public Pistol(Pane layer) {
+        super(1000, 1000, "graphics/items/uzi.png", layer);
+        setAmmo(0);
+        setBulletVel(8);
+        setCooldownShot(500);
+        setDmg(2);
+        setGunName("Pistol");
     }
+
+
+
 
 }

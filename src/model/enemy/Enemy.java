@@ -5,7 +5,7 @@ import model.MovingObjects;
 
 public abstract class Enemy extends MovingObjects {
 
-    private int remainingLives;
+    private int remainingHealth;
 
     public Enemy(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
         super(x, y, pathStatic, pathMoving, mainLayer);
@@ -13,11 +13,11 @@ public abstract class Enemy extends MovingObjects {
     }
 
 
-    public int getRemainingLives() {
-        return remainingLives;
+    public int getRemainingHealth() {
+        return remainingHealth;
     }
-    public void setRemainingLives(int remainingLives) {
-        this.remainingLives = remainingLives;
+    public void setRemainingHealth(int remainingHealth) {
+        this.remainingHealth = remainingHealth;
     }
 
 }

@@ -7,7 +7,7 @@ public class EnemyTest extends Enemy{
     public EnemyTest(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
         super(x, y, pathStatic, pathMoving, mainLayer);
         setVelX(8);
-        setRemainingLives(1);
+        setRemainingHealth(1);
     }
 
 }

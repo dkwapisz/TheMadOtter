@@ -5,6 +5,7 @@ import model.enemy.Enemy;
 import model.enemy.EnemyTest;
 import model.item.Item;
 import model.item.Pistol;
+import model.item.Uzi;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -107,7 +108,8 @@ public class MapGenerator {
     private ArrayList<Item> itemsGenerator() {
         ArrayList<Item> items = new ArrayList<>();
 
-        items.add(new Pistol(600, 600, layer));
+        items.add(new Uzi(600, 600, layer));
+        items.add(new Uzi(300, 300, layer));
 
         return items;
     }

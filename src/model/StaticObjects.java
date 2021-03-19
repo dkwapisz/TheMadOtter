@@ -28,6 +28,8 @@ public abstract class StaticObjects {
         setY(y);
     }
 
+    public void setLocation() {}
+
 
     private void loadImage(String path) {
         imageView = new ImageView(new Image(path));

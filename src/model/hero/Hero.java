@@ -7,7 +7,9 @@ import map.MapGenerator;
 import map.Room;
 import model.Bullet;
 import model.MovingObjects;
+import model.item.Gun;
 import model.item.Item;
+import model.item.Pistol;
 
 import java.util.ArrayList;
 
@@ -19,9 +21,10 @@ public class Hero extends MovingObjects {
     private Room actualRoom;
     private MapGenerator map;
     private long lastShot = 0;
-    private long cooldownShot = 500;
-    private ArrayList<Item> equipment = new ArrayList<>();
-    private Item actualGun;
+    private long cooldownShot;
+    private ArrayList<Gun> equipment = new ArrayList<>();
+    private Gun actualGun;
+    private long lastChange = 0;
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer);
@@ -29,13 +32,15 @@ public class Hero extends MovingObjects {
         actualRoom = map.getRoomList().get((map.getNrOfRooms()*map.getNrOfRooms()-1)/2);
         currentAction = HeroActions.UP;
         actualRoom.makeHeroBulletList();
+        equipment.add(new Pistol(layer));
+        actualGun = equipment.get(0);
+        cooldownShot = actualGun.getCooldownShot();
     }
 
     public void updateHero() {
         updateLocation();
         setShootingStatus(shooting);
         actualRoom.itemCollision(this);
-        System.out.println(currentAction);
         ArrayList<Bullet> toBeRemoved = new ArrayList<>();
         if(actualRoom.getHeroBullets() != null) {
             for(Bullet bullet : actualRoom.getHeroBullets()) {
@@ -49,6 +54,8 @@ public class Hero extends MovingObjects {
     }
 
     public void shot(int velX, int velY) {
+        cooldownShot = actualGun.getCooldownShot();
+
         if(currentAction == HeroActions.SHOTUP) {
             getImageView().setViewport(getFrame().get(1));
         }
@@ -62,9 +69,10 @@ public class Hero extends MovingObjects {
             getImageView().setViewport(getFrame().get(2));
         }
         long time = System.currentTimeMillis();
-        if (time > lastShot + cooldownShot) {
+        if (time > lastShot + cooldownShot && (actualGun.getAmmo() != 0 || actualGun instanceof Pistol)) {
             lastShot = time;
-            actualRoom.getHeroBullets().add(new Bullet(getX()+32, getY()+32, velX, velY, "graphics/bullet.png", "graphics/bullet.png", getLayer()));
+            actualRoom.getHeroBullets().add(new Bullet(getX()+32, getY()+32, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), "graphics/bullet.png", "graphics/bullet.png", getLayer()));
+            actualGun.setAmmo(actualGun.getAmmo()-1);
         }
     }
 
@@ -180,6 +188,45 @@ public class Hero extends MovingObjects {
         }
     }
 
+    public void addNewGun(Gun gun) {
+        boolean isOwned = false;
+        for(Gun ownedGun : equipment) {
+            if(ownedGun.getClass().equals(gun.getClass())) {
+                isOwned = true;
+                ownedGun.addAmmo();
+            }
+        }
+        if(!isOwned) {
+            equipment.add(gun);
+            actualGun = gun;
+        }
+    }
+
+    public void changeWeapon(boolean forward) {
+        int length = equipment.size();
+        if(length == 1) {
+            return;
+        }
+        int selectedGun = equipment.indexOf(actualGun);
+        long time = System.currentTimeMillis();
+        if (time > lastChange + 500) {
+            lastChange = time;
+            if(forward) {
+                if (selectedGun + 1 == length) {
+                    actualGun = equipment.get(0);
+                } else {
+                    actualGun = equipment.get(equipment.indexOf(actualGun) + 1);
+                }
+            } else {
+                if (selectedGun - 1 == -1) {
+                    actualGun = equipment.get(length-1);
+                } else {
+                    actualGun = equipment.get(equipment.indexOf(actualGun) - 1);
+                }
+            }
+        }
+    }
+
 
     public int getRemainingLives() {
         return remainingLives;
@@ -212,8 +259,14 @@ public class Hero extends MovingObjects {
     public boolean isShooting() {
         return shooting;
     }
-
     public void setShooting(boolean shooting) {
         this.shooting = shooting;
+    }
+
+    public Gun getActualGun() {
+        return actualGun;
+    }
+    public void setActualGun(Gun actualGun) {
+        this.actualGun = actualGun;
     }
 }

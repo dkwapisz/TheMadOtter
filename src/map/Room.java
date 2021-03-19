@@ -4,6 +4,7 @@ import javafx.scene.shape.Rectangle;
 import model.Bullet;
 import model.enemy.Enemy;
 import model.hero.Hero;
+import model.item.Gun;
 import model.item.Item;
 
 import java.util.ArrayList;
@@ -93,6 +94,9 @@ public class Room {
             Rectangle itemBounds = item.getBounds();
             if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
                 toBeRemoved.add(item);
+                if(item instanceof Gun) {
+                    hero.addNewGun((Gun) item);
+                }
             }
         }
         removeItems(toBeRemoved);

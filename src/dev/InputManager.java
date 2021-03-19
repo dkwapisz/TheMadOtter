@@ -7,7 +7,6 @@ import model.hero.HeroActions;
 import java.util.List;
 
 public class InputManager {
-    private boolean shooting;
     public Hero hero;
     public InputManager(Hero hero) {
         this.hero = hero;
@@ -36,23 +35,31 @@ public class InputManager {
         if(keyboardInput.contains(KeyCode.UP)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTUP);
-            hero.shot(0, -10);
+            hero.shot(0, -1);
         }
         if(keyboardInput.contains(KeyCode.DOWN)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTDOWN);
-            hero.shot(0, 10);
+            hero.shot(0, 1);
         }
         if(keyboardInput.contains(KeyCode.LEFT)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTLEFT);
-            hero.shot(-10, 0);
+            hero.shot(-1, 0);
         }
         if(keyboardInput.contains(KeyCode.RIGHT)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTRIGHT);
-            hero.shot(10, 0);
+            hero.shot(1, 0);
         }
+
+        if(keyboardInput.contains(KeyCode.E)){
+            hero.changeWeapon(true);
+        }
+        if(keyboardInput.contains(KeyCode.Q)){
+            hero.changeWeapon(false);
+        }
+
 
         if(!keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.D)) {
             hero.setVelX(0);
