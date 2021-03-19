@@ -137,7 +137,7 @@ public class Room {
                 }
                 if(item instanceof Fish && hero.getRemainingLives() <= 19) {
                     if(hero.getRemainingLives() == 19){
-                        hero.setRemainingLives(hero.getRemainingLives()+((Fish) item).getHpBonus()-1);
+                        hero.setRemainingLives(hero.getRemainingLives() + ((Fish) item).getHpBonus() - 1);
                     }else {
                         hero.setRemainingLives(hero.getRemainingLives() + ((Fish) item).getHpBonus());
                     }
@@ -175,22 +175,22 @@ public class Room {
     public void heroBulletsCollision(){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
-        for(Bullet bullet: heroBullets){
+        for(Bullet bullet : heroBullets){
             Rectangle bulletBounds = bullet.getBounds();
-            for(Block block: blocks) {
+            for(Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
                     if(block.isBreakable()){
                         ((SoftBlock) block).setHp(((SoftBlock)block).getHp()-1);
                         ((SoftBlock) block).changeImage();
-                        if(((SoftBlock) block).getHp() <= 0){
+                        if(((SoftBlock) block).getHp() <= 0 || bullet.getDmg() > 50){
                             toRemoveBlocks.add(block);
                         }
                     }
                 }
             }
-            for (Enemy enemy: enemies){
+            for (Enemy enemy : enemies){
                 Rectangle enemyBounds = enemy.getBounds();
                 if(bulletBounds.intersects(enemyBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);

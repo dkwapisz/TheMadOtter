@@ -8,6 +8,8 @@ import model.enemy.Enemy;
 import model.enemy.EnemyTest;
 import model.item.Fish;
 import model.item.Item;
+import model.item.guns.Ak47;
+import model.item.guns.SniperRifle;
 import model.item.guns.Uzi;
 
 import java.util.ArrayList;
@@ -112,8 +114,9 @@ public class MapGenerator {
         ArrayList<Item> items = new ArrayList<>();
 
         items.add(new Uzi(600, 600, layer));
-        items.add(new Uzi(300, 300, layer));
-        items.add(new Fish(200,200,layer));
+        items.add(new Ak47(300, 300, layer));
+        items.add(new SniperRifle(300, 600, layer));
+        items.add(new Fish(200,200, layer));
 
         return items;
     }
@@ -123,7 +126,7 @@ public class MapGenerator {
 
         blocks.add(new SolidBlock(500,500,"graphics/blocks/SolidBlock.png",layer));
         blocks.add(new SolidBlock(500,580,"graphics/blocks/SolidBlock.png",layer));
-        blocks.add(new SoftBlock(300,300,layer));
+        blocks.add(new SoftBlock(200,400, layer));
 
         return blocks;
     }
@@ -131,8 +134,8 @@ public class MapGenerator {
     private ArrayList<Enemy> enemiesGenerator(){
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
-        //enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer));
+        enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600), "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", layer));
+        //enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStatic.gif","/graphics/hero/otterMoving.gif", layer));
 
         return enemies;
     }

@@ -7,8 +7,8 @@ public abstract class Enemy extends MovingObjects {
 
     private int remainingHealth;
 
-    public Enemy(double x, double y, String pathStatic, String pathMoving, Pane mainLayer) {
-        super(x, y, pathStatic, pathMoving, mainLayer);
+    public Enemy(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane mainLayer) {
+        super(x, y, pathStatic, pathMoving, pathStaticShot, pathMovingShot, mainLayer);
         this.removeFromLayer();
     }
 

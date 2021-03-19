@@ -26,7 +26,7 @@ public class Hero extends MovingObjects {
     private long lastChange = 0;
 
     public Hero(double x, double y, Pane layer) {
-        super(x, y, "/graphics/hero/otterStaticGIF.gif","/graphics/hero/otterMovingGIF.gif", layer);
+        super(x, y, "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", "graphics/hero/otterStaticShoting.gif", "graphics/hero/otterMovingShoting.gif",  layer);
         map = new MapGenerator(5, layer);  //nrOfRooms musi być nieparzyste (!!!)
         actualRoom = map.getRoomList().get((map.getNrOfRooms()*map.getNrOfRooms()-1)/2);
         currentAction = HeroActions.UP;
@@ -55,24 +55,39 @@ public class Hero extends MovingObjects {
     }
 
     public void shot(int velX, int velY) {
+        double x = 0;
+        double y = 0;
         cooldownShot = actualGun.getCooldownShot();
+        if(actualGun.getAmmo() == 0) {
+            setNoAmmo(true);
+        } else {
+            setNoAmmo(false);
+        }
 
         if(currentAction == HeroActions.SHOTUP) {
             getImageView().setViewport(getFrame().get(1));
+            x = getX() + 32;
+            y = getY() + 25;
         }
         else if (currentAction == HeroActions.SHOTDOWN) {
             getImageView().setViewport(getFrame().get(0));
+            x = getX() + 27;
+            y = getY() + 28;
         }
         else if (currentAction == HeroActions.SHOTLEFT) {
             getImageView().setViewport(getFrame().get(3));
+            x = getX() + 2;
+            y = getY() + 20;
         }
         else if (currentAction == HeroActions.SHOTRIGHT) {
             getImageView().setViewport(getFrame().get(2));
+            x = getX() + 61;
+            y = getY() + 20;
         }
         long time = System.currentTimeMillis();
         if (time > lastShot + cooldownShot && (actualGun.getAmmo() != 0 || actualGun instanceof Pistol)) {
             lastShot = time;
-            actualRoom.getHeroBullets().add(new Bullet(getX()+32, getY()+32, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), "graphics/bullet.png", "graphics/bullet.png", getLayer()));
+            actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
             actualGun.setAmmo(actualGun.getAmmo()-1);
         }
     }

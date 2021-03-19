@@ -19,15 +19,22 @@ public abstract class MovingObjects {
     private ImageView imageView;
     private Image imageStatic;
     private Image imageMoving;
+    private Image imageStaticShot;
+    private Image imageMovingShot;
     private boolean shootingStatus = false;
+    private boolean noAmmo = false;
     private final ArrayList<Rectangle2D> frame = new ArrayList<>();
 
-    public MovingObjects(double x, double y, String pathStatic, String pathMoving, Pane layer) {
+    public MovingObjects(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane layer) {
         setLocation(x, y);
         this.layer = layer;
         loadImage(pathStatic);
         imageStatic = new Image(pathStatic);
         imageMoving = new Image(pathMoving);
+        if(pathStaticShot != null && pathMovingShot != null) {
+            imageStaticShot = new Image(pathStaticShot);
+            imageMovingShot = new Image(pathMovingShot);
+        }
         dimension = new javafx.geometry.Dimension2D(imageStatic.getWidth(), imageStatic.getHeight()/4);
     }
 
@@ -52,14 +59,19 @@ public abstract class MovingObjects {
         imageView.relocate(x, y);
 
         if (velX != 0 || velY != 0){
-            imageView.setImage(imageMoving);
+            if(shootingStatus && !noAmmo) {
+                imageView.setImage(imageMovingShot);
+            } else {
+                imageView.setImage(imageMoving);
+            }
             directions(shootingStatus);
         } else {
-            imageView.setImage(imageStatic);
-            if (shootingStatus) {
+            if (shootingStatus && !noAmmo) {
+                imageView.setImage(imageStaticShot);
                 directions(shootingStatus);
             } else {
-                imageView.setViewport(frame.get(0));
+                imageView.setImage(imageStatic);
+                //imageView.setViewport(frame.get(0));
             }
         }
     }
@@ -169,9 +181,29 @@ public abstract class MovingObjects {
     public boolean isShootingStatus() {
         return shootingStatus;
     }
-
     public void setShootingStatus(boolean shootingStatus) {
         this.shootingStatus = shootingStatus;
+    }
+
+    public boolean isNoAmmo() {
+        return noAmmo;
+    }
+    public void setNoAmmo(boolean noAmmo) {
+        this.noAmmo = noAmmo;
+    }
+
+    public Image getImageStaticShot() {
+        return imageStaticShot;
+    }
+    public void setImageStaticShot(Image imageStaticShot) {
+        this.imageStaticShot = imageStaticShot;
+    }
+
+    public Image getImageMovingShot() {
+        return imageMovingShot;
+    }
+    public void setImageMovingShot(Image imageMovingShot) {
+        this.imageMovingShot = imageMovingShot;
     }
 }
 

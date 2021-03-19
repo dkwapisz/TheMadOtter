@@ -7,11 +7,13 @@ public class Bullet extends MovingObjects {
     private int dmg;
 
     public Bullet(double x, double y, int bulletVelX, int bulletVelY, int dmg, String pathStatic, String pathMoving, Pane layer) {
-        super(x, y, pathStatic, pathMoving, layer);
+        super(x, y, pathStatic, pathMoving, null, null, layer);
         this.dmg = dmg;
 
         setVelX(bulletVelX);
         setVelY(bulletVelY);
+
+        getImageView().toBack();
     }
 
     public boolean removeBullets() {
