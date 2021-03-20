@@ -8,9 +8,7 @@ import model.enemy.Enemy;
 import model.enemy.EnemyTest;
 import model.item.Fish;
 import model.item.Item;
-import model.item.guns.Ak47;
-import model.item.guns.SniperRifle;
-import model.item.guns.Uzi;
+import model.item.guns.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -113,10 +111,12 @@ public class MapGenerator {
     private ArrayList<Item> itemsGenerator() {
         ArrayList<Item> items = new ArrayList<>();
 
-        items.add(new Uzi(600, 600, layer));
-        items.add(new Ak47(300, 300, layer));
-        items.add(new SniperRifle(300, 600, layer));
-        items.add(new Fish(200,200, layer));
+        items.add(new Uzi(200, 200, layer));
+        items.add(new Ak47(200, 300, layer));
+        items.add(new SniperRifle(200, 400, layer));
+        items.add(new Deagle(200, 500, layer));
+        items.add(new PlasmaGun(200, 600, layer));
+        items.add(new Fish(100,200, layer));
 
         return items;
     }
@@ -126,7 +126,7 @@ public class MapGenerator {
 
         blocks.add(new SolidBlock(500,500,"graphics/blocks/SolidBlock.png",layer));
         blocks.add(new SolidBlock(500,580,"graphics/blocks/SolidBlock.png",layer));
-        blocks.add(new SoftBlock(200,400, layer));
+        blocks.add(new SoftBlock(300,400, layer));
 
         return blocks;
     }

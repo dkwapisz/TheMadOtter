@@ -33,6 +33,9 @@ public abstract class Gun extends Item {
         if (this instanceof SniperRifle) {
             ammo = ammo + 5;
         }
+        if (this instanceof Deagle) {
+            ammo = ammo + 7;
+        }
     }
 
 

@@ -8,7 +8,7 @@ public class SniperRifle extends Gun {
         super(x, y, "graphics/items/guns/sniperRifle.png", "graphics/items/bullets/sniperBullet.png", layer);
         setAmmo(5);
         setBulletVel(20);
-        setCooldownShot(1000);
+        setCooldownShot(1500);
         setDmg(80);
         setGunName("Sniper Rifle");
     }
