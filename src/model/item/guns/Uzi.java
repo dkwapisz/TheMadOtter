@@ -9,7 +9,7 @@ public class Uzi extends Gun {
         setAmmo(50);
         setBulletVel(10);
         setCooldownShot(100);
-        setDmg(1);
+        setDmg(2);
         setGunName("Uzi");
     }
 

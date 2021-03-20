@@ -7,10 +7,10 @@ import map.MapGenerator;
 import map.Room;
 import model.Bullet;
 import model.MovingObjects;
-import model.item.guns.Gun;
-import model.item.guns.Pistol;
+import model.item.guns.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Hero extends MovingObjects {
 
@@ -24,6 +24,7 @@ public class Hero extends MovingObjects {
     private ArrayList<Gun> equipment = new ArrayList<>();
     private Gun actualGun;
     private long lastChange = 0;
+    private final Random random = new Random();
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", "graphics/hero/otterStaticShoting.gif", "graphics/hero/otterMovingShoting.gif",  layer);
@@ -54,10 +55,12 @@ public class Hero extends MovingObjects {
         updateLocation();
     }
 
-    public void shot(int velX, int velY) {
+    public void shot(double velX, double velY) {
         double x = 0;
         double y = 0;
+
         cooldownShot = actualGun.getCooldownShot();
+
         if(actualGun.getAmmo() == 0) {
             setNoAmmo(true);
         } else {
@@ -84,10 +87,39 @@ public class Hero extends MovingObjects {
             x = getX() + 61;
             y = getY() + 20;
         }
+
         long time = System.currentTimeMillis();
+
         if (time > lastShot + cooldownShot && (actualGun.getAmmo() != 0 || actualGun instanceof Pistol)) {
             lastShot = time;
-            actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+
+            if(actualGun instanceof Shotgun) {
+                double newVelX = 0;
+                double newVelY = 0;
+                for(double i = -0.1; i<0.1;) {
+                    if(velX != 0) {
+                        newVelY = i + (random.nextDouble()-0.5)/5;
+                        newVelX = velX + (random.nextDouble()-0.5)/10;
+                        i = i + 0.02;
+                    }
+                    if(velY != 0) {
+                        newVelY = velY + (random.nextDouble()-0.5)/10;
+                        newVelX = i + (random.nextDouble()-0.5)/5;
+                        i = i + 0.02;
+                    }
+                    actualRoom.getHeroBullets().add(new Bullet(x, y, newVelX*actualGun.getBulletVel(), newVelY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+                }
+            }
+            else if (actualGun instanceof M16){
+                for(double i=1; i<1.3; i = i+0.1) {
+                    actualRoom.getHeroBullets().add(new Bullet(x, y, i*velX*actualGun.getBulletVel(), i*velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+                }
+                actualGun.setAmmo(actualGun.getAmmo()-2);
+            }
+            else {
+                actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+            }
+
             actualGun.setAmmo(actualGun.getAmmo()-1);
         }
     }
@@ -244,6 +276,7 @@ public class Hero extends MovingObjects {
             }
         }
     }
+
 
 
     public int getRemainingLives() {

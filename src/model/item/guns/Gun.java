@@ -27,14 +27,26 @@ public abstract class Gun extends Item {
         if (this instanceof Uzi) {
             ammo = ammo + 50;
         }
-        if (this instanceof Ak47) {
+        else if (this instanceof Ak47) {
             ammo = ammo + 30;
         }
-        if (this instanceof SniperRifle) {
+        else if (this instanceof SniperRifle) {
             ammo = ammo + 5;
         }
-        if (this instanceof Deagle) {
+        else if (this instanceof Deagle) {
             ammo = ammo + 7;
+        }
+        else if (this instanceof PlasmaGun) {
+            ammo = ammo + 20;
+        }
+        else if (this instanceof Shotgun) {
+            ammo = ammo + 12;
+        }
+        else if (this instanceof RocketLauncher) {
+            ammo = ammo + 3;
+        }
+        else if (this instanceof M16) {
+            ammo = ammo + 30;
         }
     }
 

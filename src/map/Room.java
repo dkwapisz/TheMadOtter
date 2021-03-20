@@ -11,6 +11,7 @@ import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
 import model.item.Item;
+import model.item.guns.RocketLauncher;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class Room {
         blockCollision(hero);
         enemyCollision(hero);
         itemCollision(hero);
-        heroBulletsCollision();
+        heroBulletsCollision(hero);
     }
 
     public void drawEnemies(){
@@ -172,7 +173,7 @@ public class Room {
         }
     }
 
-    public void heroBulletsCollision(){
+    public void heroBulletsCollision(Hero hero){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         for(Bullet bullet : heroBullets){

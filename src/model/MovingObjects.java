@@ -63,6 +63,7 @@ public abstract class MovingObjects {
                 imageView.setImage(imageMovingShot);
             } else {
                 imageView.setImage(imageMoving);
+
             }
             directions(shootingStatus);
         } else {
@@ -71,7 +72,6 @@ public abstract class MovingObjects {
                 directions(shootingStatus);
             } else {
                 imageView.setImage(imageStatic);
-                //imageView.setViewport(frame.get(0));
             }
         }
     }

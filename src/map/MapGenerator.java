@@ -111,12 +111,15 @@ public class MapGenerator {
     private ArrayList<Item> itemsGenerator() {
         ArrayList<Item> items = new ArrayList<>();
 
-        items.add(new Uzi(200, 200, layer));
-        items.add(new Ak47(200, 300, layer));
-        items.add(new SniperRifle(200, 400, layer));
-        items.add(new Deagle(200, 500, layer));
-        items.add(new PlasmaGun(200, 600, layer));
-        items.add(new Fish(100,200, layer));
+        items.add(new Uzi(100, 100, layer));
+        items.add(new Ak47(100, 200, layer));
+        items.add(new SniperRifle(100, 300, layer));
+        items.add(new Deagle(100, 400, layer));
+        items.add(new PlasmaGun(100, 500, layer));
+        items.add(new Shotgun(100, 600, layer));
+        items.add(new RocketLauncher(100, 700, layer));
+        items.add(new M16(200, 100, layer));
+        items.add(new Fish(700,100, layer));
 
         return items;
     }
@@ -124,9 +127,10 @@ public class MapGenerator {
     private ArrayList<Block> BlockGenerator() {
         ArrayList<Block> blocks = new ArrayList<>();
 
-        blocks.add(new SolidBlock(500,500,"graphics/blocks/SolidBlock.png",layer));
-        blocks.add(new SolidBlock(500,580,"graphics/blocks/SolidBlock.png",layer));
-        blocks.add(new SoftBlock(300,400, layer));
+        blocks.add(new SolidBlock(700,200, layer));
+        blocks.add(new SolidBlock(700,300, layer));
+        blocks.add(new SoftBlock(700,400, layer));
+        blocks.add(new SoftBlock(700,500, layer));
 
         return blocks;
     }
