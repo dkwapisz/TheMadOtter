@@ -1,6 +1,5 @@
 package map;
 
-import javafx.geometry.Bounds;
 import javafx.scene.shape.Rectangle;
 import model.Bullet;
 import model.MovingObjects;
@@ -8,13 +7,15 @@ import model.StaticObjects;
 import model.block.Block;
 import model.block.SoftBlock;
 import model.enemy.Enemy;
+import model.enemy.Turret;
 import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
 import model.item.Item;
 import java.lang.Math;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Vector;
+
 
 public class Room {
 
@@ -24,8 +25,10 @@ public class Room {
     private ArrayList<Enemy> enemies;
     private ArrayList<Item> items;
     private ArrayList<Bullet> heroBullets;
+    private ArrayList<Bullet> enemyBullets;
     private ArrayList<Block> blocks;
     private long lastTouch;
+    private long lastEnemyShot;
 
 
     public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks) {
@@ -42,7 +45,9 @@ public class Room {
         enemyCollision(hero);
         itemCollision(hero);
         heroBulletsCollision();
+        enemyBulletCollision(hero);
         enemyFollow(hero);
+        updateEnemy(hero);
     }
 
     public void drawEnemies(){
@@ -89,7 +94,11 @@ public class Room {
         for(MovingObjects object : list) {
             object.removeFromLayer();
             if(object instanceof Bullet){
-                heroBullets.remove(object);
+                if(heroBullets.contains(object)) {
+                    heroBullets.remove(object);
+                } else {
+                    enemyBullets.remove(object);
+                }
             }if (object instanceof Enemy){
                 enemies.remove(object);
             }
@@ -117,6 +126,13 @@ public class Room {
             bullet.removeFromLayer();
         }
         heroBullets.clear();
+        if(enemyBullets == null) {
+            return;
+        }
+        for (Bullet bullet : enemyBullets) {
+            bullet.removeFromLayer();
+        }
+        enemyBullets.clear();
     }
 
     public void openDoor(){
@@ -175,6 +191,28 @@ public class Room {
         }
     }
 
+    public void enemyBulletCollision(Hero hero) {
+        if(enemyBullets == null) {
+            return;
+        }
+        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
+        for(Bullet bullet : enemyBullets) {
+            Rectangle bulletBounds = bullet.getBounds();
+            Rectangle heroBounds = hero.getBounds();
+            if(bulletBounds.intersects(heroBounds.getBoundsInParent())) {
+                toBeRemoved.add(bullet);
+                hero.setRemainingLives(hero.getRemainingLives()-bullet.getDmg());
+            }
+            for(Block block : blocks) {
+                Rectangle blockBounds = block.getBounds();
+                if(bulletBounds.intersects(blockBounds.getBoundsInParent())) {
+                    toBeRemoved.add(bullet);
+                }
+            }
+        }
+        removeMovingObjects(toBeRemoved);
+    }
+
 
     public void heroBulletsCollision(){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
@@ -209,37 +247,30 @@ public class Room {
         removeStaticObjects(toRemoveBlocks);
     }
 
-    public void makeHeroBulletList() {
-        heroBullets = new ArrayList<>();
-    }
-
     public void enemyFollow(Hero hero) {
         double vecLength;
+        double newVelX;
+        double newVelY;
         for (Enemy enemy : enemies) {
+            vecLength = Math.hypot(hero.getX() - enemy.getX(), hero.getY() - enemy.getY());
+            newVelX = enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength;
+            newVelY = enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength;
             if (enemy.isFollowing()) {
-                if((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
-                    enemy.setVelX(0);
-                    enemy.setVelY(0);
-                } else {
-                    for (Block block : blocks) {
-                        vecLength = Math.hypot(hero.getX() - enemy.getX(), hero.getY() - enemy.getY());
-                        if (!block.isToPass() && !enemy.isFlying()) {
-                            Bounds blockBounds = block.getBounds().getBoundsInParent();
-                            if(blockBounds.intersects(enemy.getBounds().getBoundsInParent())) {
-                                if (enemy.getDownBounds().intersects(blockBounds) || enemy.getUpBounds().intersects(blockBounds)) {
-                                    enemy.setVelY(0);
-                                    enemy.setVelX(enemy.getFollowingVel() * (hero.getX() - enemy.getX()) / vecLength);
-                                    System.out.println('y');
-                                }
-                                if (enemy.getLeftBounds().intersects(blockBounds) || enemy.getRightBounds().intersects(blockBounds)) {
-                                    enemy.setVelX(0);
-                                    enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
-                                    System.out.println('x');
-                                }
-                            } else {
-                                enemy.setVelX(enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength);
-                                enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
-                            }
+                for (Block block : blocks) {
+                    enemy.setVelX(enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength);
+                    enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
+                    Rectangle enemyBounds = enemy.getBounds();
+                    Rectangle blockBounds = block.getBounds();
+                    if(enemyBounds.intersects(blockBounds.getBoundsInParent())) {
+                        newVelX = 0;
+                        newVelY = 0;
+                    } else {
+                        if((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
+                            enemy.setVelX(0);
+                            enemy.setVelY(0);
+                        } else {
+                            enemy.setVelX(newVelX);
+                            enemy.setVelY(newVelY);
                         }
                     }
                 }
@@ -247,6 +278,37 @@ public class Room {
         }
     }
 
+    public void updateEnemy(Hero hero){
+        if (!enemies.isEmpty()) {
+            for (Enemy enemy : enemies) {
+                if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
+                    enemy.setVelX(-enemy.getVelX());
+                }
+                enemy.updateLocation();
+                if(enemy instanceof Turret) {
+                    long time = System.currentTimeMillis();
+                    if (time > lastEnemyShot + 2000) {
+                        lastEnemyShot = time;
+                        enemy.shot(hero, 1, 8);
+                        if(enemy.getNewVelX() < 0) {
+                            enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI-(Math.atan(enemy.getNewVelY()/enemy.getNewVelX())+Math.PI/2))));
+                        } else {
+                            enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getNewVelY()/enemy.getNewVelX())+Math.PI/2));
+                        }
+                    }
+                }
+            }
+        }
+        openDoor();
+    }
+
+    public void makeHeroBulletList() {
+        heroBullets = new ArrayList<>();
+    }
+
+    public void makeEnemyBulletList() {
+        enemyBullets = new ArrayList<>();
+    }
 
     public ArrayList<Door> getDoor() {
         return door;
@@ -298,5 +360,13 @@ public class Room {
 
     public void setBlocks(ArrayList<Block> blocks) {
         this.blocks = blocks;
+    }
+
+    public ArrayList<Bullet> getEnemyBullets() {
+        return enemyBullets;
+    }
+
+    public void setEnemyBullets(ArrayList<Bullet> enemyBullets) {
+        this.enemyBullets = enemyBullets;
     }
 }

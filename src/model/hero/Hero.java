@@ -52,6 +52,15 @@ public class Hero extends MovingObjects {
             }
             actualRoom.removeMovingObjects(toBeRemoved);
         }
+        if(actualRoom.getEnemyBullets() != null) {
+            for(Bullet bullet : actualRoom.getEnemyBullets()) {
+                bullet.updateLocation();
+                if (bullet.removeBullets()) {
+                    toBeRemoved.add(bullet);
+                }
+            }
+            actualRoom.removeMovingObjects(toBeRemoved);
+        }
         updateLocation();
     }
 
@@ -230,6 +239,7 @@ public class Hero extends MovingObjects {
         nextRoom.drawEnemies();
         nextRoom.drawBlocks();
         nextRoom.makeHeroBulletList();
+        nextRoom.makeEnemyBulletList();
         if (!nextRoom.getEnemies().isEmpty()){
             for (Door door : nextRoom.getDoor()) {
                 door.removeFromLayer();
@@ -276,8 +286,6 @@ public class Hero extends MovingObjects {
             }
         }
     }
-
-
 
     public int getRemainingLives() {
         return remainingLives;

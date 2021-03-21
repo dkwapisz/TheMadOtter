@@ -45,7 +45,6 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
-        inputManager.hero.getMap().updateEnemy(hero.getActualRoom());
         label.setText("   Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + hero.getActualGun().getAmmo() + ", HP: " + hero.getRemainingLives());
     }
 

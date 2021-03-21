@@ -48,6 +48,15 @@ public abstract class Gun extends Item {
         else if (this instanceof M16) {
             ammo = ammo + 30;
         }
+        else if (this instanceof Mp5) {
+            ammo = ammo + 40;
+        }
+        else if (this instanceof Glock) {
+            ammo = ammo + 20;
+        }
+        else if (this instanceof LaserGun) {
+            ammo = ammo + 30;
+        }
     }
 
 

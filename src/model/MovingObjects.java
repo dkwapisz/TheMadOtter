@@ -154,16 +154,16 @@ public abstract class MovingObjects {
         this.dimension = dimension;
     }
 
-    public Rectangle getBounds() { return new Rectangle((int) x, (int) y, dimension.getWidth(), dimension.getHeight()); }
+    public Rectangle getBounds() { return new Rectangle((int) x+velX, (int) y+velY, dimension.getWidth(), dimension.getHeight()); }
 
     public Rectangle getSmallerBounds(){
         return new Rectangle((int) x+velX+16,(int) y+velY+32, dimension.getWidth()/2, dimension.getHeight()/2);
     }
 
-    public Rectangle getUpBounds() { return new Rectangle((int) x+velX, (int) y+velY, dimension.getWidth(), 2); }
-    public Rectangle getDownBounds() { return new Rectangle((int) x+velX, (int) y+velY+dimension.getHeight(), dimension.getWidth(), 2); }
-    public Rectangle getLeftBounds() { return new Rectangle((int) x+velX, (int) y+velY, 2, dimension.getHeight()); }
-    public Rectangle getRightBounds() { return new Rectangle((int) x+velX+dimension.getHeight(), (int) y+velY, 2, dimension.getHeight()); }
+    public Rectangle getUpBounds() { return new Rectangle((int) x, (int) y, dimension.getWidth(), 0); }
+    public Rectangle getDownBounds() { return new Rectangle((int) x, (int) y+dimension.getHeight(), dimension.getWidth(), 0); }
+    public Rectangle getLeftBounds() { return new Rectangle((int) x, (int) y, 0, dimension.getHeight()); }
+    public Rectangle getRightBounds() { return new Rectangle((int) x+dimension.getHeight(), (int) y, 0, dimension.getHeight()); }
 
     public Image getImageStatic() {
         return imageStatic;

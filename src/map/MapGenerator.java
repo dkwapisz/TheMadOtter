@@ -6,6 +6,8 @@ import model.block.SoftBlock;
 import model.block.SolidBlock;
 import model.enemy.Enemy;
 import model.enemy.Snake;
+import model.enemy.Turret;
+import model.hero.Hero;
 import model.item.Fish;
 import model.item.Item;
 import model.item.guns.*;
@@ -23,6 +25,7 @@ public class MapGenerator {
     private Door door4;
     private Random random = new Random();
     private Pane layer;
+    private long lastEnemyShot = 0;
 
     public MapGenerator(int nrOfRooms, Pane layer) {
         this.nrOfRooms = nrOfRooms;
@@ -119,6 +122,9 @@ public class MapGenerator {
         items.add(new Shotgun(100, 600, layer));
         items.add(new RocketLauncher(100, 700, layer));
         items.add(new M16(200, 100, layer));
+        items.add(new Mp5(200, 200, layer));
+        items.add(new Glock(200, 300, layer));
+        items.add(new LaserGun(200, 400, layer));
         items.add(new Fish(700,100, layer));
 
         if(roomId != (nrOfRooms*nrOfRooms-1)/2) {
@@ -133,8 +139,11 @@ public class MapGenerator {
     private ArrayList<Block> BlockGenerator(int roomId) {
         ArrayList<Block> blocks = new ArrayList<>();
 
-        blocks.add(new SolidBlock(300,300, layer));
-        blocks.add(new SoftBlock(500,400, layer));
+        blocks.add(new SolidBlock(600,400, layer));
+        blocks.add(new SolidBlock(600,500, layer));
+        blocks.add(new SoftBlock(600,600, layer));
+        blocks.add(new SoftBlock(600,700, layer));
+
 
         if(roomId != (nrOfRooms*nrOfRooms-1)/2) {
             for (Block block : blocks) {
@@ -148,23 +157,15 @@ public class MapGenerator {
     private ArrayList<Enemy> enemiesGenerator(int roomId){
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        enemies.add(new Snake(500,500, layer));
-        //enemies.add(new EnemyTest(100+random.nextInt(600),100+random.nextInt(600),"/graphics/hero/otterStatic.gif","/graphics/hero/otterMoving.gif", layer));
+        enemies.add(new Turret(500, 500, layer));
+        enemies.add(new Snake(500, 300, layer));
+        //enemies.add(new Snake(500,500, layer));
+
 
         return enemies;
     }
 
-    public void updateEnemy(Room actualRoom){
-        if (!actualRoom.getEnemies().isEmpty()) {
-            for (Enemy enemy : actualRoom.getEnemies()) {
-                if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
-                    enemy.setVelX(-enemy.getVelX());
-                }
-                enemy.updateLocation();
-            }
-        }
-        actualRoom.openDoor();
-    }
+
 
 
     public ArrayList<Room> getRoomList() {

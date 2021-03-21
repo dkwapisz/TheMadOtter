@@ -1,8 +1,6 @@
 package model;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 
 public class Bullet extends MovingObjects {
 
