@@ -10,6 +10,8 @@ public class SoftBlock extends Block{
         super(x, y,"graphics/blocks/softBlock1.png" , layer);
         hp = 3;
         setBreakable(true);
+        setPrickly(false);
+        setToPass(false);
     }
 
     public void changeImage(){

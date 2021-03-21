@@ -1,5 +1,6 @@
 package map;
 
+import javafx.geometry.Bounds;
 import javafx.scene.shape.Rectangle;
 import model.Bullet;
 import model.MovingObjects;
@@ -11,9 +12,9 @@ import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
 import model.item.Item;
-import model.item.guns.RocketLauncher;
-
+import java.lang.Math;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Room {
 
@@ -40,7 +41,8 @@ public class Room {
         blockCollision(hero);
         enemyCollision(hero);
         itemCollision(hero);
-        heroBulletsCollision(hero);
+        heroBulletsCollision();
+        enemyFollow(hero);
     }
 
     public void drawEnemies(){
@@ -162,10 +164,10 @@ public class Room {
 
     public void enemyCollision(Hero hero){
         Rectangle heroBounds = hero.getBounds();
-        for(Enemy enemy:enemies){
+        for(Enemy enemy : enemies){
             if(heroBounds.intersects(enemy.getBounds().getBoundsInParent())){
                 Long time = System.currentTimeMillis();
-                if(time > lastTouch + 1000) {
+                if(time > lastTouch + 2000) {
                     hero.setRemainingLives(hero.getRemainingLives() - 1);
                     lastTouch = time;
                 }
@@ -173,7 +175,8 @@ public class Room {
         }
     }
 
-    public void heroBulletsCollision(Hero hero){
+
+    public void heroBulletsCollision(){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         for(Bullet bullet : heroBullets){
@@ -182,10 +185,10 @@ public class Room {
                 Rectangle blockBounds = block.getBounds();
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
-                    if(block.isBreakable()){
+                    if (block.isBreakable()){
                         ((SoftBlock) block).setHp(((SoftBlock)block).getHp()-1);
                         ((SoftBlock) block).changeImage();
-                        if(((SoftBlock) block).getHp() <= 0 || bullet.getDmg() > 50){
+                        if (((SoftBlock) block).getHp() <= 0 || bullet.getDmg() > 50){
                             toRemoveBlocks.add(block);
                         }
                     }
@@ -193,7 +196,7 @@ public class Room {
             }
             for (Enemy enemy : enemies){
                 Rectangle enemyBounds = enemy.getBounds();
-                if(bulletBounds.intersects(enemyBounds.getBoundsInParent())){
+                if (bulletBounds.intersects(enemyBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
                     enemy.setRemainingHealth(enemy.getRemainingHealth()-bullet.getDmg());
                     if (enemy.getRemainingHealth() <= 0){
@@ -209,6 +212,41 @@ public class Room {
     public void makeHeroBulletList() {
         heroBullets = new ArrayList<>();
     }
+
+    public void enemyFollow(Hero hero) {
+        double vecLength;
+        for (Enemy enemy : enemies) {
+            if (enemy.isFollowing()) {
+                if((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
+                    enemy.setVelX(0);
+                    enemy.setVelY(0);
+                } else {
+                    for (Block block : blocks) {
+                        vecLength = Math.hypot(hero.getX() - enemy.getX(), hero.getY() - enemy.getY());
+                        if (!block.isToPass() && !enemy.isFlying()) {
+                            Bounds blockBounds = block.getBounds().getBoundsInParent();
+                            if(blockBounds.intersects(enemy.getBounds().getBoundsInParent())) {
+                                if (enemy.getDownBounds().intersects(blockBounds) || enemy.getUpBounds().intersects(blockBounds)) {
+                                    enemy.setVelY(0);
+                                    enemy.setVelX(enemy.getFollowingVel() * (hero.getX() - enemy.getX()) / vecLength);
+                                    System.out.println('y');
+                                }
+                                if (enemy.getLeftBounds().intersects(blockBounds) || enemy.getRightBounds().intersects(blockBounds)) {
+                                    enemy.setVelX(0);
+                                    enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
+                                    System.out.println('x');
+                                }
+                            } else {
+                                enemy.setVelX(enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength);
+                                enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     public ArrayList<Door> getDoor() {
         return door;

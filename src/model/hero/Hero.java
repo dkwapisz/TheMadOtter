@@ -150,25 +150,25 @@ public class Hero extends MovingObjects {
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
                 actualRoom.eraseBullets();
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
-                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
+                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 1);
                     setX(360);
                     setY(700);
                 }
                 if (door.getDoorId() == 2 && !door.isClosedDoors()) {
-                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms()), actualRoom);
+                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms()), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms());
                     setX(700);
                     setY(360);
                 }
                 if (door.getDoorId() == 3 && !door.isClosedDoors()) {
-                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
+                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 1);
                     setX(360);
                     setY(40);
                 }
                 if (door.getDoorId() == 4 && !door.isClosedDoors()) {
-                    checkNumberOfDoors(map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms()), actualRoom);
+                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms()), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms());
                     setX(40);
                     setY(360);
@@ -178,7 +178,7 @@ public class Hero extends MovingObjects {
     }
 
 
-    private void checkNumberOfDoors(Room nextRoom, Room actualRoom) {
+    private void goToNextRoom(Room nextRoom, Room actualRoom) {
         ArrayList<Integer> tempNextRemove = new ArrayList<>();
         ArrayList<Integer> tempNextAdd = new ArrayList<>();
         for (int i = 0; i < nextRoom.getDoor().size(); i++) {

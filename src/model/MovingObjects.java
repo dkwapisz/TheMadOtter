@@ -86,13 +86,13 @@ public abstract class MovingObjects {
 
     public void directions(boolean shooting){
         if(!shooting) {
-            if(velX > 0){
+            if(velX > 0 && Math.abs(velX) > Math.abs(velY)){
                 imageView.setViewport(frame.get(2)); // PRAWO
-            }else if (velX < 0){
+            }else if (velX < 0 && Math.abs(velX) > Math.abs(velY)){
                 imageView.setViewport(frame.get(3)); // LEWO
-            }else if (velY < 0){
+            }else if (velY < 0 && Math.abs(velY) > Math.abs(velX)){
                 imageView.setViewport(frame.get(1)); // GÓRA
-            }else if (velY > 0){
+            }else if (velY > 0 && Math.abs(velY) > Math.abs(velX)){
                 imageView.setViewport(frame.get(0)); // DÓŁ
             }
         }
@@ -159,6 +159,11 @@ public abstract class MovingObjects {
     public Rectangle getSmallerBounds(){
         return new Rectangle((int) x+velX+16,(int) y+velY+32, dimension.getWidth()/2, dimension.getHeight()/2);
     }
+
+    public Rectangle getUpBounds() { return new Rectangle((int) x+velX, (int) y+velY, dimension.getWidth(), 2); }
+    public Rectangle getDownBounds() { return new Rectangle((int) x+velX, (int) y+velY+dimension.getHeight(), dimension.getWidth(), 2); }
+    public Rectangle getLeftBounds() { return new Rectangle((int) x+velX, (int) y+velY, 2, dimension.getHeight()); }
+    public Rectangle getRightBounds() { return new Rectangle((int) x+velX+dimension.getHeight(), (int) y+velY, 2, dimension.getHeight()); }
 
     public Image getImageStatic() {
         return imageStatic;
