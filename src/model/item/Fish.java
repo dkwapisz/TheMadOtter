@@ -14,7 +14,6 @@ public class Fish extends Item{
     public int getHpBonus() {
         return hpBonus;
     }
-
     public void setHpBonus(int hpBonus) {
         this.hpBonus = hpBonus;
     }

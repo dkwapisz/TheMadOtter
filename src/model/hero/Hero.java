@@ -21,9 +21,10 @@ public class Hero extends MovingObjects {
     private MapGenerator map;
     private long lastShot = 0;
     private long cooldownShot;
+    private long lastChange = 0;
+    private long lastEnemyTouch = 0;
     private ArrayList<Gun> equipment = new ArrayList<>();
     private Gun actualGun;
-    private long lastChange = 0;
     private final Random random = new Random();
 
     public Hero(double x, double y, Pane layer) {
@@ -42,6 +43,11 @@ public class Hero extends MovingObjects {
     public void updateHero() {
         setShootingStatus(shooting);
         actualRoom.checkCollision(this);
+        updateBullets();
+        updateLocation();
+    }
+
+    private void updateBullets() {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         if(actualRoom.getHeroBullets() != null) {
             for(Bullet bullet : actualRoom.getHeroBullets()) {
@@ -61,7 +67,6 @@ public class Hero extends MovingObjects {
             }
             actualRoom.removeMovingObjects(toBeRemoved);
         }
-        updateLocation();
     }
 
     public void shot(double velX, double velY) {
@@ -284,6 +289,14 @@ public class Hero extends MovingObjects {
                     actualGun = equipment.get(equipment.indexOf(actualGun) - 1);
                 }
             }
+        }
+    }
+
+    public void healthDown(int minus) {
+        long time = System.currentTimeMillis();
+        if(time > lastEnemyTouch + 2000) {
+            setRemainingLives(getRemainingLives() - minus);
+            lastEnemyTouch = time;
         }
     }
 

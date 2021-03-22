@@ -14,8 +14,7 @@ public class Turret extends Enemy{
         setVelY(0);
         setRemainingHealth(100);
         setBulletPath("graphics/items/bullets/ak47Bullet.png");
+        setDmg(1);
     }
-
-
 
 }

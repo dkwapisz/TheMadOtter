@@ -1,7 +1,6 @@
 package map;
 
 import javafx.scene.layout.Pane;
-import model.MovingObjects;
 import model.StaticObjects;
 
 public class Door extends StaticObjects {

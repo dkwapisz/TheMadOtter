@@ -20,6 +20,13 @@ public class Bullet extends MovingObjects {
         return (getX() + getVelX() < 30 || getX() + getVelX() > 770 - getImageStatic().getHeight() / 4 || getY() + getVelY() < 30 || getY() + getVelY() > 770 - getImageStatic().getHeight() / 4);
     }
 
+    public void changeLayer() {
+        if (getVelX() == 0 && getVelY() > 0) {
+            getImageView().toFront();
+        } else {
+            getImageView().toBack();
+        }
+    }
 
     public int getDmg() {
         return dmg;

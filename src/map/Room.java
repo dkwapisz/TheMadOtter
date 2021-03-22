@@ -13,7 +13,6 @@ import model.item.Fish;
 import model.item.guns.Gun;
 import model.item.Item;
 import java.lang.Math;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 
@@ -27,8 +26,7 @@ public class Room {
     private ArrayList<Bullet> heroBullets;
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<Block> blocks;
-    private long lastTouch;
-    private long lastEnemyShot;
+
 
 
     public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks) {
@@ -182,11 +180,7 @@ public class Room {
         Rectangle heroBounds = hero.getBounds();
         for(Enemy enemy : enemies){
             if(heroBounds.intersects(enemy.getBounds().getBoundsInParent())){
-                Long time = System.currentTimeMillis();
-                if(time > lastTouch + 2000) {
-                    hero.setRemainingLives(hero.getRemainingLives() - 1);
-                    lastTouch = time;
-                }
+                hero.healthDown(enemy.getDmg());
             }
         }
     }
@@ -201,7 +195,7 @@ public class Room {
             Rectangle heroBounds = hero.getBounds();
             if(bulletBounds.intersects(heroBounds.getBoundsInParent())) {
                 toBeRemoved.add(bullet);
-                hero.setRemainingLives(hero.getRemainingLives()-bullet.getDmg());
+                hero.healthDown(bullet.getDmg());
             }
             for(Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
@@ -218,6 +212,7 @@ public class Room {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         for(Bullet bullet : heroBullets){
+            bullet.changeLayer();
             Rectangle bulletBounds = bullet.getBounds();
             for(Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
@@ -255,24 +250,27 @@ public class Room {
             vecLength = Math.hypot(hero.getX() - enemy.getX(), hero.getY() - enemy.getY());
             newVelX = enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength;
             newVelY = enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength;
-            if (enemy.isFollowing()) {
+            if (enemy.isFollowing() && !enemy.isFlying()) {
                 for (Block block : blocks) {
                     enemy.setVelX(enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength);
                     enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
                     Rectangle enemyBounds = enemy.getBounds();
                     Rectangle blockBounds = block.getBounds();
                     if(enemyBounds.intersects(blockBounds.getBoundsInParent())) {
-                        newVelX = 0;
-                        newVelY = 0;
+                        if(enemy.getUpBounds().intersects(block.getDownBounds().getBoundsInParent()) || enemy.getDownBounds().intersects(block.getUpBounds().getBoundsInParent())) {
+                            newVelY = 0;
+                        }
+                        else if(enemy.getLeftBounds().intersects(block.getRightBounds().getBoundsInParent()) || enemy.getRightBounds().intersects(block.getLeftBounds().getBoundsInParent())) {
+                            newVelX = 0;
+                        }
                     } else {
                         if((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
                             enemy.setVelX(0);
                             enemy.setVelY(0);
-                        } else {
-                            enemy.setVelX(newVelX);
-                            enemy.setVelY(newVelY);
                         }
                     }
+                    enemy.setVelX(newVelX);
+                    enemy.setVelY(newVelY);
                 }
             }
         }
@@ -286,15 +284,11 @@ public class Room {
                 }
                 enemy.updateLocation();
                 if(enemy instanceof Turret) {
-                    long time = System.currentTimeMillis();
-                    if (time > lastEnemyShot + 2000) {
-                        lastEnemyShot = time;
-                        enemy.shot(hero, 1, 8);
-                        if(enemy.getNewVelX() < 0) {
-                            enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI-(Math.atan(enemy.getNewVelY()/enemy.getNewVelX())+Math.PI/2))));
-                        } else {
-                            enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getNewVelY()/enemy.getNewVelX())+Math.PI/2));
-                        }
+                    enemy.shot(hero, 8);
+                    if (enemy.getBulletVelX() < 0) {
+                        enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2))));
+                    } else {
+                        enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2));
                     }
                 }
             }
@@ -305,7 +299,6 @@ public class Room {
     public void makeHeroBulletList() {
         heroBullets = new ArrayList<>();
     }
-
     public void makeEnemyBulletList() {
         enemyBullets = new ArrayList<>();
     }
@@ -341,7 +334,6 @@ public class Room {
     public ArrayList<Bullet> getHeroBullets() {
         return heroBullets;
     }
-
     public void setHeroBullets(ArrayList<Bullet> heroBullets) {
         this.heroBullets = heroBullets;
     }
@@ -349,7 +341,6 @@ public class Room {
     public ArrayList<Item> getItems() {
         return items;
     }
-
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
@@ -357,7 +348,6 @@ public class Room {
     public ArrayList<Block> getBlocks() {
         return blocks;
     }
-
     public void setBlocks(ArrayList<Block> blocks) {
         this.blocks = blocks;
     }
@@ -365,7 +355,6 @@ public class Room {
     public ArrayList<Bullet> getEnemyBullets() {
         return enemyBullets;
     }
-
     public void setEnemyBullets(ArrayList<Bullet> enemyBullets) {
         this.enemyBullets = enemyBullets;
     }

@@ -18,7 +18,6 @@ public class SoftBlock extends Block{
         if(hp == 2){
             getImageView().setImage(new Image("graphics/blocks/softBlock2.png"));
         }
-
         if(hp == 1){
             getImageView().setImage(new Image("graphics/blocks/softBlock3.png"));
         }

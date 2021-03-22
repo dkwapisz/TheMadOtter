@@ -158,14 +158,14 @@ public class MapGenerator {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         enemies.add(new Turret(500, 500, layer));
+        enemies.add(new Turret(300, 500, layer));
         enemies.add(new Snake(500, 300, layer));
+        enemies.add(new Snake(400, 300, layer));
+        enemies.add(new Snake(300, 300, layer));
         //enemies.add(new Snake(500,500, layer));
-
 
         return enemies;
     }
-
-
 
 
     public ArrayList<Room> getRoomList() {

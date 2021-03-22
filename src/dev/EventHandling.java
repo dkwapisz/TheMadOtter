@@ -21,17 +21,6 @@ public class EventHandling {
         scene.setOnKeyPressed(keyPressed);
     }
 
-
-    public static char getLastKeyPressed() { return lastKeyPressed; }
-    public static void setLastKeyPressed(char lastKeyPressed) { EventHandling.lastKeyPressed = lastKeyPressed; }
-
-    public static char getLastKeyReleased() { return lastKeyReleased; }
-    public static void setLastKeyReleased(char lastKeyReleased) { EventHandling.lastKeyReleased = lastKeyReleased; }
-
-    public static ArrayList<KeyCode> getInputList() { return inputList; }
-    public static void setInputList(ArrayList<KeyCode> inputList) { EventHandling.inputList = inputList; }
-
-
     static class KeyRelease implements javafx.event.EventHandler<KeyEvent>{
         @Override
         public void handle(KeyEvent evt) {
@@ -41,7 +30,6 @@ public class EventHandling {
             }
         }
     }
-
 
     static class KeyPressed implements javafx.event.EventHandler<KeyEvent>{
         @Override
@@ -53,5 +41,13 @@ public class EventHandling {
         }
     }
 
+    public static char getLastKeyPressed() { return lastKeyPressed; }
+    public static void setLastKeyPressed(char lastKeyPressed) { EventHandling.lastKeyPressed = lastKeyPressed; }
+
+    public static char getLastKeyReleased() { return lastKeyReleased; }
+    public static void setLastKeyReleased(char lastKeyReleased) { EventHandling.lastKeyReleased = lastKeyReleased; }
+
+    public static ArrayList<KeyCode> getInputList() { return inputList; }
+    public static void setInputList(ArrayList<KeyCode> inputList) { EventHandling.inputList = inputList; }
 
 }

@@ -92,7 +92,6 @@ public abstract class Gun extends Item {
     public String getGunName() {
         return gunName;
     }
-
     public void setGunName(String gunName) {
         this.gunName = gunName;
     }
@@ -100,7 +99,6 @@ public abstract class Gun extends Item {
     public String getPathBullet() {
         return pathBullet;
     }
-
     public void setPathBullet(String pathBullet) {
         this.pathBullet = pathBullet;
     }
