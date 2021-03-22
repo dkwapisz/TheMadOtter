@@ -14,6 +14,7 @@ import model.item.guns.Gun;
 import model.item.Item;
 import java.lang.Math;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Room {
@@ -26,7 +27,7 @@ public class Room {
     private ArrayList<Bullet> heroBullets;
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<Block> blocks;
-
+    private final Random random = new Random();
 
 
     public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks) {
@@ -178,8 +179,8 @@ public class Room {
 
     public void enemyCollision(Hero hero){
         Rectangle heroBounds = hero.getBounds();
-        for(Enemy enemy : enemies){
-            if(heroBounds.intersects(enemy.getBounds().getBoundsInParent())){
+        for (Enemy enemy : enemies) {
+            if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
                 hero.healthDown(enemy.getDmg());
             }
         }
@@ -244,6 +245,7 @@ public class Room {
 
     public void enemyFollow(Hero hero) {
         double vecLength;
+        double randomize;
         double newVelX;
         double newVelY;
         for (Enemy enemy : enemies) {
@@ -265,12 +267,13 @@ public class Room {
                         }
                     } else {
                         if((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
-                            enemy.setVelX(0);
-                            enemy.setVelY(0);
+                            newVelX = 0;
+                            newVelY = 0;
                         }
                     }
-                    enemy.setVelX(newVelX);
-                    enemy.setVelY(newVelY);
+                    randomize = (0.75+random.nextDouble());
+                    enemy.setVelX(randomize*newVelX);
+                    enemy.setVelY(randomize*newVelY);
                 }
             }
         }
@@ -281,6 +284,9 @@ public class Room {
             for (Enemy enemy : enemies) {
                 if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
                     enemy.setVelX(-enemy.getVelX());
+                }
+                if(enemy.getY() + enemy.getVelY() < 30 || enemy.getY() + enemy.getVelY() > 770 - enemy.getImageStatic().getHeight()/4){
+                    enemy.setVelY(-enemy.getVelY());
                 }
                 enemy.updateLocation();
                 if(enemy instanceof Turret) {

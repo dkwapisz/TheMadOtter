@@ -1,9 +1,11 @@
 package model.enemy;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import model.Bullet;
 import model.MovingObjects;
 import model.hero.Hero;
+import org.w3c.dom.css.Rect;
 
 public abstract class Enemy extends MovingObjects {
 
@@ -91,5 +93,12 @@ public abstract class Enemy extends MovingObjects {
     }
     public void setDmg(int dmg) {
         this.dmg = dmg;
+    }
+
+    public Rectangle getCenterBounds() {
+        Rectangle centerBounds = new Rectangle((int) getX() + 2*getVelX() +  getDimension().getWidth()/4, (int) getY() + 2*getVelY() + getDimension().getHeight()/4, getDimension().getWidth()/2, getDimension().getHeight()/2);
+        centerBounds.setArcHeight(getDimension().getHeight()/8);
+        centerBounds.setArcWidth(getDimension().getWidth()/8);
+        return centerBounds;
     }
 }

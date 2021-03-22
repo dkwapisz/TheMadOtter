@@ -47,28 +47,6 @@ public class Hero extends MovingObjects {
         updateLocation();
     }
 
-    private void updateBullets() {
-        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-        if(actualRoom.getHeroBullets() != null) {
-            for(Bullet bullet : actualRoom.getHeroBullets()) {
-                bullet.updateLocation();
-                if (bullet.removeBullets()) {
-                    toBeRemoved.add(bullet);
-                }
-            }
-            actualRoom.removeMovingObjects(toBeRemoved);
-        }
-        if(actualRoom.getEnemyBullets() != null) {
-            for(Bullet bullet : actualRoom.getEnemyBullets()) {
-                bullet.updateLocation();
-                if (bullet.removeBullets()) {
-                    toBeRemoved.add(bullet);
-                }
-            }
-            actualRoom.removeMovingObjects(toBeRemoved);
-        }
-    }
-
     public void shot(double velX, double velY) {
         double x = 0;
         double y = 0;
@@ -106,7 +84,6 @@ public class Hero extends MovingObjects {
 
         if (time > lastShot + cooldownShot && (actualGun.getAmmo() != 0 || actualGun instanceof Pistol)) {
             lastShot = time;
-
             if(actualGun instanceof Shotgun) {
                 double newVelX = 0;
                 double newVelY = 0;
@@ -133,7 +110,6 @@ public class Hero extends MovingObjects {
             else {
                 actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
             }
-
             actualGun.setAmmo(actualGun.getAmmo()-1);
         }
     }
@@ -155,6 +131,27 @@ public class Hero extends MovingObjects {
         }
     }
 
+    private void updateBullets() {
+        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
+        if(actualRoom.getHeroBullets() != null) {
+            for(Bullet bullet : actualRoom.getHeroBullets()) {
+                bullet.updateLocation();
+                if (bullet.removeBullets()) {
+                    toBeRemoved.add(bullet);
+                }
+            }
+            actualRoom.removeMovingObjects(toBeRemoved);
+        }
+        if(actualRoom.getEnemyBullets() != null) {
+            for(Bullet bullet : actualRoom.getEnemyBullets()) {
+                bullet.updateLocation();
+                if (bullet.removeBullets()) {
+                    toBeRemoved.add(bullet);
+                }
+            }
+            actualRoom.removeMovingObjects(toBeRemoved);
+        }
+    }
 
     public void doorCollision() {
         Rectangle heroBounds = getBounds();
@@ -162,7 +159,6 @@ public class Hero extends MovingObjects {
         for (Door door : doors) {
             Rectangle doorBounds = door.getBounds();
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
-                actualRoom.eraseBullets();
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
                     goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
                     actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 1);
@@ -239,6 +235,7 @@ public class Hero extends MovingObjects {
         actualRoom.eraseEnemies();
         actualRoom.eraseItems();
         actualRoom.eraseBlocks();
+        actualRoom.eraseBullets();
 
         nextRoom.drawItems();
         nextRoom.drawEnemies();
