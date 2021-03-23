@@ -60,6 +60,9 @@ public abstract class Gun extends Item {
         else if (this instanceof Scar) {
             ammo = ammo + 60;
         }
+        else if (this instanceof Stg44) {
+            ammo = ammo + 30;
+        }
     }
 
 

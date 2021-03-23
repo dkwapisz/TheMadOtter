@@ -9,7 +9,7 @@ public class M16 extends Gun {
         setAmmo(30);
         setBulletVel(16);
         setCooldownShot(700);
-        setDmg(5);
+        setDmg(6);
         setGunName("M16");
     }
 

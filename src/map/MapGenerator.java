@@ -127,6 +127,7 @@ public class MapGenerator {
         items.add(new Glock(200, 300, layer));
         items.add(new LaserGun(200, 400, layer));
         items.add(new Scar(200, 500, layer));
+        items.add(new Stg44(200, 600, layer));
         items.add(new Fish(700,100, layer));
 
         if(roomId != (nrOfRooms*nrOfRooms-1)/2) {
