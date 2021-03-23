@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import model.block.Block;
 import model.block.SoftBlock;
 import model.block.SolidBlock;
+import model.block.SpikeBlock;
 import model.enemy.Enemy;
 import model.enemy.Snake;
 import model.enemy.Turret;
@@ -144,6 +145,7 @@ public class MapGenerator {
         blocks.add(new SolidBlock(600,500, layer));
         blocks.add(new SoftBlock(600,600, layer));
         blocks.add(new SoftBlock(600,700, layer));
+        blocks.add(new SpikeBlock(500,700, layer));
 
 
         if(roomId != (nrOfRooms*nrOfRooms-1)/2) {

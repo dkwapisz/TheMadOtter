@@ -6,6 +6,7 @@ import model.MovingObjects;
 import model.StaticObjects;
 import model.block.Block;
 import model.block.SoftBlock;
+import model.block.SpikeBlock;
 import model.enemy.Enemy;
 import model.enemy.Turret;
 import model.hero.Hero;
@@ -171,8 +172,13 @@ public class Room {
         for(Block block : blocks) {
             Rectangle blockBounds = block.getBounds();
             if (heroBounds.intersects(blockBounds.getBoundsInParent())) {
-                hero.setVelX(0);
-                hero.setVelY(0);
+                if(!block.isToPass()) {
+                    hero.setVelX(0);
+                    hero.setVelY(0);
+                }
+                if (block.isPrickly()){
+                    hero.healthDown(1);
+                }
             }
         }
     }
@@ -200,7 +206,7 @@ public class Room {
             }
             for(Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
-                if(bulletBounds.intersects(blockBounds.getBoundsInParent())) {
+                if(bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
                     toBeRemoved.add(bullet);
                 }
             }
@@ -217,7 +223,7 @@ public class Room {
             Rectangle bulletBounds = bullet.getBounds();
             for(Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
-                if (bulletBounds.intersects(blockBounds.getBoundsInParent())){
+                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()){
                     toBeRemoved.add(bullet);
                     if (block.isBreakable()){
                         ((SoftBlock) block).setHp(((SoftBlock)block).getHp()-1);
