@@ -11,7 +11,7 @@ public class EventHandling {
 
     private static char lastKeyPressed;
     private static char lastKeyReleased;
-    private static ArrayList<KeyCode> inputList = new ArrayList<KeyCode>();
+    private static ArrayList<KeyCode> inputList = new ArrayList<>();
 
 
     public static void addEventHandlers(Scene scene) {
