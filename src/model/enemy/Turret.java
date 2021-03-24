@@ -1,7 +1,6 @@
 package model.enemy;
 
 import javafx.scene.layout.Pane;
-import model.hero.Hero;
 
 public class Turret extends Enemy{
 
@@ -9,9 +8,10 @@ public class Turret extends Enemy{
         super(x, y, "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", mainLayer);
         setFollowing(false);
         setFlying(false);
-        setFollowingVel(0);
+        setShooting(true);
         setVelX(0);
         setVelY(0);
+        setBulletVelFactor(8);
         setRemainingHealth(100);
         setBulletPath("graphics/items/bullets/ak47Bullet.png");
         setDmg(1);

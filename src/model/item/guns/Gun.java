@@ -10,12 +10,12 @@ import java.awt.*;
 
 public abstract class Gun extends Item {
 
-    private int bulletVel;
-    private long cooldownShot;
-    private int dmg;
-    private int ammo;
-    private String gunName;
-    private String pathBullet;
+    private int bulletVel; // prędkość pocisku
+    private long cooldownShot; // cooldown między strzałami
+    private int dmg; // dmg per shot
+    private int ammo; // ilość ammo (w szczególności startowego)
+    private String gunName; // nazwa broni
+    private String pathBullet; // ścieżka do grafiki pocisku
 
     public Gun(double x, double y, String pathStatic, String pathBullet, Pane layer) {
         super(x, y, pathStatic, layer);

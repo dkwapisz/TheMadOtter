@@ -5,10 +5,7 @@ import model.block.Block;
 import model.block.SoftBlock;
 import model.block.SolidBlock;
 import model.block.SpikeBlock;
-import model.enemy.Enemy;
-import model.enemy.Snake;
-import model.enemy.Turret;
-import model.hero.Hero;
+import model.enemy.*;
 import model.item.Fish;
 import model.item.Item;
 import model.item.guns.*;
@@ -165,7 +162,9 @@ public class MapGenerator {
         enemies.add(new Turret(300, 500, layer));
         enemies.add(new Snake(500, 300, layer));
         enemies.add(new Snake(400, 300, layer));
-        enemies.add(new Snake(300, 300, layer));
+        enemies.add(new Wasp(100, 700, layer));
+        enemies.add(new Wasp(700, 700, layer));
+        enemies.add(new Fly(360, 700, layer));
         //enemies.add(new Snake(500,500, layer));
 
         return enemies;

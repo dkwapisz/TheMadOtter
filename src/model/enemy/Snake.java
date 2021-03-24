@@ -8,6 +8,7 @@ public class Snake extends Enemy{
         super(x, y, "/graphics/enemies/snake.gif", "/graphics/enemies/snake.gif", null, null, mainLayer);
         setFollowing(true);
         setFlying(false);
+        setShooting(false);
         setFollowingVel(2);
         setRemainingHealth(20);
         setDmg(1);

@@ -5,9 +5,9 @@ import model.StaticObjects;
 
 public abstract class Block extends StaticObjects {
 
-    private boolean breakable;
-    private boolean toPass;
-    private boolean prickly;
+    private boolean breakable; // blok zniszczalny
+    private boolean toPass;    // blok, przez który można przejść
+    private boolean prickly;   // blok zadający obrażenia
 
     public Block(double x, double y, String pathStatic, Pane layer) {
         super(x, y, pathStatic, layer);

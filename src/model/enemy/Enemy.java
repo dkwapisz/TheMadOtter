@@ -1,23 +1,26 @@
 package model.enemy;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import model.Bullet;
 import model.MovingObjects;
 import model.hero.Hero;
-import org.w3c.dom.css.Rect;
 
 public abstract class Enemy extends MovingObjects {
 
-    private int remainingHealth;
-    private boolean following;
-    private int followingVel; // tylko dla przeciwników podążających za graczem
-    private boolean flying;
-    private String bulletPath;
-    private double bulletVelX = 0;
-    private double bulletVelY = 0;
-    private int dmg;
-    private long lastEnemyShot; //cooldown dla przeciwników strzelających
+    private int remainingHealth; // MUST HAVE
+    private boolean following; // MUST HAVE
+    private boolean flying; // MUST HAVE
+    private boolean shooting; // MUST HAVE
+    private int dmg; // MUST HAVE
+
+    private int followingVel = 0; // tylko dla przeciwników podążających za graczem - nie więcej niż 4!
+    private String bulletPath = null; // tylko dla przeciwników strzelających, ścieżka do grafiki pocisku
+    private int bulletVelFactor = 0; // prędkość pocisków przeciwników strzelających
+
+    private double bulletVelX = 0; // atrybut pomocniczy, nigdzie nie ustawiać
+    private double bulletVelY = 0; // atrybut pomocniczy, nigdzie nie ustawiać
+    private long lastEnemyShot = 0; // atrybut pomocniczy, nigdzie nie ustawiać
+
 
     public Enemy(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane mainLayer) {
         super(x, y, pathStatic, pathMoving, pathStaticShot, pathMovingShot, mainLayer);
@@ -26,7 +29,7 @@ public abstract class Enemy extends MovingObjects {
 
     public void shot(Hero hero, int velFactor) {
         long time = System.currentTimeMillis();
-        if(this instanceof Turret) {
+        if(this.shooting) {
             if (time > lastEnemyShot + 2000) {
                 lastEnemyShot = time;
                 double vecLength;
@@ -38,6 +41,12 @@ public abstract class Enemy extends MovingObjects {
         }
     }
 
+//    public Rectangle getCenterBounds() {
+//        Rectangle centerBounds = new Rectangle((int) getX() + 2*getVelX() +  getDimension().getWidth()/4, (int) getY() + 2*getVelY() + getDimension().getHeight()/4, getDimension().getWidth()/2, getDimension().getHeight()/2);
+//        centerBounds.setArcHeight(getDimension().getHeight()/8);
+//        centerBounds.setArcWidth(getDimension().getWidth()/8);
+//        return centerBounds;
+//    }
 
     public int getRemainingHealth() {
         return remainingHealth;
@@ -95,10 +104,17 @@ public abstract class Enemy extends MovingObjects {
         this.dmg = dmg;
     }
 
-    public Rectangle getCenterBounds() {
-        Rectangle centerBounds = new Rectangle((int) getX() + 2*getVelX() +  getDimension().getWidth()/4, (int) getY() + 2*getVelY() + getDimension().getHeight()/4, getDimension().getWidth()/2, getDimension().getHeight()/2);
-        centerBounds.setArcHeight(getDimension().getHeight()/8);
-        centerBounds.setArcWidth(getDimension().getWidth()/8);
-        return centerBounds;
+    public boolean isShooting() {
+        return shooting;
+    }
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
+    }
+
+    public int getBulletVelFactor() {
+        return bulletVelFactor;
+    }
+    public void setBulletVelFactor(int bulletVelFactor) {
+        this.bulletVelFactor = bulletVelFactor;
     }
 }

@@ -6,9 +6,7 @@ import model.MovingObjects;
 import model.StaticObjects;
 import model.block.Block;
 import model.block.SoftBlock;
-import model.block.SpikeBlock;
 import model.enemy.Enemy;
-import model.enemy.Turret;
 import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
@@ -258,13 +256,13 @@ public class Room {
             vecLength = Math.hypot(hero.getX() - enemy.getX(), hero.getY() - enemy.getY());
             newVelX = enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength;
             newVelY = enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength;
-            if (enemy.isFollowing() && !enemy.isFlying()) {
+            if (enemy.isFollowing()) {
                 for (Block block : blocks) {
                     enemy.setVelX(enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength);
                     enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
                     Rectangle enemyBounds = enemy.getBounds();
                     Rectangle blockBounds = block.getBounds();
-                    if(enemyBounds.intersects(blockBounds.getBoundsInParent())) {
+                    if(enemyBounds.intersects(blockBounds.getBoundsInParent()) && !enemy.isFlying()) {
                         if(enemy.getUpBounds().intersects(block.getDownBounds().getBoundsInParent()) || enemy.getDownBounds().intersects(block.getUpBounds().getBoundsInParent())) {
                             newVelY = 0;
                         }
@@ -280,6 +278,12 @@ public class Room {
                     randomize = (0.75+random.nextDouble());
                     enemy.setVelX(randomize*newVelX);
                     enemy.setVelY(randomize*newVelY);
+//                    if (enemy.getVelX() < 0) {
+//                        enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getVelY() / enemy.getVelX()) + Math.PI / 2))));
+//                    } else {
+//                        enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getVelY() / enemy.getVelX()) + Math.PI / 2));
+//                    } hmm czy to implementować?
+
                 }
             }
         }
@@ -288,15 +292,15 @@ public class Room {
     public void updateEnemy(Hero hero){
         if (!enemies.isEmpty()) {
             for (Enemy enemy : enemies) {
-                if(enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
+                if (enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
                     enemy.setVelX(-enemy.getVelX());
                 }
-                if(enemy.getY() + enemy.getVelY() < 30 || enemy.getY() + enemy.getVelY() > 770 - enemy.getImageStatic().getHeight()/4){
+                if (enemy.getY() + enemy.getVelY() < 30 || enemy.getY() + enemy.getVelY() > 770 - enemy.getImageStatic().getHeight()/4){
                     enemy.setVelY(-enemy.getVelY());
                 }
                 enemy.updateLocation();
-                if(enemy instanceof Turret) {
-                    enemy.shot(hero, 8);
+                if(enemy.isShooting()) {
+                    enemy.shot(hero, enemy.getBulletVelFactor());
                     if (enemy.getBulletVelX() < 0) {
                         enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2))));
                     } else {
