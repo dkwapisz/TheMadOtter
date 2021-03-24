@@ -1,15 +1,24 @@
 package model;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
+import java.sql.Time;
 
 public class Bullet extends MovingObjects {
 
     private int dmg;
+    private Pane layer;
 
     public Bullet(double x, double y, double bulletVelX, double bulletVelY, int dmg, String pathStatic, String pathMoving, Pane layer) {
         super(x, y, pathStatic, pathMoving, null, null, layer);
         this.dmg = dmg;
-
+        this.layer = layer;
         setVelX(bulletVelX);
         setVelY(bulletVelY);
 
