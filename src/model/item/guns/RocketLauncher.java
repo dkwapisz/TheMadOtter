@@ -9,7 +9,7 @@ public class RocketLauncher extends Gun {
         setAmmo(5);
         setBulletVel(12);
         setCooldownShot(2500);
-        setDmg(200);
+        setDmg(60);
         setGunName("Rocket Launcher");
     }
 

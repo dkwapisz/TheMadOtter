@@ -1,7 +1,10 @@
 package model.hero;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import map.Door;
 import map.MapGenerator;
 import map.Room;

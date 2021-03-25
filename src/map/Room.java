@@ -1,7 +1,13 @@
 package map;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import model.Bullet;
+import model.Explosion;
 import model.MovingObjects;
 import model.StaticObjects;
 import model.block.Block;
@@ -11,6 +17,8 @@ import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
 import model.item.Item;
+
+import java.awt.*;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Random;
@@ -223,6 +231,9 @@ public class Room {
                 Rectangle blockBounds = block.getBounds();
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()){
                     toBeRemoved.add(bullet);
+                    if(bullet.getDmg() == 60){
+                        new Explosion(bullet.getX(),bullet.getY(),bullet.getLayer());
+                    }
                     if (block.isBreakable()){
                         ((SoftBlock) block).setHp(((SoftBlock)block).getHp()-1);
                         ((SoftBlock) block).changeImage();
@@ -236,6 +247,9 @@ public class Room {
                 Rectangle enemyBounds = enemy.getBounds();
                 if (bulletBounds.intersects(enemyBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
+                    if(bullet.getDmg() == 60){
+                        new Explosion(bullet.getX(),bullet.getY(),bullet.getLayer());
+                    }
                     enemy.setRemainingHealth(enemy.getRemainingHealth()-bullet.getDmg());
                     if (enemy.getRemainingHealth() <= 0){
                         toBeRemoved.add(enemy);
