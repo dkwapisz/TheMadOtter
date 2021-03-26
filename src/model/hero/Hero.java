@@ -46,7 +46,7 @@ public class Hero extends MovingObjects {
     public void updateHero() {
         setShootingStatus(shooting);
         actualRoom.checkCollision(this);
-        updateBullets();
+        updateBullets(this);
         updateLocation();
     }
 
@@ -134,7 +134,7 @@ public class Hero extends MovingObjects {
         }
     }
 
-    private void updateBullets() {
+    private void updateBullets(Hero hero) {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         if(actualRoom.getHeroBullets() != null) {
             for(Bullet bullet : actualRoom.getHeroBullets()) {
@@ -143,7 +143,7 @@ public class Hero extends MovingObjects {
                     toBeRemoved.add(bullet);
                 }
             }
-            actualRoom.removeMovingObjects(toBeRemoved);
+            actualRoom.removeMovingObjects(toBeRemoved, hero);
         }
         if(actualRoom.getEnemyBullets() != null) {
             for(Bullet bullet : actualRoom.getEnemyBullets()) {
@@ -152,7 +152,7 @@ public class Hero extends MovingObjects {
                     toBeRemoved.add(bullet);
                 }
             }
-            actualRoom.removeMovingObjects(toBeRemoved);
+            actualRoom.removeMovingObjects(toBeRemoved, hero);
         }
     }
 

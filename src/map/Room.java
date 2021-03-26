@@ -36,7 +36,6 @@ public class Room {
     private ArrayList<Block> blocks;
     private final Random random = new Random();
 
-
     public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks) {
         this.door = door;
         this.clean = clean;
@@ -50,7 +49,7 @@ public class Room {
         blockCollision(hero);
         enemyCollision(hero);
         itemCollision(hero);
-        heroBulletsCollision();
+        heroBulletsCollision(hero);
         enemyBulletCollision(hero);
         enemyFollow(hero);
         updateEnemy(hero);
@@ -93,7 +92,7 @@ public class Room {
         }
     }
 
-    public void removeMovingObjects(ArrayList<MovingObjects> list) {
+    public void removeMovingObjects(ArrayList<MovingObjects> list, Hero hero) {
         if (list == null) {
             return;
         }
@@ -101,6 +100,9 @@ public class Room {
             object.removeFromLayer();
             if(object instanceof Bullet){
                 if(heroBullets.contains(object)) {
+                    if(((Bullet) object).getDmg() == 60) {
+                        explosionCollision(new Explosion(object.getX(), object.getY(), object.getLayer()), hero);
+                    }
                     heroBullets.remove(object);
                 } else {
                     enemyBullets.remove(object);
@@ -173,6 +175,17 @@ public class Room {
         removeStaticObjects(toBeRemoved);
     }
 
+    public void explosionCollision(Explosion explosion, Hero hero) {
+        if(hero.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+            hero.healthDown(2);
+        }
+        for(Enemy enemy : enemies) {
+            if(enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+                enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - 30, 0));
+            }
+        }
+    } // coś tu nie gra
+
     public void blockCollision(Hero hero) {
         Rectangle heroBounds = hero.getSmallerBounds();
         for(Block block : blocks) {
@@ -217,11 +230,11 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved);
+        removeMovingObjects(toBeRemoved, hero);
     }
 
 
-    public void heroBulletsCollision(){
+    public void heroBulletsCollision(Hero hero){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         for(Bullet bullet : heroBullets){
@@ -231,9 +244,6 @@ public class Room {
                 Rectangle blockBounds = block.getBounds();
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()){
                     toBeRemoved.add(bullet);
-                    if(bullet.getDmg() == 60){
-                        new Explosion(bullet.getX(),bullet.getY(),bullet.getLayer());
-                    }
                     if (block.isBreakable()){
                         ((SoftBlock) block).setHp(((SoftBlock)block).getHp()-1);
                         ((SoftBlock) block).changeImage();
@@ -247,9 +257,6 @@ public class Room {
                 Rectangle enemyBounds = enemy.getBounds();
                 if (bulletBounds.intersects(enemyBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
-                    if(bullet.getDmg() == 60){
-                        new Explosion(bullet.getX(),bullet.getY(),bullet.getLayer());
-                    }
                     enemy.setRemainingHealth(enemy.getRemainingHealth()-bullet.getDmg());
                     if (enemy.getRemainingHealth() <= 0){
                         toBeRemoved.add(enemy);
@@ -257,7 +264,7 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved);
+        removeMovingObjects(toBeRemoved, hero);
         removeStaticObjects(toRemoveBlocks);
     }
 
