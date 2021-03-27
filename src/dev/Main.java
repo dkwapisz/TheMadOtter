@@ -21,6 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        //komentarz
         Pane root = FXMLLoader.load(getClass().getResource("mainStage.fxml"));
         primaryStage.setTitle("TheGame");
         primaryStage.setScene(new Scene(root));
