@@ -16,14 +16,12 @@ import java.util.Random;
 public class MapGenerator {
 
     private ArrayList<Room> roomList = new ArrayList<>();
-    private int nrOfRooms;              //pierwiastek z liczby pokoi
+    private int nrOfRooms;  //pierwiastek z liczby pokoi
     private Door door1;
     private Door door2;
     private Door door3;
     private Door door4;
-    private Random random = new Random();
     private Pane layer;
-    private long lastEnemyShot = 0;
 
     public MapGenerator(int nrOfRooms, Pane layer) {
         this.nrOfRooms = nrOfRooms;
@@ -37,7 +35,6 @@ public class MapGenerator {
         door4.getImageView().setRotate(180);
         generateMap();
     }
-
 
     private void generateMap() {
         int k = 0;
@@ -159,12 +156,10 @@ public class MapGenerator {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         enemies.add(new Turret(500, 500, layer));
-        enemies.add(new Turret(300, 500, layer));
         enemies.add(new Snake(500, 300, layer));
-        enemies.add(new Snake(400, 300, layer));
         enemies.add(new Wasp(100, 700, layer));
-        enemies.add(new Wasp(700, 700, layer));
         enemies.add(new Fly(360, 700, layer));
+        enemies.add(new Crab(360, 700, layer));
         //enemies.add(new Snake(500,500, layer));
 
         return enemies;
@@ -219,4 +214,5 @@ public class MapGenerator {
     public void setLayer(Pane layer) {
         this.layer = layer;
     }
+
 }

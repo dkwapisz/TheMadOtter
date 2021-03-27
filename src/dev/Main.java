@@ -21,7 +21,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        //komentarz
         Pane root = FXMLLoader.load(getClass().getResource("mainStage.fxml"));
         primaryStage.setTitle("TheGame");
         primaryStage.setScene(new Scene(root));
@@ -48,7 +47,6 @@ public class Main extends Application {
         inputManager.hero.updateHero();
         label.setText("   Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + hero.getActualGun().getAmmo() + ", HP: " + hero.getRemainingLives());
     }
-
 
     public static void main(String[] args) {
         launch(args);

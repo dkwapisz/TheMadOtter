@@ -1,10 +1,8 @@
 package model.hero;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
+
 import map.Door;
 import map.MapGenerator;
 import map.Room;
@@ -48,6 +46,7 @@ public class Hero extends MovingObjects {
         actualRoom.checkCollision(this);
         updateBullets(this);
         updateLocation();
+        doorCollision();
     }
 
     public void shot(double velX, double velY) {
@@ -119,7 +118,6 @@ public class Hero extends MovingObjects {
 
     public void move() {
         int vel = 5;
-        doorCollision();
         if(currentAction == HeroActions.UP) {
             setVelY(-vel);
         }
@@ -341,4 +339,5 @@ public class Hero extends MovingObjects {
     public void setActualGun(Gun actualGun) {
         this.actualGun = actualGun;
     }
+
 }

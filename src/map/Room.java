@@ -1,11 +1,7 @@
 package map;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
+
 import model.Bullet;
 import model.Explosion;
 import model.MovingObjects;
@@ -18,7 +14,6 @@ import model.item.Fish;
 import model.item.guns.Gun;
 import model.item.Item;
 
-import java.awt.*;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,7 +29,9 @@ public class Room {
     private ArrayList<Bullet> heroBullets;
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<Block> blocks;
+    private ArrayList<Explosion> explosions = new ArrayList<>();
     private final Random random = new Random();
+
 
     public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks) {
         this.door = door;
@@ -51,6 +48,7 @@ public class Room {
         itemCollision(hero);
         heroBulletsCollision(hero);
         enemyBulletCollision(hero);
+        explosionCollision(hero);
         enemyFollow(hero);
         updateEnemy(hero);
     }
@@ -101,7 +99,7 @@ public class Room {
             if(object instanceof Bullet){
                 if(heroBullets.contains(object)) {
                     if(((Bullet) object).getDmg() == 60) {
-                        explosionCollision(new Explosion(object.getX(), object.getY(), object.getLayer()), hero);
+                        explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
                     }
                     heroBullets.remove(object);
                 } else {
@@ -175,16 +173,20 @@ public class Room {
         removeStaticObjects(toBeRemoved);
     }
 
-    public void explosionCollision(Explosion explosion, Hero hero) {
-        if(hero.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
-            hero.healthDown(2);
-        }
-        for(Enemy enemy : enemies) {
-            if(enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
-                enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - 30, 0));
+    public void explosionCollision(Hero hero) {
+        if (explosions.size() != 0) {
+            for(Explosion explosion : explosions) {
+                if(hero.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+                    hero.healthDown(2);
+                }
+                for(Enemy enemy : enemies) {
+                    if(enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+                        enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - 30, 0));
+                    }
+                }
             }
         }
-    } // coś tu nie gra
+    }
 
     public void blockCollision(Hero hero) {
         Rectangle heroBounds = hero.getSmallerBounds();
@@ -207,6 +209,14 @@ public class Room {
         for (Enemy enemy : enemies) {
             if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
                 hero.healthDown(enemy.getDmg());
+            }
+            if (!enemy.isFlying() && !enemy.isFollowing()) {
+                for (Block block : blocks) {
+                    if(enemy.getBounds().intersects(block.getBounds().getBoundsInParent()) && !block.isToPass()) {
+                        enemy.setVelX(-enemy.getVelX());
+                        enemy.setVelY(-enemy.getVelY());
+                    }
+                }
             }
         }
     }
@@ -232,7 +242,6 @@ public class Room {
         }
         removeMovingObjects(toBeRemoved, hero);
     }
-
 
     public void heroBulletsCollision(Hero hero){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
@@ -394,5 +403,12 @@ public class Room {
     }
     public void setEnemyBullets(ArrayList<Bullet> enemyBullets) {
         this.enemyBullets = enemyBullets;
+    }
+
+    public ArrayList<Explosion> getExplosions() {
+        return explosions;
+    }
+    public void setExplosions(ArrayList<Explosion> explosions) {
+        this.explosions = explosions;
     }
 }
