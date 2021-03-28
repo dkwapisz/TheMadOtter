@@ -237,6 +237,7 @@ public class Hero extends MovingObjects {
         actualRoom.eraseItems();
         actualRoom.eraseBlocks();
         actualRoom.eraseBullets();
+        actualRoom.eraseExplosions();
 
         nextRoom.drawItems();
         nextRoom.drawEnemies();

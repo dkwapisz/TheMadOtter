@@ -11,6 +11,7 @@ public class Crab extends Enemy{
         setFollowing(false);
         setFlying(false);
         setShooting(false);
+        setExplosive(false);
         randomVel();
         setRemainingHealth(30);
         setDmg(1);

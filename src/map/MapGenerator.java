@@ -160,7 +160,6 @@ public class MapGenerator {
         enemies.add(new Wasp(100, 700, layer));
         enemies.add(new Fly(360, 700, layer));
         enemies.add(new Crab(360, 700, layer));
-        //enemies.add(new Snake(500,500, layer));
 
         return enemies;
     }

@@ -9,6 +9,7 @@ public class Snake extends Enemy{
         setFollowing(true);
         setFlying(false);
         setShooting(false);
+        setExplosive(false);
         setFollowingVel(2);
         setRemainingHealth(20);
         setDmg(1);

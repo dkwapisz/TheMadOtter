@@ -8,10 +8,12 @@ import model.hero.Hero;
 public abstract class Enemy extends MovingObjects {
 
     private int remainingHealth; // MUST HAVE
+    private int dmg; // MUST HAVE
     private boolean following; // MUST HAVE
     private boolean flying; // MUST HAVE
     private boolean shooting; // MUST HAVE
-    private int dmg; // MUST HAVE
+    private boolean explosive; // MUST HAVE
+
 
     private int followingVel = 0; // tylko dla przeciwników podążających za graczem - nie więcej niż 4!
     private String bulletPath = null; // tylko dla przeciwników strzelających, ścieżka do grafiki pocisku
@@ -117,4 +119,12 @@ public abstract class Enemy extends MovingObjects {
     public void setBulletVelFactor(int bulletVelFactor) {
         this.bulletVelFactor = bulletVelFactor;
     }
+
+    public boolean isExplosive() {
+        return explosive;
+    }
+    public void setExplosive(boolean explosive) {
+        this.explosive = explosive;
+    }
+
 }

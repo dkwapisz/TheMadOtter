@@ -9,6 +9,7 @@ public class Wasp extends Enemy{
         setFollowing(true);
         setFlying(true);
         setShooting(false);
+        setExplosive(false);
         setFollowingVel(3);
         setRemainingHealth(30);
         setDmg(2);

@@ -9,6 +9,7 @@ public class Fly extends Enemy{
         setFollowing(false);
         setFlying(true);
         setShooting(false);
+        setExplosive(false);
         setVelX(5);
         setVelY(-5);
         setRemainingHealth(30);

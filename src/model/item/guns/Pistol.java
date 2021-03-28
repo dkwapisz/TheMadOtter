@@ -13,7 +13,4 @@ public class Pistol extends Gun {
         setGunName("Pistol");
     }
 
-
-
-
 }

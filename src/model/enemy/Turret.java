@@ -9,6 +9,7 @@ public class Turret extends Enemy{
         setFollowing(false);
         setFlying(false);
         setShooting(true);
+        setExplosive(false);
         setVelX(0);
         setVelY(0);
         setBulletVelFactor(8);

@@ -9,6 +9,7 @@ import model.StaticObjects;
 import model.block.Block;
 import model.block.SoftBlock;
 import model.enemy.Enemy;
+import model.enemy.Turret;
 import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
@@ -90,6 +91,15 @@ public class Room {
         }
     }
 
+    public void eraseExplosions() {
+        if (explosions.size() != 0) {
+            for (Explosion explosion : explosions) {
+                explosion.removeFromLayer();
+            }
+            explosions.clear();
+        }
+    }
+
     public void removeMovingObjects(ArrayList<MovingObjects> list, Hero hero) {
         if (list == null) {
             return;
@@ -106,6 +116,9 @@ public class Room {
                     enemyBullets.remove(object);
                 }
             }if (object instanceof Enemy){
+                if (((Enemy) object).isExplosive()) {
+                    explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
+                }
                 enemies.remove(object);
             }
 
@@ -308,12 +321,6 @@ public class Room {
                     randomize = (0.75+random.nextDouble());
                     enemy.setVelX(randomize*newVelX);
                     enemy.setVelY(randomize*newVelY);
-//                    if (enemy.getVelX() < 0) {
-//                        enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getVelY() / enemy.getVelX()) + Math.PI / 2))));
-//                    } else {
-//                        enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getVelY() / enemy.getVelX()) + Math.PI / 2));
-//                    } hmm czy to implementować?
-
                 }
             }
         }
@@ -331,10 +338,12 @@ public class Room {
                 enemy.updateLocation();
                 if(enemy.isShooting()) {
                     enemy.shot(hero, enemy.getBulletVelFactor());
-                    if (enemy.getBulletVelX() < 0) {
-                        enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2))));
-                    } else {
-                        enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2));
+                    if (enemy instanceof Turret) {
+                        if (enemy.getBulletVelX() < 0) {
+                            enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2))));
+                        } else {
+                            enemy.getImageView().setRotate(Math.toDegrees(Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2));
+                        }
                     }
                 }
             }
@@ -411,4 +420,5 @@ public class Room {
     public void setExplosions(ArrayList<Explosion> explosions) {
         this.explosions = explosions;
     }
+
 }
