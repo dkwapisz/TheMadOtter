@@ -161,13 +161,14 @@ public class FloorGenerator {
 
     private ArrayList<Enemy> enemiesGenerator(int roomId){
         ArrayList<Enemy> enemies = new ArrayList<>();
-        if(roomId == 11 || roomId == 13) {
-            enemies.add(new Turret(500, 500, layer));
+        enemies.add(new Turret(500, 500, layer));
+//        if(roomId == 11 || roomId == 13) {
+//            enemies.add(new Turret(500, 500, layer));
 //            enemies.add(new Snake(500, 300, layer));
 //            enemies.add(new Wasp(100, 700, layer));
 //            enemies.add(new Fly(360, 700, layer));
 //            enemies.add(new Crab(360, 700, layer));
-        }
+//        }
 
         nrOfEnemies = nrOfEnemies + enemies.size();
         return enemies;

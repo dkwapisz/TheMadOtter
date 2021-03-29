@@ -28,7 +28,7 @@ public class Main extends Application {
         primaryStage.getScene().getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
         primaryStage.setResizable(false);
 
-        hero = new Hero(368, 368, root);
+        hero = new Hero(368, 568, root);
         inputManager = new InputManager(hero);
 
         label = new Label();

@@ -12,6 +12,7 @@ public class Trapdoor extends Block{
         setBreakable(false);
         setPrickly(false);
         setToPass(true);
+        getImageView().toBack();
     }
 
 

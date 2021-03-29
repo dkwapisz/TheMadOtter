@@ -54,11 +54,17 @@ public class Room {
         explosionCollision(hero);
         enemyFollow(hero);
         updateEnemy(hero);
-        trapDoorCollision();
+        openTrapDoor();
     }
 
-    private void trapDoorCollision() {
-        if (actualFloor.getNrOfEnemies() == 0) {
+    private void openTrapDoor() {
+        boolean isAllClear = true;
+        for (Room room : actualFloor.getRoomList()) {
+            if (!room.isClean()) {
+                isAllClear = false;
+            }
+        }
+        if (isAllClear) {
             actualFloor.getTrapdoor().open();
         }
     }
