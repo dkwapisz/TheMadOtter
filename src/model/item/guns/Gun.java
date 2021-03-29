@@ -13,7 +13,6 @@ public abstract class Gun extends Item {
     private int bulletVel; // prędkość pocisku
     private long cooldownShot; // cooldown między strzałami
     private int dmg; // dmg per shot
-    private int ammo; // ilość ammo (w szczególności startowego)
     private String gunName; // nazwa broni
     private String pathBullet; // ścieżka do grafiki pocisku
 
@@ -21,50 +20,6 @@ public abstract class Gun extends Item {
         super(x, y, pathStatic, layer);
         this.pathBullet = pathBullet;
     }
-
-
-    public void addAmmo() {
-        if (this instanceof Uzi) {
-            ammo = ammo + 50;
-        }
-        else if (this instanceof Ak47) {
-            ammo = ammo + 30;
-        }
-        else if (this instanceof SniperRifle) {
-            ammo = ammo + 5;
-        }
-        else if (this instanceof Deagle) {
-            ammo = ammo + 7;
-        }
-        else if (this instanceof PlasmaGun) {
-            ammo = ammo + 20;
-        }
-        else if (this instanceof Shotgun) {
-            ammo = ammo + 12;
-        }
-        else if (this instanceof RocketLauncher) {
-            ammo = ammo + 3;
-        }
-        else if (this instanceof M16) {
-            ammo = ammo + 30;
-        }
-        else if (this instanceof Mp5) {
-            ammo = ammo + 40;
-        }
-        else if (this instanceof Glock) {
-            ammo = ammo + 20;
-        }
-        else if (this instanceof LaserGun) {
-            ammo = ammo + 30;
-        }
-        else if (this instanceof Scar) {
-            ammo = ammo + 60;
-        }
-        else if (this instanceof Stg44) {
-            ammo = ammo + 30;
-        }
-    }
-
 
 
     public int getBulletVel() {
@@ -86,13 +41,6 @@ public abstract class Gun extends Item {
     }
     public void setDmg(int dmg) {
         this.dmg = dmg;
-    }
-
-    public int getAmmo() {
-        return ammo;
-    }
-    public void setAmmo(int ammo) {
-        this.ammo = ammo;
     }
 
     public String getGunName() {

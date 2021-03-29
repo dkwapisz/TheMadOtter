@@ -28,7 +28,7 @@ public class Main extends Application {
         primaryStage.getScene().getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
         primaryStage.setResizable(false);
 
-        hero = new Hero(360, 360, root);
+        hero = new Hero(368, 368, root);
         inputManager = new InputManager(hero);
 
         label = new Label();
@@ -45,7 +45,7 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
-        label.setText("   Gun: " + hero.getActualGun().getGunName() + ", Ammo: " + hero.getActualGun().getAmmo() + ", HP: " + hero.getRemainingLives());
+        label.setText("   Gun: " + hero.getActualGun().getGunName() + ", HP: " + hero.getRemainingLives() + ", Enemies: " + hero.getActualRoom().getActualFloor().getNrOfEnemies());
     }
 
     public static void main(String[] args) {

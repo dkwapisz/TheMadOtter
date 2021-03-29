@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import map.Door;
-import map.MapGenerator;
+import map.FloorGenerator;
 import map.Room;
 import model.Bullet;
 import model.MovingObjects;
@@ -19,7 +19,7 @@ public class Hero extends MovingObjects {
     private int remainingLives;
     private HeroActions currentAction;
     private Room actualRoom;
-    private MapGenerator map;
+    private FloorGenerator floor;
     private long lastShot = 0;
     private long cooldownShot;
     private long lastChange = 0;
@@ -27,11 +27,12 @@ public class Hero extends MovingObjects {
     private ArrayList<Gun> equipment = new ArrayList<>();
     private Gun actualGun;
     private final Random random = new Random();
+    private Pane layer;
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", "graphics/hero/otterStaticShoting.gif", "graphics/hero/otterMovingShoting.gif",  layer);
-        map = new MapGenerator(5, layer);  //nrOfRooms musi być nieparzyste (!!!)
-        actualRoom = map.getRoomList().get((map.getNrOfRooms()*map.getNrOfRooms()-1)/2);
+        floor = new FloorGenerator(5, layer, 1);  //nrOfRooms musi być nieparzyste (!!!)
+        actualRoom = floor.getRoomList().get((floor.getNrOfRooms()* floor.getNrOfRooms()-1)/2);
         currentAction = HeroActions.UP;
         actualRoom.makeHeroBulletList();
         equipment.add(new Pistol(layer));
@@ -39,6 +40,7 @@ public class Hero extends MovingObjects {
         cooldownShot = actualGun.getCooldownShot();
         remainingLives = 20;
         getImageView().toFront();
+        this.layer = layer;
     }
 
     public void updateHero() {
@@ -47,6 +49,7 @@ public class Hero extends MovingObjects {
         updateBullets(this);
         updateLocation();
         doorCollision();
+        goToNextFloor();
     }
 
     public void shot(double velX, double velY) {
@@ -54,12 +57,6 @@ public class Hero extends MovingObjects {
         double y = 0;
 
         cooldownShot = actualGun.getCooldownShot();
-
-        if(actualGun.getAmmo() == 0) {
-            setNoAmmo(true);
-        } else {
-            setNoAmmo(false);
-        }
 
         if(currentAction == HeroActions.SHOTUP) {
             getImageView().setViewport(getFrame().get(1));
@@ -84,7 +81,7 @@ public class Hero extends MovingObjects {
 
         long time = System.currentTimeMillis();
 
-        if (time > lastShot + cooldownShot && (actualGun.getAmmo() != 0 || actualGun instanceof Pistol)) {
+        if (time > lastShot + cooldownShot) {
             lastShot = time;
             if(actualGun instanceof Shotgun) {
                 double newVelX = 0;
@@ -107,12 +104,10 @@ public class Hero extends MovingObjects {
                 for(double i=1; i<1.3; i = i+0.1) {
                     actualRoom.getHeroBullets().add(new Bullet(x, y, i*velX*actualGun.getBulletVel(), i*velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
                 }
-                actualGun.setAmmo(actualGun.getAmmo()-2);
             }
             else {
                 actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
             }
-            actualGun.setAmmo(actualGun.getAmmo()-1);
         }
     }
 
@@ -161,26 +156,26 @@ public class Hero extends MovingObjects {
             Rectangle doorBounds = door.getBounds();
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
-                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
-                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() - 1);
+                    goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);
+                    actualRoom = floor.getRoomList().get(actualRoom.getRoomId() - 1);
                     setX(360);
                     setY(700);
                 }
                 if (door.getDoorId() == 2 && !door.isClosedDoors()) {
-                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms()), actualRoom);
-                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() - map.getNrOfRooms());
+                    goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() - floor.getNrOfRooms()), actualRoom);
+                    actualRoom = floor.getRoomList().get(actualRoom.getRoomId() - floor.getNrOfRooms());
                     setX(700);
                     setY(360);
                 }
                 if (door.getDoorId() == 3 && !door.isClosedDoors()) {
-                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
-                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() + 1);
+                    goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
+                    actualRoom = floor.getRoomList().get(actualRoom.getRoomId() + 1);
                     setX(360);
                     setY(40);
                 }
                 if (door.getDoorId() == 4 && !door.isClosedDoors()) {
-                    goToNextRoom(map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms()), actualRoom);
-                    actualRoom = map.getRoomList().get(actualRoom.getRoomId() + map.getNrOfRooms());
+                    goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() + floor.getNrOfRooms()), actualRoom);
+                    actualRoom = floor.getRoomList().get(actualRoom.getRoomId() + floor.getNrOfRooms());
                     setX(40);
                     setY(360);
                 }
@@ -188,6 +183,22 @@ public class Hero extends MovingObjects {
         }
     }
 
+    private void goToNextFloor() {
+        if(floor.getTrapdoor().isOpen() && actualRoom.getRoomId() == 12) {
+            if(this.getSmallerBounds().intersects(floor.getTrapdoor().getBounds().getBoundsInParent())) {
+                actualRoom.eraseEnemies(); // pokój ze starego piętra
+                actualRoom.eraseItems();
+                actualRoom.eraseBlocks();
+                actualRoom.eraseBullets();
+                actualRoom.eraseExplosions();
+                floor = new FloorGenerator(5, layer, floor.getFloorId()+1);
+                actualRoom = floor.getRoomList().get((floor.getNrOfRooms()* floor.getNrOfRooms()-1)/2); // pokój z nowego piętra
+                currentAction = HeroActions.UP;
+                actualRoom.makeHeroBulletList();
+                getImageView().toFront();
+            }
+        }
+    }
 
     private void goToNextRoom(Room nextRoom, Room actualRoom) {
         ArrayList<Integer> tempNextRemove = new ArrayList<>();
@@ -197,40 +208,40 @@ public class Hero extends MovingObjects {
         }
         if (nextRoom.getDoor().size() < actualRoom.getDoor().size()) {
             if (!tempNextRemove.contains(1)) {
-                map.getDoor1().removeFromLayer();
-                map.getDoor1().setClosedDoors(true);
+                floor.getDoor1().removeFromLayer();
+                floor.getDoor1().setClosedDoors(true);
             }
             if (!tempNextRemove.contains(2)) {
-                map.getDoor2().removeFromLayer();
-                map.getDoor2().setClosedDoors(true);
+                floor.getDoor2().removeFromLayer();
+                floor.getDoor2().setClosedDoors(true);
             }
             if (!tempNextRemove.contains(3)) {
-                map.getDoor3().removeFromLayer();
-                map.getDoor3().setClosedDoors(true);
+                floor.getDoor3().removeFromLayer();
+                floor.getDoor3().setClosedDoors(true);
             }
             if (!tempNextRemove.contains(4)) {
-                map.getDoor4().removeFromLayer();
-                map.getDoor4().setClosedDoors(true);
+                floor.getDoor4().removeFromLayer();
+                floor.getDoor4().setClosedDoors(true);
             }
         } else {
             for (int i = 0; i < actualRoom.getDoor().size(); i++) {
                 tempNextAdd.add(actualRoom.getDoor().get(i).getDoorId());
             }
             if (tempNextRemove.contains(1) && !tempNextAdd.contains(1)) {
-                map.getDoor1().addToLayer();
-                map.getDoor1().setClosedDoors(false);
+                floor.getDoor1().addToLayer();
+                floor.getDoor1().setClosedDoors(false);
             }
             if (tempNextRemove.contains(2) && !tempNextAdd.contains(2)) {
-                map.getDoor2().addToLayer();
-                map.getDoor2().setClosedDoors(false);
+                floor.getDoor2().addToLayer();
+                floor.getDoor2().setClosedDoors(false);
             }
             if (tempNextRemove.contains(3) && !tempNextAdd.contains(3)) {
-                map.getDoor3().addToLayer();
-                map.getDoor3().setClosedDoors(false);
+                floor.getDoor3().addToLayer();
+                floor.getDoor3().setClosedDoors(false);
             }
             if (tempNextRemove.contains(4) && !tempNextAdd.contains(4)) {
-                map.getDoor4().addToLayer();
-                map.getDoor4().setClosedDoors(false);
+                floor.getDoor4().addToLayer();
+                floor.getDoor4().setClosedDoors(false);
             }
         }
         actualRoom.eraseEnemies();
@@ -255,9 +266,9 @@ public class Hero extends MovingObjects {
     public void addNewGun(Gun gun) {
         boolean isOwned = false;
         for(Gun ownedGun : equipment) {
-            if(ownedGun.getClass().equals(gun.getClass())) {
+            if (ownedGun.getClass().equals(gun.getClass())) {
                 isOwned = true;
-                ownedGun.addAmmo();
+                break;
             }
         }
         if(!isOwned) {
@@ -320,11 +331,11 @@ public class Hero extends MovingObjects {
         this.actualRoom = actualRoom;
     }
 
-    public MapGenerator getMap() {
-        return map;
+    public FloorGenerator getFloor() {
+        return floor;
     }
-    public void setMap(MapGenerator map) {
-        this.map = map;
+    public void setFloor(FloorGenerator floor) {
+        this.floor = floor;
     }
 
     public boolean isShooting() {

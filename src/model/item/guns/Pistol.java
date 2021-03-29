@@ -6,7 +6,6 @@ public class Pistol extends Gun {
 
     public Pistol(Pane layer) {
         super(1000, 1000, "graphics/items/guns/uzi.png", "graphics/items/bullets/pistolBullet.png", layer);
-        setAmmo(0);
         setBulletVel(8);
         setCooldownShot(500);
         setDmg(2);

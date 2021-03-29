@@ -25,6 +25,7 @@ public class Room {
     private ArrayList<Door> door;
     private boolean clean;
     private int roomId;
+    private FloorGenerator actualFloor;
     private ArrayList<Enemy> enemies;
     private ArrayList<Item> items;
     private ArrayList<Bullet> heroBullets;
@@ -34,13 +35,14 @@ public class Room {
     private final Random random = new Random();
 
 
-    public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks) {
+    public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
         this.door = door;
         this.clean = clean;
         this.roomId = roomId;
         this.enemies = enemies;
         this.items = items;
         this.blocks = blocks;
+        this.actualFloor = actualFloor;
     }
 
     public void checkCollision(Hero hero){
@@ -52,6 +54,13 @@ public class Room {
         explosionCollision(hero);
         enemyFollow(hero);
         updateEnemy(hero);
+        trapDoorCollision();
+    }
+
+    private void trapDoorCollision() {
+        if (actualFloor.getNrOfEnemies() == 0) {
+            actualFloor.getTrapdoor().open();
+        }
     }
 
     public void drawEnemies(){
@@ -120,6 +129,10 @@ public class Room {
                     explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
                 }
                 enemies.remove(object);
+                if(enemies.size() == 0) {
+                    clean = true;
+                }
+                actualFloor.setNrOfEnemies(actualFloor.getNrOfEnemies()-1);
             }
 
         }
@@ -421,4 +434,10 @@ public class Room {
         this.explosions = explosions;
     }
 
+    public FloorGenerator getActualFloor() {
+        return actualFloor;
+    }
+    public void setActualFloor(FloorGenerator actualFloor) {
+        this.actualFloor = actualFloor;
+    }
 }

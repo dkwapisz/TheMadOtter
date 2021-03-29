@@ -1,6 +1,7 @@
 package model.enemy;
 
 import javafx.scene.layout.Pane;
+import map.FloorGenerator;
 import model.Bullet;
 import model.MovingObjects;
 import model.hero.Hero;

@@ -6,7 +6,6 @@ public class SniperRifle extends Gun {
 
     public SniperRifle(double x, double y, Pane layer) {
         super(x, y, "graphics/items/guns/sniperRifle.png", "graphics/items/bullets/sniperBullet.png", layer);
-        setAmmo(5);
         setBulletVel(25);
         setCooldownShot(1500);
         setDmg(50);
