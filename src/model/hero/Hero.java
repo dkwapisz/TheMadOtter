@@ -1,5 +1,7 @@
 package model.hero;
 
+import dev.Main;
+import dev.MainController;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -309,6 +311,7 @@ public class Hero extends MovingObjects {
             lastEnemyTouch = time;
         }
     }
+
 
     public int getRemainingLives() {
         return remainingLives;

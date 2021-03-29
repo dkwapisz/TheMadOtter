@@ -15,7 +15,7 @@ import model.hero.Hero;
 
 
 public class Main extends Application {
-    private Hero hero;
+    static Hero hero;
     private InputManager inputManager;
     private Label label;
 

@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="800.0" maxWidth="1000.0" minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="800.0" maxWidth="1000.0" minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.MainController">
    <children>
       <Pane fx:id="pane1" maxHeight="800.0" maxWidth="800.0" minHeight="800.0" minWidth="800.0" prefHeight="800.0" prefWidth="800.0">
          <stylesheets>
             <URL value="@application.css" />
          </stylesheets>
-         <children>
-            <Pane layoutX="-243.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" />
-         </children>
       </Pane>
+      <AnchorPane layoutX="801.0" prefHeight="800.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="GunImageView" fitHeight="46.0" fitWidth="138.0" layoutX="62.0" layoutY="732.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/items/guns/pistol.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
    </children>
 </Pane>
