@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import map.Door;
 import model.hero.Hero;
 
 
@@ -21,6 +22,7 @@ public class Main extends Application {
     private InputManager inputManager;
     private Label infoLabel;
     private ImageView gunReview;
+    private MiniMap miniMap;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,17 +39,19 @@ public class Main extends Application {
         infoLabel = new Label();
         infoLabel.setStyle("-fx-font: 16 verdana;");
         infoLabel.setTextFill(Color.WHITE);
-        infoLabel.relocate(800, 0);
+        infoLabel.relocate(800, 200);
         root.getChildren().add(infoLabel);
 
         gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
-        gunReview.relocate(850, 750);
+        gunReview.relocate(900 - gunReview.getImage().getWidth()/2,725);
         root.getChildren().add(gunReview);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e->run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         EventHandling.addEventHandlers(primaryStage.getScene());
+        this.miniMap = new MiniMap(hero);
+
     }
 
     private void run() {
@@ -65,11 +69,13 @@ public class Main extends Application {
                         "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen());
 
         updateGun();
+        miniMap.updateMiniMap();
     }
 
     private void updateGun() {
         if(hero.getActualGun().getImageView().getImage() != gunReview.getImage()) {
             gunReview.setImage(hero.getActualGun().getImageView().getImage()); // wywołuje się tylko, gdy aktualna wybrana broń różni się od wyświetlonej :)
+            gunReview.relocate(900 - gunReview.getImage().getWidth()/2,725);
         }
     }
 

@@ -193,6 +193,9 @@ public class Hero extends MovingObjects {
                 actualRoom.eraseBlocks();
                 actualRoom.eraseBullets();
                 actualRoom.eraseExplosions();
+                for (Door door:getActualRoom().getDoor()) {
+                    door.removeFromLayer();
+                }
                 floor = new FloorGenerator(5, layer, floor.getFloorId()+1);
                 actualRoom = floor.getRoomList().get((floor.getNrOfRooms()* floor.getNrOfRooms()-1)/2); // pokój z nowego piętra
                 currentAction = HeroActions.UP;
