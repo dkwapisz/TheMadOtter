@@ -17,6 +17,7 @@ import model.item.Item;
 
 import java.lang.Math;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -35,13 +36,15 @@ public class Room {
     private final Random random = new Random();
 
 
-    public Room(ArrayList<Door> door, boolean clean, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
+    public Room(ArrayList<Door> door, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
+        // Objects.requireNonNullElseGet, to po prostu taki skrót :)
+        // Jeśli podczas tworzenia pokoju, wpisujemy null do X (enemies, items, blocks), to jest wywoływane this.X = new Arraylist<>().
+        // Skraca to formułkę do tworzenia pokoju (nie trzeba wpisać ciągle new Arraylist, wystarczy null.
+        this.enemies = Objects.requireNonNullElseGet(enemies, ArrayList::new);
+        this.blocks = Objects.requireNonNullElseGet(blocks, ArrayList::new);
+        this.items = Objects.requireNonNullElseGet(items, ArrayList::new);
         this.door = door;
-        this.clean = clean;
         this.roomId = roomId;
-        this.enemies = enemies;
-        this.items = items;
-        this.blocks = blocks;
         this.actualFloor = actualFloor;
     }
 
@@ -49,7 +52,7 @@ public class Room {
         blockCollision(hero);
         enemyCollision(hero);
         itemCollision(hero);
-        heroBulletsCollision(hero);
+        heroBulletsCollision();
         enemyBulletCollision(hero);
         explosionCollision(hero);
         enemyFollow(hero);
@@ -115,7 +118,7 @@ public class Room {
         }
     }
 
-    public void removeMovingObjects(ArrayList<MovingObjects> list, Hero hero) {
+    public void removeMovingObjects(ArrayList<MovingObjects> list) {
         if (list == null) {
             return;
         }
@@ -127,7 +130,7 @@ public class Room {
                         explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
                     }
                     heroBullets.remove(object);
-                } else {
+                } else if (enemyBullets != null){
                     enemyBullets.remove(object);
                 }
             }if (object instanceof Enemy){
@@ -138,7 +141,6 @@ public class Room {
                 if(enemies.size() == 0) {
                     clean = true;
                 }
-                actualFloor.setNrOfEnemies(actualFloor.getNrOfEnemies()-1);
             }
 
         }
@@ -272,10 +274,10 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved, hero);
+        removeMovingObjects(toBeRemoved);
     }
 
-    public void heroBulletsCollision(Hero hero){
+    public void heroBulletsCollision(){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         for(Bullet bullet : heroBullets){
@@ -305,7 +307,7 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved, hero);
+        removeMovingObjects(toBeRemoved);
         removeStaticObjects(toRemoveBlocks);
     }
 

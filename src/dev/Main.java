@@ -7,6 +7,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -17,7 +19,8 @@ import model.hero.Hero;
 public class Main extends Application {
     static Hero hero;
     private InputManager inputManager;
-    private Label label;
+    private Label infoLabel;
+    private ImageView gunReview;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -31,10 +34,15 @@ public class Main extends Application {
         hero = new Hero(368, 568, root);
         inputManager = new InputManager(hero);
 
-        label = new Label();
-        label.setStyle("-fx-font: 16 verdana;");
-        label.setTextFill(Color.WHITE);
-        root.getChildren().add(label);
+        infoLabel = new Label();
+        infoLabel.setStyle("-fx-font: 16 verdana;");
+        infoLabel.setTextFill(Color.WHITE);
+        infoLabel.relocate(800, 0);
+        root.getChildren().add(infoLabel);
+
+        gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
+        gunReview.relocate(850, 750);
+        root.getChildren().add(gunReview);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e->run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -45,7 +53,24 @@ public class Main extends Application {
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
-        label.setText("   Gun: " + hero.getActualGun().getGunName() + ", HP: " + hero.getRemainingLives() + ", Enemies: " + hero.getActualRoom().getActualFloor().getNrOfEnemies());
+        infoLabel.setText("Gun: " + hero.getActualGun().getGunName() +
+                        "\nGun Dmg: " + hero.getActualGun().getDmg() +
+                        "\nGun coold.: " + hero.getActualGun().getCooldownShot() + " [ms]" +
+                        "\nBullet Vel: " + hero.getActualGun().getBulletVel() +
+                        "\nHP: " + hero.getRemainingLives() +
+                        "\nClean Room: " + hero.getActualRoom().isClean() +
+                        "\nFloorID: " + hero.getFloor().getFloorId() +
+                        "\nRoomID: " + hero.getActualRoom().getRoomId() +
+                        "\nShooting: " + hero.isShooting() +
+                        "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen());
+
+        updateGun();
+    }
+
+    private void updateGun() {
+        if(hero.getActualGun().getImageView().getImage() != gunReview.getImage()) {
+            gunReview.setImage(hero.getActualGun().getImageView().getImage()); // wywołuje się tylko, gdy aktualna wybrana broń różni się od wyświetlonej :)
+        }
     }
 
     public static void main(String[] args) {

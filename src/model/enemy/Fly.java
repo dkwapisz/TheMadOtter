@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 public class Fly extends Enemy{
 
     public Fly(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/fly.png", "/graphics/enemies/fly.png", null, null, mainLayer);
+        super(x, y, "/graphics/enemies/fly.gif", "/graphics/enemies/fly.gif", null, null, mainLayer);
         setFollowing(false);
         setFlying(true);
         setShooting(false);
