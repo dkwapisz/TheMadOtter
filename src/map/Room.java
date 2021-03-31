@@ -10,6 +10,7 @@ import model.block.Block;
 import model.block.SoftBlock;
 import model.enemy.Enemy;
 import model.enemy.Enemy3;
+import model.enemy.Slime;
 import model.enemy.Turret;
 import model.hero.Hero;
 import model.item.Fish;
@@ -286,6 +287,7 @@ public class Room {
     public void heroBulletsCollision(){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
+        ArrayList<Slime> slimes = new ArrayList<>();
         for(Bullet bullet : heroBullets){
             bullet.changeLayer();
             Rectangle bulletBounds = bullet.getBounds();
@@ -309,7 +311,21 @@ public class Room {
                     enemy.setRemainingHealth(enemy.getRemainingHealth()-bullet.getDmg());
                     if (enemy.getRemainingHealth() <= 0){
                         toBeRemoved.add(enemy);
+                        if(enemy instanceof Slime){
+                            slimes.add(((Slime) enemy));
+                        }
                     }
+                }
+            }
+        }
+        if(!slimes.isEmpty()){
+            for (Slime slime: slimes) {
+                if(slime.isSlimeKing()){
+                    System.out.println("x");
+                    enemies.addAll(slime.createMedium(slime.getX(), slime.getY()));
+                }else if(slime.isMedium()){
+                    enemies.addAll(slime.createSmall(slime.getX(), slime.getY()));
+                    System.out.println("y");
                 }
             }
         }

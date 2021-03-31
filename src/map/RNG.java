@@ -99,7 +99,11 @@ public class RNG {
             enemies.add(new Enemy2(300, 500, layer));
             enemies.add(new Enemy3(600, 300, layer));
             enemies.add(new Turret(200, 300, layer));
+            enemies.add(new Slime(400,500, layer,"SlimeKing"));
 
+        }
+        if(roomId == 13) { // do testów, przeciwnicy spawnują się tylko w pomieszczeniu nr 11, 18
+            enemies.add(new Slime(400,500, layer,"SlimeKing"));
         }
         if(roomId == 18) {
             enemies.add(new Turret(500, 500, layer));
