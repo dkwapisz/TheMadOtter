@@ -9,6 +9,7 @@ import model.StaticObjects;
 import model.block.Block;
 import model.block.SoftBlock;
 import model.enemy.Enemy;
+import model.enemy.Enemy3;
 import model.enemy.Turret;
 import model.hero.Hero;
 import model.item.Fish;
@@ -192,7 +193,6 @@ public class Room {
             if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
                 if(item instanceof Gun) {
                     hero.addNewGun((Gun) item);
-                    toBeRemoved.add(item);
                 }
                 if(item instanceof Fish && hero.getRemainingLives() <= 19) {
                     if(hero.getRemainingLives() == 19){
@@ -200,8 +200,8 @@ public class Room {
                     }else {
                         hero.setRemainingLives(hero.getRemainingLives() + ((Fish) item).getHpBonus());
                     }
-                    toBeRemoved.add(item);
                 }
+                toBeRemoved.add(item);
             }
         }
         removeStaticObjects(toBeRemoved);
@@ -239,10 +239,15 @@ public class Room {
     }
 
     public void enemyCollision(Hero hero){
+        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         Rectangle heroBounds = hero.getBounds();
         for (Enemy enemy : enemies) {
             if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
                 hero.healthDown(enemy.getDmg());
+                if(enemy instanceof Enemy3) {
+                    enemy.setRemainingHealth(0);
+                    toBeRemoved.add(enemy);
+                }
             }
             if (!enemy.isFlying() && !enemy.isFollowing()) {
                 for (Block block : blocks) {
@@ -253,6 +258,7 @@ public class Room {
                 }
             }
         }
+        removeMovingObjects(toBeRemoved);
     }
 
     public void enemyBulletCollision(Hero hero) {

@@ -15,25 +15,25 @@ public abstract class Enemy extends MovingObjects {
     private boolean shooting; // MUST HAVE
     private boolean explosive; // MUST HAVE
 
-
     private int followingVel = 0; // tylko dla przeciwników podążających za graczem - nie więcej niż 4!
     private String bulletPath = null; // tylko dla przeciwników strzelających, ścieżka do grafiki pocisku
     private int bulletVelFactor = 0; // prędkość pocisków przeciwników strzelających
+    private int cooldownShot = 2000; // szybkostrzelność przeciwników strzelających (domyślnie 2000, żeby nie było syfu jak się zapomni ustawić)
 
     private double bulletVelX = 0; // atrybut pomocniczy, nigdzie nie ustawiać
     private double bulletVelY = 0; // atrybut pomocniczy, nigdzie nie ustawiać
     private long lastEnemyShot = 0; // atrybut pomocniczy, nigdzie nie ustawiać
 
 
-    public Enemy(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane mainLayer) {
-        super(x, y, pathStatic, pathMoving, pathStaticShot, pathMovingShot, mainLayer);
+    public Enemy(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane layer) {
+        super(x, y, pathStatic, pathMoving, pathStaticShot, pathMovingShot, layer);
         this.removeFromLayer();
     }
 
     public void shot(Hero hero, int velFactor) {
         long time = System.currentTimeMillis();
         if(this.shooting) {
-            if (time > lastEnemyShot + 2000) {
+            if (time > lastEnemyShot + cooldownShot) {
                 lastEnemyShot = time;
                 double vecLength;
                 vecLength = Math.hypot(hero.getX() - getX(), hero.getY() - getY());
@@ -128,4 +128,10 @@ public abstract class Enemy extends MovingObjects {
         this.explosive = explosive;
     }
 
+    public int getCooldownShot() {
+        return cooldownShot;
+    }
+    public void setCooldownShot(int cooldownShot) {
+        this.cooldownShot = cooldownShot;
+    }
 }

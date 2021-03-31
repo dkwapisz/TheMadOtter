@@ -94,7 +94,14 @@ public class RNG {
         loadBitMap(roomId);
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        if(roomId == 11) { // do testów, przeciwnicy spawnują się tylko w pomieszczeniu nr 11
+        if(roomId == 11) { // do testów, przeciwnicy spawnują się tylko w pomieszczeniu nr 11, 18
+            enemies.add(new Enemy1(500, 500, layer));
+            enemies.add(new Enemy2(300, 500, layer));
+            enemies.add(new Enemy3(600, 300, layer));
+            enemies.add(new Turret(200, 300, layer));
+
+        }
+        if(roomId == 18) {
             enemies.add(new Turret(500, 500, layer));
             enemies.add(new Snake(500, 300, layer));
             enemies.add(new Wasp(100, 700, layer));
