@@ -8,10 +8,7 @@ import model.MovingObjects;
 import model.StaticObjects;
 import model.block.Block;
 import model.block.SoftBlock;
-import model.enemy.Enemy;
-import model.enemy.Enemy3;
-import model.enemy.Slime;
-import model.enemy.Turret;
+import model.enemy.*;
 import model.hero.Hero;
 import model.item.Fish;
 import model.item.guns.Gun;
@@ -372,6 +369,7 @@ public class Room {
     public void updateEnemy(Hero hero){
         if (!enemies.isEmpty()) {
             for (Enemy enemy : enemies) {
+                enemy.specificMovement();
                 if (enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
                     enemy.setVelX(-enemy.getVelX());
                 }

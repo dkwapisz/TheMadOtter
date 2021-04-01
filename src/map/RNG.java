@@ -93,8 +93,11 @@ public class RNG {
     public ArrayList<Enemy> enemiesGenerator(int roomId){
         loadBitMap(roomId);
         ArrayList<Enemy> enemies = new ArrayList<>();
-
-        if(roomId == 11) { // do testów, przeciwnicy spawnują się tylko w pomieszczeniu nr 11, 18
+        if(roomId == 7) {
+            enemies.add(new Enemy4(500, 500, layer));
+            enemies.add(new Enemy5(300, 500, layer));
+        }
+        if(roomId == 11) {
             enemies.add(new Enemy1(500, 500, layer));
             enemies.add(new Enemy2(300, 500, layer));
             enemies.add(new Enemy3(600, 300, layer));
@@ -102,8 +105,12 @@ public class RNG {
             enemies.add(new Slime(400,500, layer,"SlimeKing"));
 
         }
-        if(roomId == 13) { // do testów, przeciwnicy spawnują się tylko w pomieszczeniu nr 11, 18
+        if(roomId == 13) {
             enemies.add(new Slime(400,500, layer,"SlimeKing"));
+        }
+        if(roomId == 17) {
+            enemies.add(new Enemy6(500, 500, layer));
+            enemies.add(new Enemy7(300, 500, layer));
         }
         if(roomId == 18) {
             enemies.add(new Turret(500, 500, layer));

@@ -44,12 +44,7 @@ public abstract class Enemy extends MovingObjects {
         }
     }
 
-//    public Rectangle getCenterBounds() {
-//        Rectangle centerBounds = new Rectangle((int) getX() + 2*getVelX() +  getDimension().getWidth()/4, (int) getY() + 2*getVelY() + getDimension().getHeight()/4, getDimension().getWidth()/2, getDimension().getHeight()/2);
-//        centerBounds.setArcHeight(getDimension().getHeight()/8);
-//        centerBounds.setArcWidth(getDimension().getWidth()/8);
-//        return centerBounds;
-//    }
+    public void specificMovement() {} // funkcja do przeciążeń (np Enemy5, Enemy6)
 
     public int getRemainingHealth() {
         return remainingHealth;

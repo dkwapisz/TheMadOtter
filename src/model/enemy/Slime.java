@@ -5,7 +5,8 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Slime extends Enemy{
+public class Slime extends Enemy {
+
     private boolean slimeKing = false;
     private boolean medium = false;
     private boolean small = false;
@@ -14,34 +15,34 @@ public class Slime extends Enemy{
 
     public Slime(double x, double y, Pane layer, String name) {
         super(x, y, "/graphics/enemies/slime.gif", "/graphics/enemies/slime.gif", null, null, layer);
-        if(name == "SlimeKing") {
+        if(name.equals("SlimeKing")) {
             setFlying(false);
             setExplosive(false);
             setShooting(false);
             setRemainingHealth(120);
             setFollowing(true);
             setFollowingVel(2);
-            setDmg(4);
+            setDmg(2);
             setSlimeKing(true);
         }
-        if(name == "Medium") {
+        if(name.equals("Medium")) {
             setFlying(false);
             setExplosive(false);
             setShooting(false);
             setRemainingHealth(60);
             setFollowing(false);
-            setDmg(4);
+            setDmg(1);
             setMedium(true);
             addToLayer();
             setParentPositionX(parentPositionX);
             setParentPositionY(parentPositionY);
         }
-        if(name == "Small") {
+        if(name.equals("Small")) {
             setFlying(false);
             setExplosive(false);
             setShooting(false);
             setRemainingHealth(15);
-            setDmg(4);
+            setDmg(1);
             setSmall(true);
             addToLayer();
             setParentPositionX(parentPositionX);
@@ -53,16 +54,16 @@ public class Slime extends Enemy{
         ArrayList<Slime> mediumSlimes = new ArrayList<>();
         for (int i = 0; i<=3; i++){
             Slime medium = new Slime(x,y,getLayer(),"Medium");
-            if(i == 0){
+            if (i == 0){
                 medium.setVelY(0);
                 medium.setVelX(4);
-            }else if(i == 1){
+            } else if (i == 1){
                 medium.setVelY(0);
                 medium.setVelX(-4);
-            }else if(i == 2){
+            } else if (i == 2){
                 medium.setVelY(4);
                 medium.setVelX(0);
-            }else if(i == 3){
+            } else if (i == 3){
                 medium.setVelY(-4);
                 medium.setVelX(0);
             }
@@ -76,16 +77,16 @@ public class Slime extends Enemy{
         ArrayList<Slime> mediumSlimes = new ArrayList<>();
         for (int i = 0; i<=3; i++){
             Slime medium = new Slime(x,y,getLayer(),"Small");
-            if(i == 0){
+            if (i == 0){
                 medium.setVelY(8);
                 medium.setVelX(8);
-            }else if(i == 1){
+            } else if(i == 1){
                 medium.setVelY(-8);
                 medium.setVelX(-8);
-            }else if(i == 2){
+            } else if(i == 2){
                 medium.setVelY(8);
                 medium.setVelX(-8);
-            }else if(i == 3){
+            } else if(i == 3){
                 medium.setVelY(-8);
                 medium.setVelX(8);
             }
@@ -99,7 +100,6 @@ public class Slime extends Enemy{
     public boolean isSlimeKing() {
         return slimeKing;
     }
-
     public void setSlimeKing(boolean slimeKing) {
         this.slimeKing = slimeKing;
     }
@@ -107,7 +107,6 @@ public class Slime extends Enemy{
     public boolean isMedium() {
         return medium;
     }
-
     public void setMedium(boolean medium) {
         this.medium = medium;
     }
@@ -115,7 +114,6 @@ public class Slime extends Enemy{
     public boolean isSmall() {
         return small;
     }
-
     public void setSmall(boolean small) {
         this.small = small;
     }
@@ -123,7 +121,6 @@ public class Slime extends Enemy{
     public double getParentPositionX() {
         return parentPositionX;
     }
-
     public void setParentPositionX(double parentPositionX) {
         this.parentPositionX = parentPositionX;
     }
@@ -131,7 +128,6 @@ public class Slime extends Enemy{
     public double getParentPositionY() {
         return parentPositionY;
     }
-
     public void setParentPositionY(double parentPositionY) {
         this.parentPositionY = parentPositionY;
     }
