@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class Crab extends Enemy{
 
-    public Crab(double x, double y, Pane mainLayer) {
-        super(x, y, "graphics/enemies/crab.png", "graphics/enemies/crab.png", null, null, mainLayer);
+    public Crab(double x, double y, Pane layer) {
+        super(x, y, "graphics/enemies/crab.png", "graphics/enemies/crab.png", null, null, layer);
         setFollowing(false);
         setFlying(false);
         setShooting(false);

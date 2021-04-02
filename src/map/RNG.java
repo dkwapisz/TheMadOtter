@@ -46,6 +46,7 @@ public class RNG {
             items.add(new PlasmaGun(100, 500, layer));
             items.add(new Shotgun(100, 600, layer));
             items.add(new RocketLauncher(100, 700, layer));
+            items.add(new Fish(700,100, layer));
         } else if (floorId == 2) {
             items.add(new M16(200, 100, layer));
             items.add(new Mp5(200, 200, layer));

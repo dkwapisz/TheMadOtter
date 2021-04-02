@@ -6,8 +6,8 @@ import javafx.scene.layout.Pane;
 
 public class Enemy1 extends Enemy{
 
-    public Enemy1(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/enemy1.png", "/graphics/enemies/enemy1.png", "/graphics/enemies/enemy1.png", "/graphics/enemies/enemy1.png", mainLayer);
+    public Enemy1(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/enemy1.png", "/graphics/enemies/enemy1.png", "/graphics/enemies/enemy1.png", "/graphics/enemies/enemy1.png", layer);
         setFollowing(true);
         setFlying(false);
         setShooting(true);

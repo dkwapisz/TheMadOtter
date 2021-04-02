@@ -3,6 +3,7 @@ package model.item.guns;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import model.hero.Hero;
 import model.item.Item;
 import model.item.guns.Uzi;
 
@@ -21,6 +22,11 @@ public abstract class Gun extends Item {
         this.pathBullet = pathBullet;
     }
 
+    @Override
+    public boolean onTouch(Hero hero) {
+        hero.addNewGun(this);
+        return true;
+    }
 
     public int getBulletVel() {
         return bulletVel;

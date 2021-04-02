@@ -189,17 +189,9 @@ public class Room {
         for(Item item : items) {
             Rectangle itemBounds = item.getBounds();
             if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
-                if(item instanceof Gun) {
-                    hero.addNewGun((Gun) item);
+                if(item.onTouch(hero)) {
+                    toBeRemoved.add(item);
                 }
-                if(item instanceof Fish && hero.getRemainingLives() <= 19) {
-                    if(hero.getRemainingLives() == 19){
-                        hero.setRemainingLives(hero.getRemainingLives() + ((Fish) item).getHpBonus() - 1);
-                    }else {
-                        hero.setRemainingLives(hero.getRemainingLives() + ((Fish) item).getHpBonus());
-                    }
-                }
-                toBeRemoved.add(item);
             }
         }
         removeStaticObjects(toBeRemoved);

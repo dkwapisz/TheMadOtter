@@ -4,8 +4,8 @@ import javafx.scene.layout.Pane;
 
 public class Turret extends Enemy{
 
-    public Turret(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", mainLayer);
+    public Turret(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", "/graphics/enemies/turret.png", layer);
         setFollowing(false);
         setFlying(false);
         setShooting(true);

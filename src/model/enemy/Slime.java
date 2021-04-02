@@ -78,17 +78,17 @@ public class Slime extends Enemy {
         for (int i = 0; i<=3; i++){
             Slime medium = new Slime(x,y,getLayer(),"Small");
             if (i == 0){
-                medium.setVelY(8);
-                medium.setVelX(8);
+                medium.setVelY(6);
+                medium.setVelX(6);
             } else if(i == 1){
-                medium.setVelY(-8);
-                medium.setVelX(-8);
+                medium.setVelY(-6);
+                medium.setVelX(-6);
             } else if(i == 2){
-                medium.setVelY(8);
-                medium.setVelX(-8);
+                medium.setVelY(6);
+                medium.setVelX(-6);
             } else if(i == 3){
-                medium.setVelY(-8);
-                medium.setVelX(8);
+                medium.setVelY(-6);
+                medium.setVelX(6);
             }
             mediumSlimes.add(medium);
         }

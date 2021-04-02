@@ -14,8 +14,8 @@ public class Enemy7 extends Enemy{
     private Random random = new Random();
     private boolean up = false;
 
-    public Enemy7(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", mainLayer);
+    public Enemy7(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", layer);
         setFollowing(false);
         setFlying(false);
         setShooting(true);

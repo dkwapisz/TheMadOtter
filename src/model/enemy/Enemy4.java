@@ -10,8 +10,8 @@ public class Enemy4 extends Enemy{
     private long lastChange = 0;
     private int[] randomVel = new int[] {-5, 0, 5};
 
-    public Enemy4(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/enemy4.png", "/graphics/enemies/enemy4.png", null, null, mainLayer);
+    public Enemy4(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/enemy4.png", "/graphics/enemies/enemy4.png", null, null, layer);
         setFollowing(false);
         setFlying(true);
         setShooting(false);
@@ -25,7 +25,7 @@ public class Enemy4 extends Enemy{
     @Override
     public void specificMovement() {
         long time = System.currentTimeMillis();
-        if (time > lastChange + random.nextInt(750)+500) {
+        if (time > lastChange + random.nextInt(1000)+500) {
             lastChange = time;
             setVelX(randomVel[random.nextInt(3)]);
             setVelY(randomVel[random.nextInt(3)]);

@@ -10,4 +10,6 @@ public abstract class Item extends StaticObjects {
         super(x, y, pathStatic, layer);
     }
 
+    public boolean onTouch(Hero hero) {return false;}
+
 }

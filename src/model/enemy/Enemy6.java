@@ -16,8 +16,8 @@ public class Enemy6 extends Enemy{
     private double[] bulletVelTabX = new double[] {5, 2.5, 0, -2.5, -5, -2.5, 0, 2.5};
     private double[] bulletVelTabY = new double[] {0, -2.5, -5, -2.5, 0, 2.5, 5, 2.5};
 
-    public Enemy6(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", mainLayer);
+    public Enemy6(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", layer);
         setFollowing(false);
         setFlying(false);
         setShooting(true);

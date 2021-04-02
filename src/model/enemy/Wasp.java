@@ -4,8 +4,8 @@ import javafx.scene.layout.Pane;
 
 public class Wasp extends Enemy{
 
-    public Wasp(double x, double y, Pane mainLayer) {
-        super(x, y, "/graphics/enemies/wasp.gif", "/graphics/enemies/wasp.gif", null, null, mainLayer);
+    public Wasp(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/wasp.gif", "/graphics/enemies/wasp.gif", null, null, layer);
         setFollowing(true);
         setFlying(true);
         setShooting(false);
