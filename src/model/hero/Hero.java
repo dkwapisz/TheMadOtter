@@ -2,6 +2,7 @@ package model.hero;
 
 import dev.Main;
 import dev.MainController;
+import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -312,7 +313,38 @@ public class Hero extends MovingObjects {
         if(time > lastEnemyTouch + 2000) {
             setRemainingLives(getRemainingLives() - minus);
             lastEnemyTouch = time;
+            long timeInNano = System.nanoTime();
+            damageAnimation(timeInNano);
         }
+    }
+
+    private void damageAnimation(long timeInNano) {
+        AnimationTimer animationTimer = new AnimationTimer(){
+            long lastUpdate = 0;
+            @Override
+            public void handle(long l) {
+                if ((l - lastUpdate) >= 200_000_000) {
+                    if (getImageView().getOpacity() == 1) {
+                        getImageView().setOpacity(0.6);
+                    } else if (getImageView().getOpacity() == 0.6) {
+                        getImageView().setOpacity(1);
+
+                    }
+                    lastUpdate = l ;
+                }
+                if (l - timeInNano >= 1800000000) {
+                    long b = System.currentTimeMillis();
+                    this.stop();
+                }
+            }
+
+            @Override
+            public void stop() {
+                getImageView().setOpacity(1);
+                super.stop();
+            }
+        };
+        animationTimer.start();
     }
 
 
