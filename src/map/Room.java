@@ -11,6 +11,7 @@ import model.block.SoftBlock;
 import model.enemy.*;
 import model.hero.Hero;
 import model.item.Fish;
+import model.item.Sign;
 import model.item.guns.Gun;
 import model.item.Item;
 
@@ -188,8 +189,15 @@ public class Room {
         Rectangle heroBounds = hero.getBounds();
         for(Item item : items) {
             Rectangle itemBounds = item.getBounds();
-            if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
-                if(item.onTouch(hero)) {
+            if (item instanceof Sign) {
+                if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
+                    ((Sign) item).showText();
+                } else {
+                    ((Sign) item).hideText();
+                }
+            }
+            else if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
+                if (item.onTouch(hero)) {
                     toBeRemoved.add(item);
                 }
             }
@@ -213,8 +221,9 @@ public class Room {
     }
 
     public void blockCollision(Hero hero) {
+        ArrayList<StaticObjects> toBeRemoved = new ArrayList<>();
         Rectangle heroBounds = hero.getSmallerBounds();
-        for(Block block : blocks) {
+        for (Block block : blocks) {
             Rectangle blockBounds = block.getBounds();
             if (heroBounds.intersects(blockBounds.getBoundsInParent())) {
                 if(!block.isToPass()) {
@@ -225,7 +234,13 @@ public class Room {
                     hero.healthDown(1);
                 }
             }
+            for (Explosion explosion : explosions) {
+                if (blockBounds.intersects(explosion.getBounds().getBoundsInParent()) && !block.isToPass()) {
+                    toBeRemoved.add(block);
+                }
+            }
         }
+        removeStaticObjects(toBeRemoved);
     }
 
     public void enemyCollision(Hero hero){

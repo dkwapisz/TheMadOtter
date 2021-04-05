@@ -43,7 +43,7 @@ public class Main extends Application {
         root.getChildren().add(infoLabel);
 
         gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
-        gunReview.relocate(900 - gunReview.getImage().getWidth()/2,725);
+        gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
         root.getChildren().add(gunReview);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e->run()));
@@ -62,6 +62,8 @@ public class Main extends Application {
                         "\nGun coold.: " + hero.getActualGun().getCooldownShot() + " [ms]" +
                         "\nBullet Vel: " + hero.getActualGun().getBulletVel() +
                         "\nHP: " + hero.getRemainingLives() +
+                        "\nMoney: " + hero.getMoney() + " $" +
+                        "\nBombs: " + hero.getBombs() +
                         "\nClean Room: " + hero.getActualRoom().isClean() +
                         "\nFloorID: " + hero.getFloor().getFloorId() +
                         "\nRoomID: " + hero.getActualRoom().getRoomId() +
@@ -75,7 +77,7 @@ public class Main extends Application {
     private void updateGun() {
         if(hero.getActualGun().getImageView().getImage() != gunReview.getImage()) {
             gunReview.setImage(hero.getActualGun().getImageView().getImage()); // wywołuje się tylko, gdy aktualna wybrana broń różni się od wyświetlonej :)
-            gunReview.relocate(900 - gunReview.getImage().getWidth()/2,725);
+            gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
         }
     }
 

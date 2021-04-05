@@ -60,6 +60,9 @@ public class InputManager {
             hero.changeWeapon(false);
         }
 
+        if(keyboardInput.contains(KeyCode.F)){
+            hero.putBomb();
+        }
 
         if(!keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.D)) {
             hero.setVelX(0);

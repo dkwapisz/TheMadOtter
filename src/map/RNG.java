@@ -3,8 +3,7 @@ package map;
 import javafx.scene.layout.Pane;
 import model.block.*;
 import model.enemy.*;
-import model.item.Fish;
-import model.item.Item;
+import model.item.*;
 import model.item.guns.*;
 
 import java.util.ArrayList;
@@ -47,6 +46,9 @@ public class RNG {
             items.add(new Shotgun(100, 600, layer));
             items.add(new RocketLauncher(100, 700, layer));
             items.add(new Fish(700,100, layer));
+            items.add(new Coin(700,200, layer));
+            items.add(new Sign(700,300, layer, "hello whats up"));
+            items.add(new Bomb(700,400, layer));
         } else if (floorId == 2) {
             items.add(new M16(200, 100, layer));
             items.add(new Mp5(200, 200, layer));
@@ -95,7 +97,7 @@ public class RNG {
         loadBitMap(roomId);
         ArrayList<Enemy> enemies = new ArrayList<>();
         if(roomId == 7) {
-            enemies.add(new Enemy4(500, 500, layer));
+            enemies.add(new Bat(500, 500, layer));
             enemies.add(new Enemy5(300, 500, layer));
         }
         if(roomId == 11) {
@@ -110,8 +112,8 @@ public class RNG {
             enemies.add(new Slime(400,500, layer,"SlimeKing"));
         }
         if(roomId == 17) {
-            enemies.add(new Enemy6(500, 500, layer));
-            enemies.add(new Enemy7(300, 500, layer));
+            enemies.add(new Diglet(500, 500, layer, bitMap.getEnemySpotLoc()));
+            enemies.add(new Enemy7(300, 500, layer, bitMap.getEnemySpotLoc()));
         }
         if(roomId == 18) {
             enemies.add(new Turret(500, 500, layer));

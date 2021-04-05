@@ -5,17 +5,20 @@ import javafx.scene.layout.Pane;
 import model.Bullet;
 import model.hero.Hero;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Enemy7 extends Enemy{
 
     private long lastEnemyShot = 0;
     private long lastChange = 0;
-    private Random random = new Random();
+    private final Random random = new Random();
     private boolean up = false;
+    private final ArrayList<int[]> spotLoc;
 
-    public Enemy7(double x, double y, Pane layer) {
+    public Enemy7(double x, double y, Pane layer, ArrayList<int[]> spotLoc) {
         super(x, y, "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", layer);
+        this.spotLoc = spotLoc;
         setFollowing(false);
         setFlying(false);
         setShooting(true);
@@ -32,7 +35,7 @@ public class Enemy7 extends Enemy{
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(3000)+2000) {
             lastChange = time;
-            setLocation(random.nextInt(600)+100, random.nextInt(600)+100);
+            setLocation(spotLoc.get(random.nextInt(spotLoc.size()))[0], spotLoc.get(random.nextInt(spotLoc.size()))[1]);
             up = true;
         }
     }

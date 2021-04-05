@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 import map.Door;
 import map.FloorGenerator;
 import map.Room;
+import model.BombFired;
 import model.Bullet;
 import model.MovingObjects;
 import model.item.guns.*;
@@ -20,14 +21,19 @@ public class Hero extends MovingObjects {
 
     private boolean shooting;
     private int remainingLives;
+    private int money;
+    private int bombs;
+
+    private long cooldownShot;
+    private long lastShot = 0;
+    private long lastChange = 0;
+    private long lastEnemyTouch = 0;
+    private long lastBomb = 0;
+
+    private ArrayList<Gun> equipment = new ArrayList<>();
     private HeroActions currentAction;
     private Room actualRoom;
     private FloorGenerator floor;
-    private long lastShot = 0;
-    private long cooldownShot;
-    private long lastChange = 0;
-    private long lastEnemyTouch = 0;
-    private ArrayList<Gun> equipment = new ArrayList<>();
     private Gun actualGun;
     private final Random random = new Random();
     private Pane layer;
@@ -308,6 +314,29 @@ public class Hero extends MovingObjects {
         }
     }
 
+    public void putBomb() { // to działa źle!
+        if (bombs > 0) {
+            long time = System.currentTimeMillis();
+            if (time > lastBomb + 1000) {
+                lastBomb = time;
+                AnimationTimer animationTimer = new AnimationTimer(){
+                    @Override
+                    public void handle(long l) {
+                        new BombFired(getX()+16, getY()+32, layer);
+                        bombs--;
+                        stop();
+                    }
+
+                    @Override
+                    public void stop() {
+
+                    }
+                };
+                animationTimer.start();
+            }
+        }
+    }
+
     public void healthDown(int minus) {
         long time = System.currentTimeMillis();
         if(time > lastEnemyTouch + 2000) {
@@ -325,8 +354,8 @@ public class Hero extends MovingObjects {
             public void handle(long l) {
                 if ((l - lastUpdate) >= 200_000_000) {
                     if (getImageView().getOpacity() == 1) {
-                        getImageView().setOpacity(0.6);
-                    } else if (getImageView().getOpacity() == 0.6) {
+                        getImageView().setOpacity(0.3);
+                    } else if (getImageView().getOpacity() == 0.3) {
                         getImageView().setOpacity(1);
 
                     }
@@ -390,4 +419,17 @@ public class Hero extends MovingObjects {
         this.actualGun = actualGun;
     }
 
+    public int getMoney() {
+        return money;
+    }
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getBombs() {
+        return bombs;
+    }
+    public void setBombs(int bombs) {
+        this.bombs = bombs;
+    }
 }

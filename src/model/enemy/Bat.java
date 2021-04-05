@@ -2,16 +2,17 @@ package model.enemy;
 
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Enemy4 extends Enemy{
+public class Bat extends Enemy{
 
     private Random random = new Random();
     private long lastChange = 0;
     private int[] randomVel = new int[] {-5, 0, 5};
 
-    public Enemy4(double x, double y, Pane layer) {
-        super(x, y, "/graphics/enemies/enemy4.png", "/graphics/enemies/enemy4.png", null, null, layer);
+    public Bat(double x, double y, Pane layer) {
+        super(x, y, "/graphics/enemies/bat.gif", "/graphics/enemies/bat.gif", null, null, layer);
         setFollowing(false);
         setFlying(true);
         setShooting(false);

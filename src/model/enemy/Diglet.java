@@ -5,19 +5,22 @@ import javafx.scene.layout.Pane;
 import model.Bullet;
 import model.hero.Hero;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Enemy6 extends Enemy{
+public class Diglet extends Enemy{
 
     private long lastEnemyShot = 0;
     private long lastChange = 0;
-    private Random random = new Random();
+    private final Random random = new Random();
     private boolean up = false;
-    private double[] bulletVelTabX = new double[] {5, 2.5, 0, -2.5, -5, -2.5, 0, 2.5};
-    private double[] bulletVelTabY = new double[] {0, -2.5, -5, -2.5, 0, 2.5, 5, 2.5};
+    private final double[] bulletVelTabX = new double[] {5, 2.5, 0, -2.5, -5, -2.5, 0, 2.5};
+    private final double[] bulletVelTabY = new double[] {0, -2.5, -5, -2.5, 0, 2.5, 5, 2.5};
+    private final ArrayList<int[]> spotLoc;
 
-    public Enemy6(double x, double y, Pane layer) {
+    public Diglet(double x, double y, Pane layer, ArrayList<int[]> spotLoc) {
         super(x, y, "graphics/enemies/diglet_test.gif", "graphics/enemies/diglet_test.gif", "/graphics/enemies/diglet.png", "/graphics/enemies/diglet.png", layer);
+        this.spotLoc = spotLoc;
         setFollowing(false);
         setFlying(false);
         setShooting(true);
@@ -34,7 +37,7 @@ public class Enemy6 extends Enemy{
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(3000)+2000) {
             lastChange = time;
-            setLocation(random.nextInt(600)+100, random.nextInt(600)+100);
+            setLocation(spotLoc.get(random.nextInt(spotLoc.size()))[0], spotLoc.get(random.nextInt(spotLoc.size()))[1]);
             up = true;
         }
     }
