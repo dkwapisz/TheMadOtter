@@ -310,11 +310,9 @@ public class Room {
         if(!slimes.isEmpty()){
             for (Slime slime: slimes) {
                 if(slime.isSlimeKing()){
-                    System.out.println("x");
                     enemies.addAll(slime.createMedium(slime.getX(), slime.getY()));
                 }else if(slime.isMedium()){
                     enemies.addAll(slime.createSmall(slime.getX(), slime.getY()));
-                    System.out.println("y");
                 }
             }
         }

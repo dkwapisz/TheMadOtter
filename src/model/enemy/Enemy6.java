@@ -17,7 +17,7 @@ public class Enemy6 extends Enemy{
     private double[] bulletVelTabY = new double[] {0, -2.5, -5, -2.5, 0, 2.5, 5, 2.5};
 
     public Enemy6(double x, double y, Pane layer) {
-        super(x, y, "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", "/graphics/enemies/enemy6.png", layer);
+        super(x, y, "graphics/enemies/diglet_test.gif", "graphics/enemies/diglet_test.gif", "/graphics/enemies/diglet.png", "/graphics/enemies/diglet.png", layer);
         setFollowing(false);
         setFlying(false);
         setShooting(true);
@@ -25,7 +25,7 @@ public class Enemy6 extends Enemy{
         setBulletVelFactor(6);
         setCooldownShot(300);
         setRemainingHealth(20);
-        setBulletPath("graphics/items/bullets/ak47Bullet.png");
+        setBulletPath("graphics/items/bullets/EnemyBullets/digletBall.png");
         setDmg(1);
     }
 
