@@ -23,6 +23,7 @@ public class Main extends Application {
     private Label infoLabel;
     private ImageView gunReview;
     private MiniMap miniMap;
+    private HealthBar healthBar;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,9 +38,9 @@ public class Main extends Application {
         inputManager = new InputManager(hero);
 
         infoLabel = new Label();
-        infoLabel.setStyle("-fx-font: 16 verdana;");
+        infoLabel.setStyle("-fx-font: 14 Arial;");
         infoLabel.setTextFill(Color.WHITE);
-        infoLabel.relocate(800, 200);
+        infoLabel.relocate(818, 285);
         root.getChildren().add(infoLabel);
 
         gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
@@ -51,6 +52,7 @@ public class Main extends Application {
         timeline.play();
         EventHandling.addEventHandlers(primaryStage.getScene());
         this.miniMap = new MiniMap(hero);
+        this.healthBar = new HealthBar(hero);
 
     }
 
@@ -72,6 +74,7 @@ public class Main extends Application {
 
         updateGun();
         miniMap.updateMiniMap();
+        healthBar.updateHealthBar();
     }
 
     private void updateGun() {

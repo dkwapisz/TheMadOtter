@@ -104,6 +104,9 @@ public class Room {
     public void eraseItems(){
         for (Item item : items) {
             item.removeFromLayer();
+            if (item instanceof Sign) {
+                ((Sign) item).hideText();
+            }
         }
     }
 
