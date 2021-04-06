@@ -1,11 +1,7 @@
 package model.item;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
-import model.hero.Hero;
 
 public class Sign extends Item {
 
@@ -17,7 +13,7 @@ public class Sign extends Item {
         this.layer = layer;
         information.setText(text);
         information.setStyle("-fx-font: 14 verdana;");
-        information.relocate(x-25, y-20);
+        information.relocate(x - 20, y - 20); // trzeba ustawić, żeby tekst pojawiał się równo
     }
 
     public void showText() {

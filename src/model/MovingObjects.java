@@ -21,7 +21,6 @@ public abstract class MovingObjects {
     private Image imageStaticShot;
     private Image imageMovingShot;
     private boolean shootingStatus = false;
-    private boolean noAmmo = false;
     private final ArrayList<Rectangle2D> frame = new ArrayList<>();
 
     public MovingObjects(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane layer) {
@@ -58,7 +57,7 @@ public abstract class MovingObjects {
         imageView.relocate(x, y);
 
         if (velX != 0 || velY != 0){
-            if(shootingStatus && !noAmmo) {
+            if(shootingStatus) {
                 imageView.setImage(imageMovingShot);
             } else {
                 imageView.setImage(imageMoving);
@@ -66,7 +65,7 @@ public abstract class MovingObjects {
             }
             directions(shootingStatus);
         } else {
-            if (shootingStatus && !noAmmo) {
+            if (shootingStatus) {
                 imageView.setImage(imageStaticShot);
                 directions(shootingStatus);
             } else {
@@ -170,6 +169,7 @@ public abstract class MovingObjects {
 
         return topBounds;
     }
+
     public Rectangle getDownBounds() {
         Rectangle downBounds = new Rectangle();
         downBounds.setX(x);
@@ -181,6 +181,7 @@ public abstract class MovingObjects {
 
         return downBounds;
     }
+
     public Rectangle getLeftBounds() {
         Rectangle leftBounds = new Rectangle();
         leftBounds.setX(x);
@@ -192,6 +193,7 @@ public abstract class MovingObjects {
 
         return leftBounds;
     }
+
     public Rectangle getRightBounds() {
         Rectangle rightBounds = new Rectangle();
         rightBounds.setX(x + dimension.getHeight());
@@ -227,13 +229,6 @@ public abstract class MovingObjects {
     }
     public void setShootingStatus(boolean shootingStatus) {
         this.shootingStatus = shootingStatus;
-    }
-
-    public boolean isNoAmmo() {
-        return noAmmo;
-    }
-    public void setNoAmmo(boolean noAmmo) {
-        this.noAmmo = noAmmo;
     }
 
     public Image getImageStaticShot() {

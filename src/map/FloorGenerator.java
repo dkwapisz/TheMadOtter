@@ -22,7 +22,6 @@ public class FloorGenerator {
         this.nrOfRooms = nrOfRooms;
         this.layer = layer;
         this.floorId = floorId;
-        this.rng = new RNG((nrOfRooms*nrOfRooms-1)/2, floorId, layer);
         trapdoor = new Trapdoor(368, 368, layer);
         door1 = new Door(360, 0, "/graphics/doorH.png",  layer, 1);         // góra
         door2 = new Door(0, 360, "/graphics/doorV.png",  layer, 2);        // lewo
@@ -38,6 +37,7 @@ public class FloorGenerator {
         int roomId = 0;
         for(int i=0; i < nrOfRooms; i++) {
             for(int j=0; j < nrOfRooms; j++) {
+                this.rng = new RNG((nrOfRooms*nrOfRooms-1)/2, floorId, roomId, layer);
                 ArrayList<Door> doors = new ArrayList<>();
                 if((i == 0 || i == nrOfRooms-1) || (j == 0 || j == nrOfRooms-1)) {
                     if((i == 0 || i == nrOfRooms-1) && (j == 0 || j == nrOfRooms-1)) {

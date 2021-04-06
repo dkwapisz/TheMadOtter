@@ -11,6 +11,7 @@ import map.FloorGenerator;
 import map.Room;
 import model.BombFired;
 import model.Bullet;
+import model.Explosion;
 import model.MovingObjects;
 import model.item.guns.*;
 
@@ -315,21 +316,26 @@ public class Hero extends MovingObjects {
     }
 
     public void putBomb() { // to działa źle!
-        if (bombs > 0) {
-            long time = System.currentTimeMillis();
-            if (time > lastBomb + 1000) {
-                lastBomb = time;
-                AnimationTimer animationTimer = new AnimationTimer(){
+        long time = System.currentTimeMillis();
+        if (time > lastBomb + 250) {
+            lastBomb = time;
+            if (bombs > 0) {
+                BombFired newBomb = new BombFired(getX() + 16, getY() + 32, layer);
+                bombs--;
+
+                AnimationTimer animationTimer = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
-                        new BombFired(getX()+16, getY()+32, layer);
-                        bombs--;
-                        stop();
+                        if (System.currentTimeMillis() - time > 2200) {
+                            this.stop();
+                        }
                     }
 
                     @Override
                     public void stop() {
-
+                        newBomb.removeFromLayer();
+                        actualRoom.getExplosions().add(new Explosion(newBomb.getX() - 20, newBomb.getY() - 16, layer, actualRoom));
+                        super.stop();
                     }
                 };
                 animationTimer.start();

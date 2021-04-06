@@ -18,12 +18,12 @@ public class RNG {
     private final Random random;
     //private ArrayList<BitMapLoader> usedBitMaps = new ArrayList<>();
 
-    public RNG(int centerRoom, int floorId, Pane layer) {
+    public RNG(int centerRoom, int floorId, int roomId, Pane layer) {
         this.layer = layer;
         this.floorId = floorId;
         this.centerRoom = centerRoom;
         this.random = new Random();
-
+        loadBitMap(roomId);
     }
 
     private void loadBitMap(int roomId) {
@@ -35,7 +35,6 @@ public class RNG {
     }
 
     public ArrayList<Item> itemsGenerator(int roomId) {
-        loadBitMap(roomId);
         ArrayList<Item> items = new ArrayList<>();
         if(floorId == 1) {
             items.add(new Uzi(100, 100, layer));
@@ -46,9 +45,13 @@ public class RNG {
             items.add(new Shotgun(100, 600, layer));
             items.add(new RocketLauncher(100, 700, layer));
             items.add(new Fish(700,100, layer));
+            items.add(new SmallFish(600,100, layer));
             items.add(new Coin(700,200, layer));
             items.add(new Sign(700,300, layer, "hello whats up"));
-            items.add(new Bomb(700,400, layer));
+            items.add(new Sign(600,300, layer, "JD JD JD"));
+            items.add(new Dolar(700,400, layer));
+            items.add(new Bomb(700,500, layer));
+            items.add(new BombPack(700,600, layer));
         } else if (floorId == 2) {
             items.add(new M16(200, 100, layer));
             items.add(new Mp5(200, 200, layer));
@@ -69,7 +72,6 @@ public class RNG {
     }
 
     public ArrayList<Block> blockGenerator(int roomId) {
-        loadBitMap(roomId);
         ArrayList<Block> blocks = new ArrayList<>();
 
         for(int i = 0; i < bitMap.getSolidBlocksLoc().size(); i++) {
@@ -94,7 +96,6 @@ public class RNG {
     }
 
     public ArrayList<Enemy> enemiesGenerator(int roomId){
-        loadBitMap(roomId);
         ArrayList<Enemy> enemies = new ArrayList<>();
         if(roomId == 7) {
             enemies.add(new Bat(500, 500, layer));

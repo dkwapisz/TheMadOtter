@@ -10,9 +10,7 @@ import model.block.Block;
 import model.block.SoftBlock;
 import model.enemy.*;
 import model.hero.Hero;
-import model.item.Fish;
 import model.item.Sign;
-import model.item.guns.Gun;
 import model.item.Item;
 
 import java.lang.Math;
@@ -300,7 +298,7 @@ public class Room {
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()){
                     toBeRemoved.add(bullet);
                     if (block.isBreakable()){
-                        ((SoftBlock) block).setHp(((SoftBlock)block).getHp()-1);
+                        ((SoftBlock) block).setHp(((SoftBlock) block).getHp() - 1);
                         ((SoftBlock) block).changeImage();
                         if (((SoftBlock) block).getHp() <= 0 || bullet.getDmg() > 50){
                             toRemoveBlocks.add(block);
@@ -312,7 +310,7 @@ public class Room {
                 Rectangle enemyBounds = enemy.getBounds();
                 if (bulletBounds.intersects(enemyBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
-                    enemy.setRemainingHealth(enemy.getRemainingHealth()-bullet.getDmg());
+                    enemy.setRemainingHealth(enemy.getRemainingHealth() - bullet.getDmg());
                     if (enemy.getRemainingHealth() <= 0){
                         toBeRemoved.add(enemy);
                         if(enemy instanceof Slime){
@@ -350,7 +348,7 @@ public class Room {
                     enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
                     Rectangle enemyBounds = enemy.getBounds();
                     Rectangle blockBounds = block.getBounds();
-                    if(enemyBounds.intersects(blockBounds.getBoundsInParent()) && !enemy.isFlying()) {
+                    if(enemyBounds.intersects(blockBounds.getBoundsInParent()) && !enemy.isFlying() && !block.isToPass()) {
                         if(enemy.getUpBounds().intersects(block.getDownBounds().getBoundsInParent()) || enemy.getDownBounds().intersects(block.getUpBounds().getBoundsInParent())) {
                             newVelY = 0;
                         }

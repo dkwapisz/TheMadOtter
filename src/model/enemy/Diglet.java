@@ -37,7 +37,8 @@ public class Diglet extends Enemy{
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(3000)+2000) {
             lastChange = time;
-            setLocation(spotLoc.get(random.nextInt(spotLoc.size()))[0], spotLoc.get(random.nextInt(spotLoc.size()))[1]);
+            int[] loc = spotLoc.get(random.nextInt(spotLoc.size()));
+            setLocation(loc[0], loc[1]);
             up = true;
         }
     }
