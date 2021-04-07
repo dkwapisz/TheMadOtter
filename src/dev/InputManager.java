@@ -64,6 +64,10 @@ public class InputManager {
             hero.putBomb();
         }
 
+        if(keyboardInput.contains(KeyCode.F1)){
+            hero.turnOnAdditionalData();
+        }
+
         if(!keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.D)) {
             hero.setVelX(0);
         }

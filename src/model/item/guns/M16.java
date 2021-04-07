@@ -8,7 +8,7 @@ public class M16 extends Gun {
         super(x, y, "graphics/items/guns/m16.png", "graphics/items/bullets/m16Bullet.png", layer);
         setBulletVel(16);
         setCooldownShot(700);
-        setDmg(6);
+        setDmg(8);
         setGunName("M16");
     }
 

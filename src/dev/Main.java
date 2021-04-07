@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import map.Door;
@@ -24,6 +25,7 @@ public class Main extends Application {
     private ImageView gunReview;
     private MiniMap miniMap;
     private HealthBar healthBar;
+    private Stats stats;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -38,10 +40,6 @@ public class Main extends Application {
         inputManager = new InputManager(hero);
 
         infoLabel = new Label();
-        infoLabel.setStyle("-fx-font: 14 Arial;");
-        infoLabel.setTextFill(Color.WHITE);
-        infoLabel.relocate(818, 285);
-        root.getChildren().add(infoLabel);
 
         gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
         gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
@@ -51,30 +49,20 @@ public class Main extends Application {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         EventHandling.addEventHandlers(primaryStage.getScene());
+
         this.miniMap = new MiniMap(hero);
         this.healthBar = new HealthBar(hero);
-
+        this.stats = new Stats(hero);
     }
 
     private void run() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
-        infoLabel.setText("Gun: " + hero.getActualGun().getGunName() +
-                        "\nGun Dmg: " + hero.getActualGun().getDmg() +
-                        "\nGun coold.: " + hero.getActualGun().getCooldownShot() + " [ms]" +
-                        "\nBullet Vel: " + hero.getActualGun().getBulletVel() +
-                        "\nHP: " + hero.getRemainingLives() +
-                        "\nMoney: " + hero.getMoney() + " $" +
-                        "\nBombs: " + hero.getBombs() +
-                        "\nClean Room: " + hero.getActualRoom().isClean() +
-                        "\nFloorID: " + hero.getFloor().getFloorId() +
-                        "\nRoomID: " + hero.getActualRoom().getRoomId() +
-                        "\nShooting: " + hero.isShooting() +
-                        "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen());
-
         updateGun();
         miniMap.updateMiniMap();
         healthBar.updateHealthBar();
+        stats.updateBasicStats();
+        stats.updateAdditionalStats();
     }
 
     private void updateGun() {

@@ -1,7 +1,5 @@
 package model.hero;
 
-import dev.Main;
-import dev.MainController;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -21,6 +19,7 @@ import java.util.Random;
 public class Hero extends MovingObjects {
 
     private boolean shooting;
+    private boolean additionalData;
     private int remainingLives;
     private int money;
     private int bombs;
@@ -30,14 +29,15 @@ public class Hero extends MovingObjects {
     private long lastChange = 0;
     private long lastEnemyTouch = 0;
     private long lastBomb = 0;
+    private long lastF1 = 0;
 
-    private ArrayList<Gun> equipment = new ArrayList<>();
+    private final ArrayList<Gun> equipment = new ArrayList<>();
     private HeroActions currentAction;
     private Room actualRoom;
     private FloorGenerator floor;
     private Gun actualGun;
     private final Random random = new Random();
-    private Pane layer;
+    private final Pane layer;
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", "graphics/hero/otterStaticShoting.gif", "graphics/hero/otterMovingShoting.gif",  layer);
@@ -382,6 +382,13 @@ public class Hero extends MovingObjects {
         animationTimer.start();
     }
 
+    public void turnOnAdditionalData() {
+        long time = System.currentTimeMillis();
+        if (time > lastF1 + 250) {
+            lastF1 = time;
+            additionalData = !additionalData;
+        }
+    }
 
     public int getRemainingLives() {
         return remainingLives;
@@ -437,5 +444,13 @@ public class Hero extends MovingObjects {
     }
     public void setBombs(int bombs) {
         this.bombs = bombs;
+    }
+
+    public boolean isAdditionalData() {
+        return additionalData;
+    }
+
+    public void setAdditionalData(boolean additionalData) {
+        this.additionalData = additionalData;
     }
 }

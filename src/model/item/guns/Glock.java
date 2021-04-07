@@ -7,7 +7,7 @@ public class Glock extends Gun {
     public Glock(double x, double y, Pane layer) {
         super(x, y, "graphics/items/guns/glock.png", "graphics/items/bullets/glockBullet.png", layer);
         setBulletVel(8);
-        setCooldownShot(100);
+        setCooldownShot(125);
         setDmg(2);
         setGunName("Glock");
     }

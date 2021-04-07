@@ -3,11 +3,11 @@ package model.block;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
-public class SoftBlock extends Block{
+public class Barrel extends Block{
     private int hp;
 
-    public SoftBlock(double x, double y, Pane layer) {
-        super(x, y,"graphics/blocks/softBlock1.png" , layer);
+    public Barrel(double x, double y, Pane layer) {
+        super(x, y,"graphics/blocks/barrel1.png" , layer);
         hp = 3;
         setBreakable(true);
         setPrickly(false);
@@ -17,10 +17,10 @@ public class SoftBlock extends Block{
     @Override
     public void changeImage(){
         if (hp == 2) {
-            getImageView().setImage(new Image("graphics/blocks/softBlock2.png"));
+            getImageView().setImage(new Image("graphics/blocks/barrel2.png"));
         }
         if (hp == 1) {
-            getImageView().setImage(new Image("graphics/blocks/softBlock3.png"));
+            getImageView().setImage(new Image("graphics/blocks/barrel3.png"));
         }
     }
 

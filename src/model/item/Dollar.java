@@ -3,9 +3,9 @@ package model.item;
 import javafx.scene.layout.Pane;
 import model.hero.Hero;
 
-public class Dolar extends Item {
+public class Dollar extends Item {
 
-    public Dolar(double x, double y, Pane layer) {
+    public Dollar(double x, double y, Pane layer) {
         super(x, y, "graphics/items/dolar.gif", layer);
     }
 

@@ -49,7 +49,7 @@ public class RNG {
             items.add(new Coin(700,200, layer));
             items.add(new Sign(700,300, layer, "hello whats up"));
             items.add(new Sign(600,300, layer, "JD JD JD"));
-            items.add(new Dolar(700,400, layer));
+            items.add(new Dollar(700,400, layer));
             items.add(new Bomb(700,500, layer));
             items.add(new BombPack(700,600, layer));
         } else if (floorId == 2) {
@@ -86,6 +86,10 @@ public class RNG {
             blocks.add(new SpikeBlock(bitMap.getSpikeBlockLoc().get(i)[0], bitMap.getSpikeBlockLoc().get(i)[1], layer));
         }
 
+        for(int i = 0; i < bitMap.getBarrelLoc().size(); i++) {
+            blocks.add(new Barrel(bitMap.getBarrelLoc().get(i)[0], bitMap.getBarrelLoc().get(i)[1], layer));
+        }
+
         if(roomId != (centerRoom)) {
             for (Block block : blocks) {
                 block.removeFromLayer();
@@ -101,28 +105,28 @@ public class RNG {
             enemies.add(new Bat(500, 500, layer));
             enemies.add(new Enemy5(300, 500, layer));
         }
-        if(roomId == 11) {
-            enemies.add(new Enemy1(500, 500, layer));
-            enemies.add(new Enemy2(300, 500, layer));
-            enemies.add(new Enemy3(600, 300, layer));
-            enemies.add(new Turret(200, 300, layer));
-            enemies.add(new Slime(400,500, layer,"SlimeKing"));
-
-        }
-        if(roomId == 13) {
-            enemies.add(new Slime(400,500, layer,"SlimeKing"));
-        }
-        if(roomId == 17) {
-            enemies.add(new Diglet(500, 500, layer, bitMap.getEnemySpotLoc()));
-            enemies.add(new Enemy7(300, 500, layer, bitMap.getEnemySpotLoc()));
-        }
-        if(roomId == 18) {
-            enemies.add(new Turret(500, 500, layer));
-            enemies.add(new Snake(500, 300, layer));
-            enemies.add(new Wasp(100, 700, layer));
-            enemies.add(new Fly(360, 700, layer));
-            enemies.add(new Crab(360, 700, layer));
-        }
+//        if(roomId == 11) {
+//            enemies.add(new Enemy1(500, 500, layer));
+//            enemies.add(new Enemy2(300, 500, layer));
+//            enemies.add(new Enemy3(600, 300, layer));
+//            enemies.add(new Turret(200, 300, layer));
+//            enemies.add(new Slime(400,500, layer,"SlimeKing"));
+//
+//        }
+//        if(roomId == 13) {
+//            enemies.add(new Slime(400,500, layer,"SlimeKing"));
+//        }
+//        if(roomId == 17) {
+//            enemies.add(new Diglet(500, 500, layer, bitMap.getEnemySpotLoc()));
+//            enemies.add(new Enemy7(300, 500, layer, bitMap.getEnemySpotLoc()));
+//        }
+//        if(roomId == 18) {
+//            enemies.add(new Turret(500, 500, layer));
+//            enemies.add(new Snake(500, 300, layer));
+//            enemies.add(new Wasp(100, 700, layer));
+//            enemies.add(new Fly(360, 700, layer));
+//            enemies.add(new Crab(360, 700, layer));
+//        }
 
         return enemies;
     }

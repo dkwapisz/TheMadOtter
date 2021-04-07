@@ -6,8 +6,8 @@ import model.Bullet;
 import model.Explosion;
 import model.MovingObjects;
 import model.StaticObjects;
+import model.block.Barrel;
 import model.block.Block;
-import model.block.SoftBlock;
 import model.enemy.*;
 import model.hero.Hero;
 import model.item.Sign;
@@ -35,9 +35,6 @@ public class Room {
 
 
     public Room(ArrayList<Door> door, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
-        // Objects.requireNonNullElseGet, to po prostu taki skrót :)
-        // Jeśli podczas tworzenia pokoju, wpisujemy null do X (enemies, items, blocks), to jest wywoływane this.X = new Arraylist<>().
-        // Skraca to formułkę do tworzenia pokoju (nie trzeba wpisać ciągle new Arraylist, wystarczy null.
         this.enemies = Objects.requireNonNullElseGet(enemies, ArrayList::new);
         this.blocks = Objects.requireNonNullElseGet(blocks, ArrayList::new);
         this.items = Objects.requireNonNullElseGet(items, ArrayList::new);
@@ -128,7 +125,7 @@ public class Room {
             if(object instanceof Bullet){
                 if(heroBullets.contains(object)) {
                     if(((Bullet) object).getDmg() == 60) {
-                        explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
+                        explosions.add(new Explosion(object.getX() - object.getDimension().getWidth()/2, object.getY() - object.getDimension().getHeight()/2, object.getLayer(), this));
                     }
                     heroBullets.remove(object);
                 } else if (enemyBullets != null){
@@ -157,6 +154,9 @@ public class Room {
                 items.remove(object);
             }
             if(object instanceof Block){
+                if (object instanceof Barrel) {
+                    explosions.add(new Explosion(object.getX() - object.getBounds().getWidth()/2, object.getY() - object.getBounds().getHeight()/2, object.getLayer(), this));
+                }
                 blocks.remove(object);
             }
         }
@@ -187,7 +187,7 @@ public class Room {
 
     public void itemCollision(Hero hero) {
         ArrayList<StaticObjects> toBeRemoved = new ArrayList<>();
-        Rectangle heroBounds = hero.getBounds();
+        Rectangle heroBounds = hero.getSmallerBounds();
         for(Item item : items) {
             Rectangle itemBounds = item.getBounds();
             if (item instanceof Sign) {
@@ -209,7 +209,7 @@ public class Room {
     public void explosionCollision(Hero hero) {
         if (explosions.size() != 0) {
             for(Explosion explosion : explosions) {
-                if(hero.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+                if(hero.getSmallerBounds().intersects(explosion.getBounds().getBoundsInParent())) {
                     hero.healthDown(2);
                 }
                 for(Enemy enemy : enemies) {
@@ -246,7 +246,7 @@ public class Room {
 
     public void enemyCollision(Hero hero){
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-        Rectangle heroBounds = hero.getBounds();
+        Rectangle heroBounds = hero.getSmallerBounds();
         for (Enemy enemy : enemies) {
             if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
                 hero.healthDown(enemy.getDmg());
@@ -274,7 +274,7 @@ public class Room {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         for(Bullet bullet : enemyBullets) {
             Rectangle bulletBounds = bullet.getBounds();
-            Rectangle heroBounds = hero.getBounds();
+            Rectangle heroBounds = hero.getSmallerBounds();
             if(bulletBounds.intersects(heroBounds.getBoundsInParent())) {
                 toBeRemoved.add(bullet);
                 hero.healthDown(bullet.getDmg());
@@ -301,9 +301,9 @@ public class Room {
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()){
                     toBeRemoved.add(bullet);
                     if (block.isBreakable()){
-                        ((SoftBlock) block).setHp(((SoftBlock) block).getHp() - 1);
-                        ((SoftBlock) block).changeImage();
-                        if (((SoftBlock) block).getHp() <= 0 || bullet.getDmg() > 50){
+                        block.setHp(block.getHp() - 1);
+                        block.changeImage();
+                        if (block.getHp() <= 0 || bullet.getDmg() > 50){
                             toRemoveBlocks.add(block);
                         }
                     }
