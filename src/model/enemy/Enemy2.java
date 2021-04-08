@@ -1,7 +1,5 @@
 package model.enemy;
 
-// follow + shoting + explosive
-
 import javafx.scene.layout.Pane;
 
 public class Enemy2 extends Enemy{

@@ -9,6 +9,8 @@ public class Glock extends Gun {
         setBulletVel(8);
         setCooldownShot(125);
         setDmg(2);
+        setPriceStandard(13);
+        setPriceHealth(5);
         setGunName("Glock");
     }
 

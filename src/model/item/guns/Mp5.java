@@ -9,6 +9,8 @@ public class Mp5 extends Gun {
         setBulletVel(16);
         setCooldownShot(125);
         setDmg(4);
+        setPriceStandard(20);
+        setPriceHealth(8);
         setGunName("MP5");
     }
 

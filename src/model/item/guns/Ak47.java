@@ -9,6 +9,8 @@ public class Ak47 extends Gun {
         setBulletVel(16);
         setCooldownShot(150);
         setDmg(10);
+        setPriceStandard(40);
+        setPriceHealth(15);
         setGunName("AK-47");
     }
 

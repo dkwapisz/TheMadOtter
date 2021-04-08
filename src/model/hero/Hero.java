@@ -23,6 +23,7 @@ public class Hero extends MovingObjects {
     private int remainingLives;
     private int money;
     private int bombs;
+    private int points;
 
     private long cooldownShot;
     private long lastShot = 0;
@@ -30,8 +31,10 @@ public class Hero extends MovingObjects {
     private long lastEnemyTouch = 0;
     private long lastBomb = 0;
     private long lastF1 = 0;
+    private long lastF2 = 0;
+    private long lastF3 = 0;
 
-    private final ArrayList<Gun> equipment = new ArrayList<>();
+    private ArrayList<Gun> equipment = new ArrayList<>();
     private HeroActions currentAction;
     private Room actualRoom;
     private FloorGenerator floor;
@@ -62,31 +65,40 @@ public class Hero extends MovingObjects {
         goToNextFloor();
     }
 
-    public void shot(double velX, double velY) {
+    public void shot() {
         double x = 0;
         double y = 0;
-
+        double velX = 0;
+        double velY = 0;
         cooldownShot = actualGun.getCooldownShot();
 
         if(currentAction == HeroActions.SHOTUP) {
             getImageView().setViewport(getFrame().get(1));
             x = getX() + 32;
             y = getY() + 25;
+            velX = 0;
+            velY = -1;
         }
         else if (currentAction == HeroActions.SHOTDOWN) {
             getImageView().setViewport(getFrame().get(0));
             x = getX() + 27;
             y = getY() + 28;
+            velX = 0;
+            velY = 1;
         }
         else if (currentAction == HeroActions.SHOTLEFT) {
             getImageView().setViewport(getFrame().get(3));
             x = getX() + 2;
             y = getY() + 20;
+            velX = -1;
+            velY = 0;
         }
         else if (currentAction == HeroActions.SHOTRIGHT) {
             getImageView().setViewport(getFrame().get(2));
             x = getX() + 61;
             y = getY() + 20;
+            velX = 1;
+            velY = 0;
         }
 
         long time = System.currentTimeMillis();
@@ -262,10 +274,11 @@ public class Hero extends MovingObjects {
         actualRoom.eraseBlocks();
         actualRoom.eraseBullets();
         actualRoom.eraseExplosions();
+        actualRoom.erasePuttedBombs();
 
-        nextRoom.drawItems();
         nextRoom.drawEnemies();
         nextRoom.drawBlocks();
+        nextRoom.drawItems();
         nextRoom.makeHeroBulletList();
         nextRoom.makeEnemyBulletList();
         if (!nextRoom.getEnemies().isEmpty()){
@@ -297,7 +310,7 @@ public class Hero extends MovingObjects {
         }
         int selectedGun = equipment.indexOf(actualGun);
         long time = System.currentTimeMillis();
-        if (time > lastChange + 500) {
+        if (time > lastChange + 250) {
             lastChange = time;
             if(forward) {
                 if (selectedGun + 1 == length) {
@@ -315,17 +328,22 @@ public class Hero extends MovingObjects {
         }
     }
 
-    public void putBomb() { // to działa źle!
+    public void putBomb() {
+        int roomWithPuttedBomb = actualRoom.getRoomId();
         long time = System.currentTimeMillis();
         if (time > lastBomb + 250) {
             lastBomb = time;
             if (bombs > 0) {
                 BombFired newBomb = new BombFired(getX() + 16, getY() + 32, layer);
+                actualRoom.getPuttedBombs().add(newBomb);
                 bombs--;
 
                 AnimationTimer animationTimer = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
+                        if (roomWithPuttedBomb != actualRoom.getRoomId()) {
+                            super.stop();
+                        }
                         if (System.currentTimeMillis() - time > 2200) {
                             this.stop();
                         }
@@ -381,12 +399,51 @@ public class Hero extends MovingObjects {
         };
         animationTimer.start();
     }
-
+    // F1
     public void turnOnAdditionalData() {
         long time = System.currentTimeMillis();
         if (time > lastF1 + 250) {
             lastF1 = time;
             additionalData = !additionalData;
+        }
+    }
+    // F2
+    public void addAllGunsAndMoney() {
+        long time = System.currentTimeMillis();
+        if (time > lastF2 + 250) {
+            lastF2 = time;
+            equipment = new ArrayList<>();
+            equipment.add(new Ak47(2000, 2000, layer));
+            equipment.add(new Deagle(2000, 2000, layer));
+            equipment.add(new Glock(2000, 2000, layer));
+            equipment.add(new LaserGun(2000, 2000, layer));
+            equipment.add(new M16(2000, 2000, layer));
+            equipment.add(new Mp5(2000, 2000, layer));
+            equipment.add(new Pistol(layer));
+            equipment.add(new PlasmaGun(2000, 2000, layer));
+            equipment.add(new RocketLauncher(2000, 2000, layer));
+            equipment.add(new Scar(2000, 2000, layer));
+            equipment.add(new Shotgun(2000, 2000, layer));
+            equipment.add(new SniperRifle(2000, 2000, layer));
+            equipment.add(new Stg44(2000, 2000, layer));
+            equipment.add(new Uzi(2000, 2000, layer));
+            money += 100;
+            bombs += 100;
+            remainingLives = 20;
+        }
+    }
+    // F3
+    public void killAllEnemies() {
+        long time = System.currentTimeMillis();
+        if (time > lastF3 + 250) {
+            lastF3 = time;
+            for (Room room : floor.getRoomList()) {
+                if (!room.isClean()) {
+                    room.eraseEnemies();
+                    room.getEnemies().clear();
+                    room.setClean(true);
+                }
+            }
         }
     }
 
@@ -449,8 +506,21 @@ public class Hero extends MovingObjects {
     public boolean isAdditionalData() {
         return additionalData;
     }
-
     public void setAdditionalData(boolean additionalData) {
         this.additionalData = additionalData;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public ArrayList<Gun> getEquipment() {
+        return equipment;
+    }
+    public void setEquipment(ArrayList<Gun> equipment) {
+        this.equipment = equipment;
     }
 }

@@ -9,6 +9,8 @@ public class Deagle extends Gun {
         setBulletVel(14);
         setCooldownShot(750);
         setDmg(25);
+        setPriceStandard(25);
+        setPriceHealth(9);
         setGunName("Deagle");
     }
 

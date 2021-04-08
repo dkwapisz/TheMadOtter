@@ -9,6 +9,8 @@ public class PlasmaGun extends Gun {
         setBulletVel(15);
         setCooldownShot(300);
         setDmg(25);
+        setPriceStandard(50);
+        setPriceHealth(16);
         setGunName("Plasma Gun");
     }
 

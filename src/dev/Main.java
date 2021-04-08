@@ -1,5 +1,8 @@
 package dev;
 
+import dev.statsPanel.HealthBar;
+import dev.statsPanel.MiniMap;
+import dev.statsPanel.Stats;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -7,21 +10,16 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import map.Door;
 import model.hero.Hero;
 
 
 public class Main extends Application {
     static Hero hero;
     private InputManager inputManager;
-    private Label infoLabel;
     private ImageView gunReview;
     private MiniMap miniMap;
     private HealthBar healthBar;
@@ -38,8 +36,6 @@ public class Main extends Application {
 
         hero = new Hero(368, 568, root);
         inputManager = new InputManager(hero);
-
-        infoLabel = new Label();
 
         gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
         gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
@@ -66,8 +62,8 @@ public class Main extends Application {
     }
 
     private void updateGun() {
-        if(hero.getActualGun().getImageView().getImage() != gunReview.getImage()) {
-            gunReview.setImage(hero.getActualGun().getImageView().getImage()); // wywołuje się tylko, gdy aktualna wybrana broń różni się od wyświetlonej :)
+        if (hero.getActualGun().getImageView().getImage() != gunReview.getImage()) {
+            gunReview.setImage(hero.getActualGun().getImageView().getImage());
             gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
         }
     }

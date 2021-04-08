@@ -9,6 +9,8 @@ public class SniperRifle extends Gun {
         setBulletVel(25);
         setCooldownShot(1500);
         setDmg(50);
+        setPriceStandard(27);
+        setPriceHealth(10);
         setGunName("Sniper Rifle");
     }
 

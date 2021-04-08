@@ -6,6 +6,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 public abstract class StaticObjects {
 
@@ -16,9 +18,9 @@ public abstract class StaticObjects {
     private Image imageStatic;
 
     public StaticObjects(double x, double y, String pathStatic, Pane layer) {
-        setLocation(x, y);
         this.layer = layer;
         loadImage(pathStatic);
+        setLocation(x, y);
         imageStatic = new Image(pathStatic);
         dimension = new javafx.geometry.Dimension2D(imageStatic.getWidth(), imageStatic.getHeight());
     }
@@ -26,6 +28,7 @@ public abstract class StaticObjects {
     public void setLocation(double x, double y) {
         setX(x);
         setY(y);
+        imageView.relocate(x, y);
     }
 
 

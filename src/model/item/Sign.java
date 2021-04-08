@@ -2,6 +2,8 @@ package model.item;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class Sign extends Item {
 
@@ -11,9 +13,9 @@ public class Sign extends Item {
     public Sign(double x, double y, Pane layer, String text) {
         super(x, y, "graphics/items/sign.png", layer);
         this.layer = layer;
+        information.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         information.setText(text);
-        information.setStyle("-fx-font: 14 verdana;");
-        information.relocate(x - 20, y - 20); // trzeba ustawić, żeby tekst pojawiał się równo
+        information.relocate(x - 20, y - 55); // trzeba ustawić, żeby tekst pojawiał się równo
     }
 
     public void showText() {

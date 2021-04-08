@@ -1,5 +1,6 @@
-package dev;
+package dev.statsPanel;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
@@ -20,12 +21,13 @@ public class Stats {
     private final Label rofLabel = new Label();
     private final Label timeLabel = new Label();
     private final Label pointLabel = new Label();
-    private ArrayList<Label> labels = new ArrayList<>();
+    private final ArrayList<Label> labels = new ArrayList<>();
 
     public Stats(Hero hero) {
         this.hero = hero;
         createBasicStats();
         createAdditionalStats();
+        stopWatch();
     }
 
     public void createBasicStats() {
@@ -53,8 +55,7 @@ public class Stats {
         floorLabel.setText(String.valueOf(hero.getFloor().getFloorId()));
         dmgLabel.setText(String.valueOf(hero.getActualGun().getDmg()));
         rofLabel.setText(String.valueOf(getRof()));
-        timeLabel.setText("No Data");
-        pointLabel.setText("No Data");
+        pointLabel.setText(String.valueOf(hero.getPoints()));
     }
 
     public void createAdditionalStats() {
@@ -68,6 +69,7 @@ public class Stats {
         infoLabel.setVisible(hero.isAdditionalData());
         infoLabel.setText("Gun: " + hero.getActualGun().getGunName() +
                 "\nGun Dmg: " + hero.getActualGun().getDmg() +
+                "\nHow many guns: " + hero.getEquipment().size() +
                 "\nGun coold.: " + hero.getActualGun().getCooldownShot() + " [ms]" +
                 "\nBullet Vel: " + hero.getActualGun().getBulletVel() +
                 "\nHP: " + hero.getRemainingLives() +
@@ -77,11 +79,13 @@ public class Stats {
                 "\nFloorID: " + hero.getFloor().getFloorId() +
                 "\nRoomID: " + hero.getActualRoom().getRoomId() +
                 "\nShooting: " + hero.isShooting() +
-                "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen());
+                "\nCurrent Action: " + hero.getCurrentAction().name() +
+                "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen() +
+                "\nShop: " + hero.getActualRoom().isShop());
     }
 
     private int getRof() {
-        float rof = 1;
+        float rof;
         if (hero.getActualGun() instanceof Shotgun) {
             rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) 10*hero.getActualGun().getDmg());
         } else if (hero.getActualGun() instanceof M16) {
@@ -92,4 +96,38 @@ public class Stats {
         rof = Math.round(rof);
         return (int) rof;
     }
+
+    private void stopWatch() {
+        timeLabel.setText("0:00");
+        AnimationTimer timer = new AnimationTimer() {
+            private long timestamp;
+            private long time = 0;
+            private long fraction = 0;
+
+            @Override
+            public void start() {
+                timestamp = System.currentTimeMillis() - fraction;
+                super.start();
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                fraction = System.currentTimeMillis() - timestamp;
+            }
+
+            @Override
+            public void handle(long now) {
+                long newTime = System.currentTimeMillis();
+                if (timestamp + 1000 <= newTime) {
+                    long deltaT = (newTime - timestamp) / 1000;
+                    time += deltaT;
+                    timestamp += 1000 * deltaT;
+                    timeLabel.setText(String.format("%d:%02d", time / 60, time % 60));
+                }
+            }
+        };
+        timer.start();
+    }
+
 }

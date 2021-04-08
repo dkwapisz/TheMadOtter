@@ -11,6 +11,11 @@ import java.awt.*;
 
 public abstract class Gun extends Item {
 
+    private int priceStandard; // cena w $
+    private int priceHealth; // cena w hp
+    private boolean buyStandard; // można kupić za $
+    private boolean buyHealth; // można kupić za hp
+
     private int bulletVel; // prędkość pocisku
     private long cooldownShot; // cooldown między strzałami
     private int dmg; // dmg per shot
@@ -24,8 +29,29 @@ public abstract class Gun extends Item {
 
     @Override
     public boolean onTouch(Hero hero) {
-        hero.addNewGun(this);
-        return true;
+        if (buyStandard && hero.getMoney() >= priceStandard) {
+            hero.setMoney(hero.getMoney() - priceStandard);
+            hero.addNewGun(this);
+            return true;
+        } else if (buyHealth && hero.getRemainingLives() >= priceHealth) {
+            hero.healthDown(priceHealth);
+            hero.addNewGun(this);
+            return true;
+        } else if (!buyStandard && !buyHealth) {
+            hero.addNewGun(this);
+            return true;
+        }
+        return false;
+    }
+
+    public String getPrice() {
+        if (buyStandard) {
+            return (priceStandard + " $");
+        } else if (buyHealth) {
+            return (priceHealth + " HP");
+        } else {
+            return "";
+        }
     }
 
     public int getBulletVel() {
@@ -61,5 +87,33 @@ public abstract class Gun extends Item {
     }
     public void setPathBullet(String pathBullet) {
         this.pathBullet = pathBullet;
+    }
+
+    public int getPriceStandard() {
+        return priceStandard;
+    }
+    public void setPriceStandard(int priceStandard) {
+        this.priceStandard = priceStandard;
+    }
+
+    public int getPriceHealth() {
+        return priceHealth;
+    }
+    public void setPriceHealth(int priceHealth) {
+        this.priceHealth = priceHealth;
+    }
+
+    public boolean isBuyStandard() {
+        return buyStandard;
+    }
+    public void setBuyStandard(boolean buyStandard) {
+        this.buyStandard = buyStandard;
+    }
+
+    public boolean isBuyHealth() {
+        return buyHealth;
+    }
+    public void setBuyHealth(boolean buyHealth) {
+        this.buyHealth = buyHealth;
     }
 }

@@ -35,22 +35,22 @@ public class InputManager {
         if(keyboardInput.contains(KeyCode.UP)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTUP);
-            hero.shot(0, -1);
+            hero.shot();
         }
-        if(keyboardInput.contains(KeyCode.DOWN)){
+        else if(keyboardInput.contains(KeyCode.DOWN)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTDOWN);
-            hero.shot(0, 1);
+            hero.shot();
         }
-        if(keyboardInput.contains(KeyCode.LEFT)){
+        else if(keyboardInput.contains(KeyCode.LEFT)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTLEFT);
-            hero.shot(-1, 0);
+            hero.shot();
         }
-        if(keyboardInput.contains(KeyCode.RIGHT)){
+        else if(keyboardInput.contains(KeyCode.RIGHT)){
             hero.setShooting(true);
             hero.setCurrentAction(HeroActions.SHOTRIGHT);
-            hero.shot(1, 0);
+            hero.shot();
         }
 
         if(keyboardInput.contains(KeyCode.E)){
@@ -66,6 +66,14 @@ public class InputManager {
 
         if(keyboardInput.contains(KeyCode.F1)){
             hero.turnOnAdditionalData();
+        }
+
+        if(keyboardInput.contains(KeyCode.F2)){
+            hero.addAllGunsAndMoney();
+        }
+
+        if(keyboardInput.contains(KeyCode.F3)){
+            hero.killAllEnemies();
         }
 
         if(!keyboardInput.contains(KeyCode.A) && !keyboardInput.contains(KeyCode.D)) {

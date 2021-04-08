@@ -9,6 +9,8 @@ public class Shotgun extends Gun {
         setBulletVel(14);
         setCooldownShot(1250);
         setDmg(2);
+        setPriceStandard(8);
+        setPriceHealth(4);
         setGunName("Shotgun");
     }
 

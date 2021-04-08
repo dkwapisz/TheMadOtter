@@ -1,4 +1,4 @@
-package dev;
+package dev.statsPanel;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,7 +10,7 @@ public class HealthBar {
 
     private final Hero hero;
     private int actualHealth;
-    private HashMap<Integer,ImageView> map = new HashMap<>();
+    private final HashMap<Integer,ImageView> map = new HashMap<>();
 
     public HealthBar(Hero hero){
         this.hero = hero;
@@ -23,8 +23,8 @@ public class HealthBar {
         int y = 0;
         int key = 0;
         for (int i = 0; i < hero.getRemainingLives()/2; i++) {
-            ImageView health1 = new ImageView(new Image("graphics/interface/halfHeart1.png"));
-            ImageView health2 = new ImageView(new Image("graphics/interface/halfHeart2.png"));
+            ImageView health1 = new ImageView(new Image("graphics/statsPanel/halfHeart1.png"));
+            ImageView health2 = new ImageView(new Image("graphics/statsPanel/halfHeart2.png"));
             this.map.put(key, health1);
             this.map.put(key + 1, health2);
             key += 2;

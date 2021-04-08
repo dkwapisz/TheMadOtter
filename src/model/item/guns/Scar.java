@@ -9,6 +9,8 @@ public class Scar extends Gun {
         setBulletVel(15);
         setCooldownShot(125);
         setDmg(7);
+        setPriceStandard(35);
+        setPriceHealth(14);
         setGunName("Scar");
     }
 

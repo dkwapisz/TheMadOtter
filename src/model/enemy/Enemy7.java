@@ -1,6 +1,5 @@
 package model.enemy;
 
-
 import javafx.scene.layout.Pane;
 import model.Bullet;
 import model.hero.Hero;

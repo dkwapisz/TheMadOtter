@@ -2,10 +2,7 @@ package map;
 
 import javafx.scene.shape.Rectangle;
 
-import model.Bullet;
-import model.Explosion;
-import model.MovingObjects;
-import model.StaticObjects;
+import model.*;
 import model.block.Barrel;
 import model.block.Block;
 import model.enemy.*;
@@ -23,6 +20,7 @@ public class Room {
 
     private ArrayList<Door> door;
     private boolean clean;
+    private boolean shop;
     private int roomId;
     private FloorGenerator actualFloor;
     private ArrayList<Enemy> enemies;
@@ -31,8 +29,8 @@ public class Room {
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<Block> blocks;
     private ArrayList<Explosion> explosions = new ArrayList<>();
+    private ArrayList<BombFired> puttedBombs = new ArrayList<>();
     private final Random random = new Random();
-
 
     public Room(ArrayList<Door> door, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
         this.enemies = Objects.requireNonNullElseGet(enemies, ArrayList::new);
@@ -60,6 +58,7 @@ public class Room {
         for (Room room : actualFloor.getRoomList()) {
             if (!room.isClean()) {
                 isAllClear = false;
+                break;
             }
         }
         if (isAllClear) {
@@ -95,6 +94,7 @@ public class Room {
     public void drawItems(){
         for (Item item : items) {
             item.addToLayer();
+            item.getImageView().toBack();
         }
     }
 
@@ -113,6 +113,15 @@ public class Room {
                 explosion.removeFromLayer();
             }
             explosions.clear();
+        }
+    }
+
+    public void erasePuttedBombs() {
+        if (puttedBombs.size() != 0) {
+            for (BombFired bombFired : puttedBombs) {
+                bombFired.removeFromLayer();
+            }
+            puttedBombs.clear();
         }
     }
 
@@ -191,7 +200,7 @@ public class Room {
         for(Item item : items) {
             Rectangle itemBounds = item.getBounds();
             if (item instanceof Sign) {
-                if (heroBounds.intersects(itemBounds.getBoundsInParent())) {
+                if (hero.getBounds().intersects(itemBounds.getBoundsInParent())) {
                     ((Sign) item).showText();
                 } else {
                     ((Sign) item).hideText();
@@ -232,7 +241,7 @@ public class Room {
                     hero.setVelY(0);
                 }
                 if (block.isPrickly()){
-                    hero.healthDown(1);
+                    hero.healthDown(2);
                 }
             }
             for (Explosion explosion : explosions) {
@@ -250,7 +259,7 @@ public class Room {
         for (Enemy enemy : enemies) {
             if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
                 hero.healthDown(enemy.getDmg());
-                if(enemy instanceof Enemy3) {
+                if(enemy instanceof Boomer) {
                     enemy.setRemainingHealth(0);
                     toBeRemoved.add(enemy);
                 }
@@ -473,5 +482,19 @@ public class Room {
     }
     public void setActualFloor(FloorGenerator actualFloor) {
         this.actualFloor = actualFloor;
+    }
+
+    public boolean isShop() {
+        return shop;
+    }
+    public void setShop(boolean shop) {
+        this.shop = shop;
+    }
+
+    public ArrayList<BombFired> getPuttedBombs() {
+        return puttedBombs;
+    }
+    public void setPuttedBombs(ArrayList<BombFired> puttedBombs) {
+        this.puttedBombs = puttedBombs;
     }
 }

@@ -1,6 +1,5 @@
 package model.enemy;
 
-
 import javafx.scene.layout.Pane;
 import model.Bullet;
 import model.hero.Hero;
@@ -19,7 +18,7 @@ public class Diglet extends Enemy{
     private final ArrayList<int[]> spotLoc;
 
     public Diglet(double x, double y, Pane layer, ArrayList<int[]> spotLoc) {
-        super(x, y, "graphics/enemies/diglet_test.gif", "graphics/enemies/diglet_test.gif", "/graphics/enemies/diglet.png", "/graphics/enemies/diglet.png", layer);
+        super(x, y, "graphics/enemies/digletMoving.gif", "graphics/enemies/digletMoving.gif", "/graphics/enemies/diglet.png", "/graphics/enemies/diglet.png", layer);
         this.spotLoc = spotLoc;
         setFollowing(false);
         setFlying(false);

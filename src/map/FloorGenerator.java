@@ -2,8 +2,12 @@ package map;
 
 import javafx.scene.layout.Pane;
 import model.block.*;
+import model.item.Item;
+import model.item.Sign;
+import model.item.guns.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class FloorGenerator {
 
@@ -17,6 +21,7 @@ public class FloorGenerator {
     private Trapdoor trapdoor;
     private Pane layer;
     private RNG rng;
+    private final Random random = new Random();
 
     public FloorGenerator(int nrOfRooms, Pane layer, int floorId) {
         this.nrOfRooms = nrOfRooms;
@@ -30,7 +35,7 @@ public class FloorGenerator {
         door3.getImageView().setRotate(180);
         door4.getImageView().setRotate(180);
         generateMap();
-
+        generateShop();
     }
 
     private void generateMap() {
@@ -109,6 +114,67 @@ public class FloorGenerator {
                 }
                 roomId++;
             }
+        }
+    }
+
+    private void generateShop() {
+        int shopId = rng.getShopRoomId();
+
+        roomList.get(shopId).setShop(true);
+        roomList.get(shopId).setClean(true);
+        roomList.get(shopId).getEnemies().clear();
+        roomList.get(shopId).getBlocks().clear();
+        roomList.get(shopId).getItems().clear();
+        roomList.get(shopId).eraseEnemies();
+        roomList.get(shopId).eraseBlocks();
+        roomList.get(shopId).eraseItems();
+
+        int gunA;
+        int gunB;
+
+        ArrayList<Item> gunList = new ArrayList<>();
+        ArrayList<Item> choosedGun = new ArrayList<>();
+        gunList.add(new Ak47(2000, 2000, layer));
+        gunList.add(new Deagle(2000, 2000, layer));
+        gunList.add(new Glock(2000, 2000, layer));
+        gunList.add(new LaserGun(2000, 2000, layer));
+        gunList.add(new M16(2000, 2000, layer));
+        gunList.add(new Mp5(2000, 2000, layer));
+        gunList.add(new PlasmaGun(2000, 2000, layer));
+        gunList.add(new RocketLauncher(2000, 2000, layer));
+        gunList.add(new Scar(2000, 2000, layer));
+        gunList.add(new Shotgun(2000, 2000, layer));
+        gunList.add(new SniperRifle(2000, 2000, layer));
+        gunList.add(new Stg44(2000, 2000, layer));
+        gunList.add(new Uzi(2000, 2000, layer));
+
+        do {
+            gunA = random.nextInt(gunList.size());
+            gunB = random.nextInt(gunList.size());
+        } while (gunA == gunB);
+
+        choosedGun.add(gunList.get(gunA));
+        choosedGun.add(gunList.get(gunB));
+        choosedGun.get(0).setLocation(300 - (choosedGun.get(0).getImageStatic().getWidth() - 32)/2,300);
+        choosedGun.get(1).setLocation(500 - (choosedGun.get(0).getImageStatic().getWidth() - 32)/2,300);
+        ((Gun) choosedGun.get(0)).setBuyStandard(true);
+        ((Gun) choosedGun.get(1)).setBuyHealth(true);
+
+        String textGunA = ((Gun) choosedGun.get(0)).getGunName() + "\n" +
+                            "Dmg: " + ((Gun) choosedGun.get(0)).getDmg() + '\n' +
+                            "Price: " + ((Gun) choosedGun.get(0)).getPrice();
+        String textGunB = ((Gun) choosedGun.get(1)).getGunName() + "\n" +
+                            "Dmg: " + ((Gun) choosedGun.get(1)).getDmg() + '\n' +
+                            "Price: " + ((Gun) choosedGun.get(1)).getPrice();
+
+        choosedGun.add(new Sign(300, 400, layer, textGunA));
+        choosedGun.add(new Sign(500, 400, layer, textGunB));
+
+        gunList.clear();
+
+        for(Item item : choosedGun) {
+            item.removeFromLayer();
+            roomList.get(shopId).getItems().add(item);
         }
     }
 

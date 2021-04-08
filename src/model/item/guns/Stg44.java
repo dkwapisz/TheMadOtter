@@ -9,6 +9,8 @@ public class Stg44 extends Gun {
         setBulletVel(18);
         setCooldownShot(200);
         setDmg(9);
+        setPriceStandard(30);
+        setPriceHealth(13);
         setGunName("STG-44");
     }
 

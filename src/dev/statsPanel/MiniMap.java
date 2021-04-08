@@ -1,4 +1,4 @@
-package dev;
+package dev.statsPanel;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,7 +17,7 @@ public class MiniMap{
     }
 
     private ImageView createImageView(int x, int y){
-        ImageView miniPart = new ImageView(new Image("graphics/interface/notCleaned.png"));
+        ImageView miniPart = new ImageView(new Image("graphics/statsPanel/notCleaned.png"));
         miniPart.relocate(x, y);
         this.hero.getLayer().getChildren().add(miniPart);
         return miniPart;
@@ -38,13 +38,15 @@ public class MiniMap{
 
     public void updateMiniMap(){
         for (Room room:hero.getFloor().getRoomList()){
-            if(room.getRoomId() == hero.getActualRoom().getRoomId()){
-                map.get(room.getRoomId()).setImage(new Image("graphics/interface/actual.png"));
+            if (room.getRoomId() == hero.getActualRoom().getRoomId()) {
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/actual.png"));
             }
-            else if(room.isClean()){
-                map.get(room.getRoomId()).setImage(new Image("graphics/interface/cleaned.png"));
-            }else {
-                map.get(room.getRoomId()).setImage(new Image("graphics/interface/notCleaned.png"));
+            else if (room.isClean() && !room.isShop()) {
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/cleaned.png"));
+            } else if (room.isShop()) {
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/shop.png"));
+            } else {
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/notCleaned.png"));
             }
         }
     }

@@ -9,6 +9,8 @@ public class LaserGun extends Gun {
         setBulletVel(18);
         setCooldownShot(300);
         setDmg(30);
+        setPriceStandard(60);
+        setPriceHealth(18);
         setGunName("Laser Gun");
     }
 
