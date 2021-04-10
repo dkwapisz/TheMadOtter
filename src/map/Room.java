@@ -5,6 +5,8 @@ import javafx.scene.shape.Rectangle;
 import model.*;
 import model.block.Barrel;
 import model.block.Block;
+import model.block.Box;
+import model.block.SoftBlock;
 import model.enemy.*;
 import model.hero.Hero;
 import model.item.Sign;
@@ -144,6 +146,10 @@ public class Room {
                 if (((Enemy) object).isExplosive()) {
                     explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
                 }
+                Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.05, object.getLayer());
+                if (randomItem != null) {
+                    items.add(randomItem);
+                }
                 enemies.remove(object);
                 if(enemies.size() == 0) {
                     clean = true;
@@ -165,6 +171,18 @@ public class Room {
             if(object instanceof Block){
                 if (object instanceof Barrel) {
                     explosions.add(new Explosion(object.getX() - object.getBounds().getWidth()/2, object.getY() - object.getBounds().getHeight()/2, object.getLayer(), this));
+                }
+                else if (object instanceof Box) {
+                    Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 1, object.getLayer());
+                    if (randomItem != null) {
+                        items.add(randomItem);
+                    }
+                }
+                else if (object instanceof SoftBlock) {
+                    Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.1, object.getLayer());
+                    if (randomItem != null) {
+                        items.add(randomItem);
+                    }
                 }
                 blocks.remove(object);
             }

@@ -383,9 +383,9 @@ public class Hero extends MovingObjects {
                         getImageView().setOpacity(1);
 
                     }
-                    lastUpdate = l ;
+                    lastUpdate = l;
                 }
-                if (l - timeInNano >= 1800000000) {
+                if (l - timeInNano >= 1_800_000_000) {
                     long b = System.currentTimeMillis();
                     this.stop();
                 }

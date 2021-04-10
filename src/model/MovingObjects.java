@@ -155,7 +155,7 @@ public abstract class MovingObjects {
     public Rectangle getBounds() { return new Rectangle((int) x+velX, (int) y+velY, dimension.getWidth(), dimension.getHeight()); }
 
     public Rectangle getSmallerBounds(){
-        return new Rectangle((int) x+velX+16,(int) y+velY+32, dimension.getWidth()/2, dimension.getHeight()/2);
+        return new Rectangle((int) x+velX+2,(int) y+velY+34, 30, 30); // bounds dla Hero
     }
 
     public Rectangle getUpBounds() {

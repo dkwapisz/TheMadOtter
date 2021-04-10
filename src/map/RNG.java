@@ -79,6 +79,10 @@ public class RNG {
             blocks.add(new TempSpikeBlock(bitMap.getTempSpikeBlockLoc().get(i)[0], bitMap.getTempSpikeBlockLoc().get(i)[1], layer));
         }
 
+        for(int i = 0; i < bitMap.getBoxLoc().size(); i++) {
+            blocks.add(new Box(bitMap.getBoxLoc().get(i)[0], bitMap.getBoxLoc().get(i)[1], layer));
+        }
+
         if(roomId != (centerRoom)) {
             for (Block block : blocks) {
                 block.removeFromLayer();
@@ -120,11 +124,32 @@ public class RNG {
         return enemies;
     }
 
-    public int getShopRoomId() {
+    public static int getShopRoomId(int centerRoom) {
+        Random random = new Random();
         if(random.nextBoolean()) {
             return random.nextInt(centerRoom);
         } else {
             return (random.nextInt(centerRoom) + centerRoom + 1);
+        }
+    }
+
+    public static Item getRandomItem(double x, double y, double itemChance, Pane layer) { // itemChance -> szansa, że wyleci jakiś item: (zakres 0.01 -> 1.0)
+        Random random = new Random();
+        double rng = random.nextInt((int) (100/itemChance)) + 1;
+        if (rng < 20) {
+            return new Bomb(x, y, layer);
+        } else if (rng >= 21 && rng < 30) {
+            return new BombPack(x, y, layer);
+        } else if (rng >= 31 && rng < 50) {
+            return new SmallFish(x, y, layer);
+        } else if (rng >= 51 && rng < 60) {
+            return new Fish(x, y, layer);
+        } else if (rng >= 61 && rng < 80) {
+            return new Coin(x, y, layer);
+        } else if (rng >= 81 && rng < 90) {
+            return new Dollar(x, y, layer);
+        } else {
+            return null;
         }
     }
 

@@ -118,7 +118,7 @@ public class FloorGenerator {
     }
 
     private void generateShop() {
-        int shopId = rng.getShopRoomId();
+        int shopId = RNG.getShopRoomId((nrOfRooms*nrOfRooms-1)/2);
 
         roomList.get(shopId).setShop(true);
         roomList.get(shopId).setClean(true);

@@ -14,6 +14,7 @@ public class BitMapLoader {
     private ArrayList<int[]> spikeBlockLoc = new ArrayList<>();
     private ArrayList<int[]> tempSpikeBlockLoc = new ArrayList<>();
     private ArrayList<int[]> barrelLoc = new ArrayList<>();
+    private ArrayList<int[]> boxLoc = new ArrayList<>();
     private ArrayList<int[]> enemySpotLoc = new ArrayList<>();
     private BufferedImage mapImage;
 
@@ -34,7 +35,7 @@ public class BitMapLoader {
         int spikeBlock = new Color(0, 200, 255).getRGB();
         int barrel = new Color(75, 0, 0).getRGB();
         int tempSpikeBlock = new Color(100, 0, 255).getRGB();
-        //int boxBlock = new Color(200, 0, 255).getRGB(); < --- oczywiście jeszcze nie dodane
+        int box = new Color(200, 200, 0).getRGB();
         int enemySpot = new Color(255, 0, 0).getRGB();
 
         for (int x = 0; x < mapImage.getWidth(); x++) {
@@ -74,6 +75,11 @@ public class BitMapLoader {
                     locXY[0] = xLoc;
                     locXY[1] = yLoc;
                     tempSpikeBlockLoc.add(locXY);
+                }
+                if(currentPixel == box) {
+                    locXY[0] = xLoc;
+                    locXY[1] = yLoc;
+                    boxLoc.add(locXY);
                 }
             }
         }
@@ -140,5 +146,12 @@ public class BitMapLoader {
     }
     public void setTempSpikeBlockLoc(ArrayList<int[]> tempSpikeBlockLoc) {
         this.tempSpikeBlockLoc = tempSpikeBlockLoc;
+    }
+
+    public ArrayList<int[]> getBoxLoc() {
+        return boxLoc;
+    }
+    public void setBoxLoc(ArrayList<int[]> boxLoc) {
+        this.boxLoc = boxLoc;
     }
 }
