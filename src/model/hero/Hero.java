@@ -158,7 +158,7 @@ public class Hero extends MovingObjects {
                     toBeRemoved.add(bullet);
                 }
             }
-            actualRoom.removeMovingObjects(toBeRemoved);
+            actualRoom.removeMovingObjects(toBeRemoved, this);
         }
         if(actualRoom.getEnemyBullets() != null) {
             for(Bullet bullet : actualRoom.getEnemyBullets()) {
@@ -167,7 +167,7 @@ public class Hero extends MovingObjects {
                     toBeRemoved.add(bullet);
                 }
             }
-            actualRoom.removeMovingObjects(toBeRemoved);
+            actualRoom.removeMovingObjects(toBeRemoved, this);
         }
     }
 
@@ -220,7 +220,8 @@ public class Hero extends MovingObjects {
                 actualRoom = floor.getRoomList().get((floor.getNrOfRooms()* floor.getNrOfRooms()-1)/2); // pokój z nowego piętra
                 currentAction = HeroActions.UP;
                 actualRoom.makeHeroBulletList();
-                getImageView().toFront();
+                this.getImageView().toFront();
+                points += 1000;
             }
         }
     }
@@ -275,6 +276,7 @@ public class Hero extends MovingObjects {
         actualRoom.eraseBullets();
         actualRoom.eraseExplosions();
         actualRoom.erasePuttedBombs();
+        actualRoom.eraseAnimations(this);
 
         nextRoom.drawEnemies();
         nextRoom.drawBlocks();

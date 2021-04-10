@@ -88,7 +88,7 @@ public class BitMapLoader {
 
 
 
-    public BufferedImage loadImage(String path){
+    public BufferedImage loadImage(String path) {
         BufferedImage imageToReturn = null;
         try {
             imageToReturn = ImageIO.read(new FileInputStream(path));

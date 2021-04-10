@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class Stats {
 
+    private int actualFloor;
     private final Hero hero;
     private final Label infoLabel = new Label();
     private final Label moneyLabel = new Label();
@@ -25,6 +26,7 @@ public class Stats {
 
     public Stats(Hero hero) {
         this.hero = hero;
+        actualFloor = hero.getFloor().getFloorId();
         createBasicStats();
         createAdditionalStats();
         stopWatch();
@@ -40,10 +42,10 @@ public class Stats {
         labels.add(pointLabel);
         int y = 0;
         for (Label label : labels) {
+            label.setTextFill(Color.rgb(131, 82, 73));
             label.setStyle("-fx-font: 25 forte");
             label.relocate(875, 295 + y);
             label.setTextAlignment(TextAlignment.LEFT);
-            label.setTextFill(Color.rgb(131, 82, 73));
             hero.getLayer().getChildren().add(label);
             y += 45;
         }
@@ -56,6 +58,8 @@ public class Stats {
         dmgLabel.setText(String.valueOf(hero.getActualGun().getDmg()));
         rofLabel.setText(String.valueOf(getRof()));
         pointLabel.setText(String.valueOf(hero.getPoints()));
+
+        changeFontColor();
     }
 
     public void createAdditionalStats() {
@@ -128,6 +132,28 @@ public class Stats {
             }
         };
         timer.start();
+    }
+
+    private void changeFontColor() {
+        // zabezpieczenie, żeby to się wykonało tylko raz
+        if (hero.getActualRoom().getActualFloor().getFloorId() == 2 && actualFloor != hero.getActualRoom().getActualFloor().getFloorId()) {
+            for (Label label : labels) {
+                label.setTextFill(Color.rgb(144, 144, 144));
+            }
+            actualFloor = hero.getActualRoom().getActualFloor().getFloorId();
+        }
+        if (hero.getActualRoom().getActualFloor().getFloorId() == 3 && actualFloor != hero.getActualRoom().getActualFloor().getFloorId()) {
+            for (Label label : labels) {
+                label.setTextFill(Color.rgb(167, 254, 255));
+            }
+            actualFloor = hero.getActualRoom().getActualFloor().getFloorId();
+        }
+        if (hero.getActualRoom().getActualFloor().getFloorId() == 4 && actualFloor != hero.getActualRoom().getActualFloor().getFloorId()) {
+            for (Label label : labels) {
+                label.setTextFill(Color.rgb(129, 72, 72));
+            }
+            actualFloor = hero.getActualRoom().getActualFloor().getFloorId();
+        }
     }
 
 }

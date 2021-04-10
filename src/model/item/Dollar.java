@@ -7,6 +7,7 @@ public class Dollar extends Item {
 
     public Dollar(double x, double y, Pane layer) {
         super(x, y, "graphics/items/dolar.gif", layer);
+        setPoints(100);
     }
 
     @Override

@@ -8,6 +8,7 @@ public class Fish extends Item{
 
     public Fish(double x, double y, Pane layer) {
         super(x, y, "graphics/items/fish.gif", layer);
+        setPoints(100);
     }
 
     @Override

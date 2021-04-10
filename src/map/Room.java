@@ -1,12 +1,10 @@
 package map;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
 import model.*;
-import model.block.Barrel;
-import model.block.Block;
-import model.block.Box;
-import model.block.SoftBlock;
+import model.block.*;
 import model.enemy.*;
 import model.hero.Hero;
 import model.item.Sign;
@@ -32,6 +30,7 @@ public class Room {
     private ArrayList<Block> blocks;
     private ArrayList<Explosion> explosions = new ArrayList<>();
     private ArrayList<BombFired> puttedBombs = new ArrayList<>();
+    private ArrayList<ImageView> animations = new ArrayList<>();
     private final Random random = new Random();
 
     public Room(ArrayList<Door> door, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
@@ -43,11 +42,11 @@ public class Room {
         this.actualFloor = actualFloor;
     }
 
-    public void checkCollision(Hero hero){
+    public void checkCollision(Hero hero) {
         blockCollision(hero);
         enemyCollision(hero);
         itemCollision(hero);
-        heroBulletsCollision();
+        heroBulletsCollision(hero);
         enemyBulletCollision(hero);
         explosionCollision(hero);
         enemyFollow(hero);
@@ -127,7 +126,16 @@ public class Room {
         }
     }
 
-    public void removeMovingObjects(ArrayList<MovingObjects> list) {
+    public void eraseAnimations(Hero hero) {
+        if (animations.size() != 0) {
+            for (ImageView animation : animations) {
+                hero.getLayer().getChildren().remove(animation);
+            }
+            animations.clear();
+        }
+    }
+
+    public void removeMovingObjects(ArrayList<MovingObjects> list, Hero hero) {
         if (list == null) {
             return;
         }
@@ -143,10 +151,11 @@ public class Room {
                     enemyBullets.remove(object);
                 }
             }if (object instanceof Enemy){
+                hero.setPoints(hero.getPoints() + ((Enemy) object).getPoints());
                 if (((Enemy) object).isExplosive()) {
                     explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
                 }
-                Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.05, object.getLayer());
+                Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.01, object.getLayer());
                 if (randomItem != null) {
                     items.add(randomItem);
                 }
@@ -155,17 +164,17 @@ public class Room {
                     clean = true;
                 }
             }
-
         }
     }
 
-    public void removeStaticObjects(ArrayList<StaticObjects> list) {
+    public void removeStaticObjects(ArrayList<StaticObjects> list, Hero hero) {
         if (list == null) {
             return;
         }
         for(StaticObjects object : list) {
             object.removeFromLayer();
             if(object instanceof Item){
+                hero.setPoints(hero.getPoints() + ((Item) object).getPoints());
                 items.remove(object);
             }
             if(object instanceof Block){
@@ -173,13 +182,22 @@ public class Room {
                     explosions.add(new Explosion(object.getX() - object.getBounds().getWidth()/2, object.getY() - object.getBounds().getHeight()/2, object.getLayer(), this));
                 }
                 else if (object instanceof Box) {
+                    ((Box) object).destroyAnimation(this);
                     Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 1, object.getLayer());
                     if (randomItem != null) {
                         items.add(randomItem);
                     }
                 }
                 else if (object instanceof SoftBlock) {
-                    Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.1, object.getLayer());
+                    ((SoftBlock) object).destroyAnimation(this);
+                    Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.05, object.getLayer());
+                    if (randomItem != null) {
+                        items.add(randomItem);
+                    }
+                }
+                else if (object instanceof SolidBlock) {
+                    ((SolidBlock) object).destroyAnimation(this);
+                    Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.001, object.getLayer());
                     if (randomItem != null) {
                         items.add(randomItem);
                     }
@@ -203,7 +221,7 @@ public class Room {
         enemyBullets.clear();
     }
 
-    public void openDoor(){
+    public void openDoor() {
         for (Door door : door) {
             if (enemies.isEmpty() && door.isClosedDoors()) {
                 door.setClosedDoors(false);
@@ -230,7 +248,7 @@ public class Room {
                 }
             }
         }
-        removeStaticObjects(toBeRemoved);
+        removeStaticObjects(toBeRemoved, hero);
     }
 
     public void explosionCollision(Hero hero) {
@@ -268,7 +286,7 @@ public class Room {
                 }
             }
         }
-        removeStaticObjects(toBeRemoved);
+        removeStaticObjects(toBeRemoved, hero);
     }
 
     public void enemyCollision(Hero hero){
@@ -291,7 +309,7 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved);
+        removeMovingObjects(toBeRemoved, hero);
     }
 
     public void enemyBulletCollision(Hero hero) {
@@ -313,10 +331,10 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved);
+        removeMovingObjects(toBeRemoved, hero);
     }
 
-    public void heroBulletsCollision(){
+    public void heroBulletsCollision(Hero hero) {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         ArrayList<Slime> slimes = new ArrayList<>();
@@ -359,8 +377,8 @@ public class Room {
                 }
             }
         }
-        removeMovingObjects(toBeRemoved);
-        removeStaticObjects(toRemoveBlocks);
+        removeMovingObjects(toBeRemoved, hero);
+        removeStaticObjects(toRemoveBlocks, hero);
     }
 
     public void enemyFollow(Hero hero) {
@@ -399,7 +417,7 @@ public class Room {
         }
     }
 
-    public void updateEnemy(Hero hero){
+    public void updateEnemy(Hero hero) {
         if (!enemies.isEmpty()) {
             for (Enemy enemy : enemies) {
                 enemy.specificMovement();
@@ -514,5 +532,12 @@ public class Room {
     }
     public void setPuttedBombs(ArrayList<BombFired> puttedBombs) {
         this.puttedBombs = puttedBombs;
+    }
+
+    public ArrayList<ImageView> getAnimations() {
+        return animations;
+    }
+    public void setAnimations(ArrayList<ImageView> animations) {
+        this.animations = animations;
     }
 }

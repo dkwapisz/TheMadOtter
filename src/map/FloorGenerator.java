@@ -1,5 +1,6 @@
 package map;
 
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import model.block.*;
 import model.item.Item;
@@ -28,14 +29,15 @@ public class FloorGenerator {
         this.layer = layer;
         this.floorId = floorId;
         trapdoor = new Trapdoor(368, 368, layer);
-        door1 = new Door(360, 0, "/graphics/doorH.png",  layer, 1);         // góra
-        door2 = new Door(0, 360, "/graphics/doorV.png",  layer, 2);        // lewo
-        door3 = new Door(360, 768, "/graphics/doorH.png",   layer, 3);        // dół
-        door4 = new Door(768, 360, "/graphics/doorV.png",   layer, 4);     // prawo
+        door1 = new Door(360, 0, "/graphics/map/floor1/doorH1.png", layer, 1);           // góra
+        door2 = new Door(0, 360, "/graphics/map/floor1/doorV1.png", layer, 2);           // lewo
+        door3 = new Door(360, 768, "/graphics/map/floor1/doorH1.png", layer, 3);         // dół
+        door4 = new Door(768, 360, "/graphics/map/floor1/doorV1.png", layer, 4);         // prawo
         door3.getImageView().setRotate(180);
         door4.getImageView().setRotate(180);
         generateMap();
         generateShop();
+        updateBoard();
     }
 
     private void generateMap() {
@@ -178,6 +180,25 @@ public class FloorGenerator {
         }
     }
 
+    private void updateBoard() {
+        if (floorId == 2) {
+            layer.getScene().getRoot().setStyle("-fx-background-image:url('/graphics/map/floor2/board2.png')");
+        }
+        if (floorId == 3) {
+            layer.getScene().getRoot().setStyle("-fx-background-image:url('/graphics/map/floor3/board3.png')");
+        }
+        if (floorId == 4) {
+            layer.getScene().getRoot().setStyle("-fx-background-image:url('/graphics/map/floor4/board4.png')");
+        }
+
+        getDoor1().getImageView().setImage(new Image("/graphics/map/floor" + floorId + "/doorH" + floorId + ".png"));
+        getDoor2().getImageView().setImage(new Image("/graphics/map/floor" + floorId + "/doorV" + floorId + ".png"));
+        getDoor3().getImageView().setImage(new Image("/graphics/map/floor" + floorId + "/doorH" + floorId + ".png"));
+        getDoor4().getImageView().setImage(new Image("/graphics/map/floor" + floorId + "/doorV" + floorId + ".png"));
+        getTrapdoor().getImageView().setImage(new Image("/graphics/map/floor" + floorId + "/trapDoorClose" + floorId + ".png"));
+        getTrapdoor().setOpenedTrapdoorImage(new Image("/graphics/map/floor" + floorId + "/trapDoorOpen" + floorId + ".png"));
+
+    }
 
     public ArrayList<Room> getRoomList() {
         return roomList;

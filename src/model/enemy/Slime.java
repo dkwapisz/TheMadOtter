@@ -15,6 +15,7 @@ public class Slime extends Enemy {
 
     public Slime(double x, double y, Pane layer, String name) {
         super(x, y, "/graphics/enemies/slime.gif", "/graphics/enemies/slime.gif", null, null, layer);
+        setPoints(50);
         if(name.equals("SlimeKing")) {
             setFlying(false);
             setExplosive(false);

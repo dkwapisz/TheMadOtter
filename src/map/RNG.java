@@ -88,11 +88,10 @@ public class RNG {
                 block.removeFromLayer();
             }
         }
-
         return blocks;
     }
 
-    public ArrayList<Enemy> enemiesGenerator(int roomId){
+    public ArrayList<Enemy> enemiesGenerator(int roomId) {
         ArrayList<Enemy> enemies = new ArrayList<>();
         if(roomId == 7) {
             enemies.add(new Bat(500, 500, layer));
@@ -104,7 +103,6 @@ public class RNG {
             enemies.add(new Enemy2(300, 500, layer));
             enemies.add(new Turret(200, 300, layer));
             enemies.add(new Slime(400,500, layer,"SlimeKing"));
-
         }
         if(roomId == 13) {
             enemies.add(new Slime(400,500, layer,"SlimeKing"));
@@ -135,19 +133,19 @@ public class RNG {
 
     public static Item getRandomItem(double x, double y, double itemChance, Pane layer) { // itemChance -> szansa, że wyleci jakiś item: (zakres 0.01 -> 1.0)
         Random random = new Random();
-        double rng = random.nextInt((int) (100/itemChance)) + 1;
+        int rng = random.nextInt((int) (100/itemChance)) + 1;
         if (rng < 20) {
-            return new Bomb(x, y, layer);
+            return new Bomb(x+5, y, layer);
         } else if (rng >= 21 && rng < 30) {
-            return new BombPack(x, y, layer);
+            return new BombPack(x+5, y, layer);
         } else if (rng >= 31 && rng < 50) {
             return new SmallFish(x, y, layer);
         } else if (rng >= 51 && rng < 60) {
             return new Fish(x, y, layer);
         } else if (rng >= 61 && rng < 80) {
-            return new Coin(x, y, layer);
+            return new Coin(x+4, y, layer);
         } else if (rng >= 81 && rng < 90) {
-            return new Dollar(x, y, layer);
+            return new Dollar(x+4, y, layer);
         } else {
             return null;
         }

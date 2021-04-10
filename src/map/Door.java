@@ -8,8 +8,8 @@ public class Door extends StaticObjects {
     private int doorId;
     private boolean closedDoors;
 
-    public Door(double x, double y, String pathStatic, Pane mainLayer, int doorId) {
-        super(x, y, pathStatic, mainLayer);
+    public Door(double x, double y, String pathStatic, Pane layer, int doorId) {
+        super(x, y, pathStatic, layer);
         this.closedDoors = false;
         this.doorId = doorId;
     }

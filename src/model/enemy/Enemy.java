@@ -8,6 +8,7 @@ import model.hero.Hero;
 
 public abstract class Enemy extends MovingObjects {
 
+    private int points = 200;
     private int remainingHealth; // MUST HAVE
     private int dmg; // MUST HAVE
     private boolean following; // MUST HAVE
@@ -128,5 +129,12 @@ public abstract class Enemy extends MovingObjects {
     }
     public void setCooldownShot(int cooldownShot) {
         this.cooldownShot = cooldownShot;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

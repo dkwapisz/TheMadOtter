@@ -25,6 +25,7 @@ public abstract class Gun extends Item {
     public Gun(double x, double y, String pathStatic, String pathBullet, Pane layer) {
         super(x, y, pathStatic, layer);
         this.pathBullet = pathBullet;
+        setPoints(200);
     }
 
     @Override

@@ -7,6 +7,7 @@ public class BombPack extends Item {
 
     public BombPack(double x, double y, Pane layer) {
         super(x, y, "graphics/items/bombPackSafe.gif", layer);
+        setPoints(100);
     }
 
     @Override

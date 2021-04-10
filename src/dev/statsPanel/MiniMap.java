@@ -7,7 +7,8 @@ import model.hero.Hero;
 
 import java.util.HashMap;
 
-public class MiniMap{
+public class MiniMap {
+
     private final Hero hero;
     private final HashMap<Integer,ImageView> map = new HashMap<>();
 
@@ -17,7 +18,7 @@ public class MiniMap{
     }
 
     private ImageView createImageView(int x, int y){
-        ImageView miniPart = new ImageView(new Image("graphics/statsPanel/notCleaned.png"));
+        ImageView miniPart = new ImageView(new Image("graphics/statsPanel/floor1/notCleaned1.png"));
         miniPart.relocate(x, y);
         this.hero.getLayer().getChildren().add(miniPart);
         return miniPart;
@@ -37,17 +38,19 @@ public class MiniMap{
     }
 
     public void updateMiniMap(){
-        for (Room room:hero.getFloor().getRoomList()){
+        int actualFloor = hero.getActualRoom().getActualFloor().getFloorId();
+        for (Room room:hero.getFloor().getRoomList()) {
+
             if (room.getRoomId() == hero.getActualRoom().getRoomId()) {
-                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/actual.png"));
-            }
-            else if (room.isClean() && !room.isShop()) {
-                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/cleaned.png"));
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/floor" + actualFloor + "/actual" + actualFloor + ".png"));
+            } else if (room.isClean() && !room.isShop()) {
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/floor" + actualFloor + "/cleaned" + actualFloor + ".png"));
             } else if (room.isShop()) {
-                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/shop.png"));
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/floor" + actualFloor + "/shop" + actualFloor + ".png"));
             } else {
-                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/notCleaned.png"));
+                map.get(room.getRoomId()).setImage(new Image("graphics/statsPanel/floor" + actualFloor + "/notCleaned" + actualFloor + ".png"));
             }
+
         }
     }
 
