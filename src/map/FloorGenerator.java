@@ -33,6 +33,10 @@ public class FloorGenerator {
         door2 = new Door(0, 360, "/graphics/map/floor1/doorV1.png", layer, 2);           // lewo
         door3 = new Door(360, 768, "/graphics/map/floor1/doorH1.png", layer, 3);         // dół
         door4 = new Door(768, 360, "/graphics/map/floor1/doorV1.png", layer, 4);         // prawo
+        door1.setDoorBounds("up");
+        door2.setDoorBounds("left");
+        door3.setDoorBounds("down");
+        door4.setDoorBounds("right");
         door3.getImageView().setRotate(180);
         door4.getImageView().setRotate(180);
         generateMap();

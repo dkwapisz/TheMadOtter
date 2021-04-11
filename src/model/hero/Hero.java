@@ -175,7 +175,7 @@ public class Hero extends MovingObjects {
         Rectangle heroBounds = getBounds();
         ArrayList<Door> doors = actualRoom.getDoor();
         for (Door door : doors) {
-            Rectangle doorBounds = door.getBounds();
+            Rectangle doorBounds = door.getDoorBounds();
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
                 if (door.getDoorId() == 1 && !door.isClosedDoors()) {
                     goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() - 1), actualRoom);

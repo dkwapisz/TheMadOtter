@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import model.hero.Hero;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,13 @@ public abstract class MovingObjects {
     }
 
     public void updateLocation() {
-        if(!(x + velX < 30 || x + velX > 770 - imageStatic.getHeight()/4 || y + velY < 30 || y + velY > 770 - imageStatic.getHeight()/4)) {
+        if (this instanceof Hero) {
+            if (!(x + 14 + velX < 30 || x - 14 + velX > 770 - imageStatic.getHeight()/4 || y + 20 + velY < 30 || y + velY > 770 - imageStatic.getHeight()/4)) {
+                x = x + velX;
+                y = y + velY;
+            }
+        }
+        else if (!(x + velX < 30 || x + velX > 770 - imageStatic.getHeight()/4 || y + velY < 30 || y + velY > 770 - imageStatic.getHeight()/4)) {
             x = x + velX;
             y = y + velY;
         }
