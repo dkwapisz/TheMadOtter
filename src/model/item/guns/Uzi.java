@@ -8,7 +8,7 @@ public class Uzi extends Gun {
         super(x, y, "graphics/items/guns/uzi.png", "graphics/items/bullets/uziBullet.png", layer);
         setBulletVel(10);
         setCooldownShot(100);
-        setDmg(3);
+        setDmg(5);
         setPriceStandard(15);
         setPriceHealth(6);
         setGunName("Uzi");

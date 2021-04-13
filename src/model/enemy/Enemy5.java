@@ -26,7 +26,7 @@ public class Enemy5 extends Enemy{
     }
 
     @Override
-    public void specificMovement() {
+    public void specificBehaviour() {
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(1500)+500) {
             lastChange = time;

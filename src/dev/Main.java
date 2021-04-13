@@ -9,16 +9,14 @@ import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.hero.Hero;
 
-
 public class Main extends Application {
-    static Hero hero;
+    private static Hero hero;
     private InputManager inputManager;
     private ImageView gunReview;
     private MiniMap miniMap;
@@ -41,7 +39,7 @@ public class Main extends Application {
         gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
         root.getChildren().add(gunReview);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e->run()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e-> gameLoop()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         EventHandling.addEventHandlers(primaryStage.getScene());
@@ -51,7 +49,7 @@ public class Main extends Application {
         this.stats = new Stats(hero);
     }
 
-    private void run() {
+    private void gameLoop() {
         inputManager.handlePlayerActions();
         inputManager.hero.updateHero();
         updateGun();

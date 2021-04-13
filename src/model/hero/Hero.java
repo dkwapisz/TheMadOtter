@@ -175,7 +175,7 @@ public class Hero extends MovingObjects {
 
     public void doorCollision() {
         Rectangle heroBounds = getBounds();
-        ArrayList<Door> doors = actualRoom.getDoor();
+        ArrayList<Door> doors = actualRoom.getDoors();
         for (Door door : doors) {
             Rectangle doorBounds = door.getDoorBounds();
             if (heroBounds.intersects(doorBounds.getBoundsInParent())) {
@@ -195,7 +195,7 @@ public class Hero extends MovingObjects {
                     goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() + 1), actualRoom);
                     actualRoom = floor.getRoomList().get(actualRoom.getRoomId() + 1);
                     setX(360);
-                    setY(40);
+                    setY(30);
                 }
                 if (door.getDoorId() == 4 && !door.isClosedDoors()) {
                     goToNextRoom(floor.getRoomList().get(actualRoom.getRoomId() + floor.getNrOfRooms()), actualRoom);
@@ -215,7 +215,7 @@ public class Hero extends MovingObjects {
                 actualRoom.eraseBlocks();
                 actualRoom.eraseBullets();
                 actualRoom.eraseExplosions();
-                for (Door door:getActualRoom().getDoor()) {
+                for (Door door:getActualRoom().getDoors()) {
                     door.removeFromLayer();
                 }
                 floor = new FloorGenerator(5, layer, floor.getFloorId()+1);
@@ -231,10 +231,10 @@ public class Hero extends MovingObjects {
     private void goToNextRoom(Room nextRoom, Room actualRoom) {
         ArrayList<Integer> tempNextRemove = new ArrayList<>();
         ArrayList<Integer> tempNextAdd = new ArrayList<>();
-        for (int i = 0; i < nextRoom.getDoor().size(); i++) {
-            tempNextRemove.add(nextRoom.getDoor().get(i).getDoorId());
+        for (int i = 0; i < nextRoom.getDoors().size(); i++) {
+            tempNextRemove.add(nextRoom.getDoors().get(i).getDoorId());
         }
-        if (nextRoom.getDoor().size() < actualRoom.getDoor().size()) {
+        if (nextRoom.getDoors().size() < actualRoom.getDoors().size()) {
             if (!tempNextRemove.contains(1)) {
                 floor.getDoor1().removeFromLayer();
                 floor.getDoor1().setClosedDoors(true);
@@ -252,8 +252,8 @@ public class Hero extends MovingObjects {
                 floor.getDoor4().setClosedDoors(true);
             }
         } else {
-            for (int i = 0; i < actualRoom.getDoor().size(); i++) {
-                tempNextAdd.add(actualRoom.getDoor().get(i).getDoorId());
+            for (int i = 0; i < actualRoom.getDoors().size(); i++) {
+                tempNextAdd.add(actualRoom.getDoors().get(i).getDoorId());
             }
             if (tempNextRemove.contains(1) && !tempNextAdd.contains(1)) {
                 floor.getDoor1().addToLayer();
@@ -286,7 +286,7 @@ public class Hero extends MovingObjects {
         nextRoom.makeHeroBulletList();
         nextRoom.makeEnemyBulletList();
         if (!nextRoom.getEnemies().isEmpty()){
-            for (Door door : nextRoom.getDoor()) {
+            for (Door door : nextRoom.getDoors()) {
                 door.removeFromLayer();
                 door.setClosedDoors(true);
             }

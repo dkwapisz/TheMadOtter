@@ -27,8 +27,8 @@ public class RNG {
 
     private void loadBitMap(int roomId) {
         if(roomId != centerRoom) {
-            int randCol = random.nextInt(2);
-            int randRow = random.nextInt(2);
+            int randCol = random.nextInt(3);
+            int randRow = random.nextInt(3);
             bitMap = new BitMapLoader(randCol, randRow); // nie podajemy współrzędnych bitmapy, tylko w której kolumnie i rzędzie występuje (liczone od 0)
         }
     }
@@ -82,7 +82,15 @@ public class RNG {
         for(int i = 0; i < bitMap.getBoxLoc().size(); i++) {
             blocks.add(new Box(bitMap.getBoxLoc().get(i)[0], bitMap.getBoxLoc().get(i)[1], layer));
         }
-        blocks.add(new BushBlock(100,100,layer));
+
+        for(int i = 0; i < bitMap.getBushLoc().size(); i++) {
+            blocks.add(new BushBlock(bitMap.getBushLoc().get(i)[0], bitMap.getBushLoc().get(i)[1], layer));
+        }
+
+        for(int i = 0; i < bitMap.getBonfireLoc().size(); i++) {
+            blocks.add(new BonFire(bitMap.getBonfireLoc().get(i)[0], bitMap.getBonfireLoc().get(i)[1], layer));
+        }
+
         if(roomId != (centerRoom)) {
             for (Block block : blocks) {
                 block.removeFromLayer();
@@ -99,7 +107,7 @@ public class RNG {
             enemies.add(new Boomer(300, 300, layer));
         }
         if(roomId == 11) {
-            enemies.add(new Enemy1(500, 500, layer));
+            enemies.add(new Spider(500, 500, layer));
             enemies.add(new Enemy2(300, 500, layer));
             enemies.add(new Turret(200, 300, layer));
             enemies.add(new Slime(400,500, layer,"SlimeKing"));
@@ -109,7 +117,7 @@ public class RNG {
         }
         if(roomId == 17) {
             enemies.add(new Diglet(500, 500, layer, bitMap.getEnemySpotLoc()));
-            enemies.add(new Enemy7(300, 500, layer, bitMap.getEnemySpotLoc()));
+            enemies.add(new Teleporto(300, 500, layer, bitMap.getEnemySpotLoc()));
         }
         if(roomId == 18) {
             enemies.add(new Turret(500, 500, layer));

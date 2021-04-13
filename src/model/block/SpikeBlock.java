@@ -8,5 +8,6 @@ public class SpikeBlock extends Block{
         setBreakable(false);
         setPrickly(true);
         setToPass(true);
+        setDmg(2);
     }
 }

@@ -7,7 +7,7 @@ import model.hero.Hero;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Enemy7 extends Enemy{
+public class Teleporto extends Enemy{
 
     private long lastEnemyShot = 0;
     private long lastChange = 0;
@@ -15,8 +15,8 @@ public class Enemy7 extends Enemy{
     private boolean up = false;
     private final ArrayList<int[]> spotLoc;
 
-    public Enemy7(double x, double y, Pane layer, ArrayList<int[]> spotLoc) {
-        super(x, y, "graphics/enemies/teleporto.gif", "graphics/enemies/teleporto.gif", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", layer);
+    public Teleporto(double x, double y, Pane layer, ArrayList<int[]> spotLoc) {
+        super(x, y, "graphics/enemies/teleporto.gif", "graphics/enemies/teleporto.gif", "/graphics/enemies/teleporto.gif", "/graphics/enemies/teleporto.gif", layer);
         this.spotLoc = spotLoc;
         setFollowing(false);
         setFlying(false);
@@ -25,12 +25,12 @@ public class Enemy7 extends Enemy{
         setBulletVelFactor(8);
         setCooldownShot(100);
         setRemainingHealth(20);
-        setBulletPath("graphics/items/bullets/EnemyBullets/teleportoBullet.png");
+        setBulletPath("graphics/items/bullets/enemyBullets/teleportoBullet.png");
         setDmg(1);
     }
 
     @Override
-    public void specificMovement() {
+    public void specificBehaviour() {
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(3000)+2000) {
             lastChange = time;

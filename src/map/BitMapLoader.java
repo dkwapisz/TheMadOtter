@@ -15,6 +15,8 @@ public class BitMapLoader {
     private ArrayList<int[]> tempSpikeBlockLoc = new ArrayList<>();
     private ArrayList<int[]> barrelLoc = new ArrayList<>();
     private ArrayList<int[]> boxLoc = new ArrayList<>();
+    private ArrayList<int[]> bushLoc = new ArrayList<>();
+    private ArrayList<int[]> bonfireLoc = new ArrayList<>();
     private ArrayList<int[]> enemySpotLoc = new ArrayList<>();
     private BufferedImage mapImage;
 
@@ -23,7 +25,7 @@ public class BitMapLoader {
     }
 
     public void readMap(int col, int row) {
-        mapImage = loadImage("src/graphics/bitMap.png");
+        mapImage = loadImage("src/graphics/bitMapFinal.png");
         mapImage = mapImage.getSubimage(col*25, row*25, 25, 25); // jedna bitmapa ma rozmiar 25x25, pobierając bitmapę, podajemy tylko kolumne i wiersz
         if (mapImage == null) {
             System.out.println("Given path is invalid...");
@@ -36,6 +38,8 @@ public class BitMapLoader {
         int barrel = new Color(75, 0, 0).getRGB();
         int tempSpikeBlock = new Color(100, 0, 255).getRGB();
         int box = new Color(200, 200, 0).getRGB();
+        int bush = new Color(0, 255, 0).getRGB();
+        int bonfire = new Color(255, 100, 0).getRGB();
         int enemySpot = new Color(255, 0, 0).getRGB();
 
         for (int x = 0; x < mapImage.getWidth(); x++) {
@@ -81,11 +85,19 @@ public class BitMapLoader {
                     locXY[1] = yLoc;
                     boxLoc.add(locXY);
                 }
+                if(currentPixel == bush) {
+                    locXY[0] = xLoc;
+                    locXY[1] = yLoc;
+                    bushLoc.add(locXY);
+                }
+                if(currentPixel == bonfire) {
+                    locXY[0] = xLoc;
+                    locXY[1] = yLoc;
+                    bonfireLoc.add(locXY);
+                }
             }
         }
     }
-
-
 
 
     public BufferedImage loadImage(String path) {
@@ -99,6 +111,13 @@ public class BitMapLoader {
     }
 
 
+    public BufferedImage getMapImage() {
+        return mapImage;
+    }
+    public void setMapImage(BufferedImage mapImage) {
+        this.mapImage = mapImage;
+    }
+
     public ArrayList<int[]> getSolidBlocksLoc() {
         return solidBlocksLoc;
     }
@@ -111,13 +130,6 @@ public class BitMapLoader {
     }
     public void setEnemySpotLoc(ArrayList<int[]> enemySpotLoc) {
         this.enemySpotLoc = enemySpotLoc;
-    }
-
-    public BufferedImage getMapImage() {
-        return mapImage;
-    }
-    public void setMapImage(BufferedImage mapImage) {
-        this.mapImage = mapImage;
     }
 
     public ArrayList<int[]> getSoftBlocksLoc() {
@@ -153,5 +165,19 @@ public class BitMapLoader {
     }
     public void setBoxLoc(ArrayList<int[]> boxLoc) {
         this.boxLoc = boxLoc;
+    }
+
+    public ArrayList<int[]> getBushLoc() {
+        return bushLoc;
+    }
+    public void setBushLoc(ArrayList<int[]> bushLoc) {
+        this.bushLoc = bushLoc;
+    }
+
+    public ArrayList<int[]> getBonfireLoc() {
+        return bonfireLoc;
+    }
+    public void setBonfireLoc(ArrayList<int[]> bonfireLoc) {
+        this.bonfireLoc = bonfireLoc;
     }
 }

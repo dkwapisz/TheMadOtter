@@ -24,7 +24,7 @@ public class Bat extends Enemy{
     }
 
     @Override
-    public void specificMovement() {
+    public void specificBehaviour() {
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(1000)+500) {
             lastChange = time;

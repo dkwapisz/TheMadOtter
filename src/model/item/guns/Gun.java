@@ -30,17 +30,28 @@ public abstract class Gun extends Item {
 
     @Override
     public boolean onTouch(Hero hero) {
-        if (buyStandard && hero.getMoney() >= priceStandard) {
-            hero.setMoney(hero.getMoney() - priceStandard);
-            hero.addNewGun(this);
-            return true;
-        } else if (buyHealth && hero.getRemainingLives() >= priceHealth) {
-            hero.healthDown(priceHealth);
-            hero.addNewGun(this);
-            return true;
-        } else if (!buyStandard && !buyHealth) {
-            hero.addNewGun(this);
-            return true;
+        if (!isOwnedGun(hero)) {
+            if (buyStandard && hero.getMoney() >= priceStandard) {
+                hero.setMoney(hero.getMoney() - priceStandard);
+                hero.addNewGun(this);
+                return true;
+            } else if (buyHealth && hero.getRemainingLives() >= priceHealth) {
+                hero.healthDown(priceHealth);
+                hero.addNewGun(this);
+                return true;
+            } else if (!buyStandard && !buyHealth) {
+                hero.addNewGun(this);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isOwnedGun(Hero hero) {
+        for (Gun gun : hero.getEquipment()) {
+            if (gun.getClass().equals(this.getClass())) {
+                return true;
+            }
         }
         return false;
     }

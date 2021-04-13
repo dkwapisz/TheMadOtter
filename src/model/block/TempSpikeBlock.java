@@ -14,6 +14,7 @@ public class TempSpikeBlock extends Block{
         setBreakable(false);
         setPrickly(false);
         setToPass(true);
+        setDmg(2);
         spikeAnimation();
     }
 

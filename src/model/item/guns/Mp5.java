@@ -8,7 +8,7 @@ public class Mp5 extends Gun {
         super(x, y, "graphics/items/guns/mp5.png", "graphics/items/bullets/mp5Bullet.png", layer);
         setBulletVel(16);
         setCooldownShot(125);
-        setDmg(4);
+        setDmg(5);
         setPriceStandard(20);
         setPriceHealth(8);
         setGunName("MP5");

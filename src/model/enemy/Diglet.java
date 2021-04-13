@@ -27,12 +27,12 @@ public class Diglet extends Enemy{
         setBulletVelFactor(6);
         setCooldownShot(300);
         setRemainingHealth(20);
-        setBulletPath("graphics/items/bullets/EnemyBullets/digletBall.png");
+        setBulletPath("graphics/items/bullets/enemyBullets/digletBall.png");
         setDmg(1);
     }
 
     @Override
-    public void specificMovement() {
+    public void specificBehaviour() {
         long time = System.currentTimeMillis();
         if (time > lastChange + random.nextInt(3000)+2000) {
             lastChange = time;

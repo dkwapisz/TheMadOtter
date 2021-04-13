@@ -9,6 +9,7 @@ public abstract class Block extends StaticObjects {
     private boolean breakable; // blok zniszczalny
     private boolean toPass;    // blok, przez który można przejść
     private boolean prickly;   // blok zadający obrażenia
+    private int dmg = 0;           // dmg bloku (pod warunkiem, że jest prickly)
 
     public Block(double x, double y, String pathStatic, Pane layer) {
         super(x, y, pathStatic, layer);
@@ -40,5 +41,12 @@ public abstract class Block extends StaticObjects {
     }
     public void setPrickly(boolean prickly) {
         this.prickly = prickly;
+    }
+
+    public int getDmg() {
+        return dmg;
+    }
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
     }
 }

@@ -45,7 +45,7 @@ public abstract class Enemy extends MovingObjects {
         }
     }
 
-    public void specificMovement() {} // funkcja do przeciążeń (np Enemy5, Enemy6)
+    public void specificBehaviour() {} // funkcja do przeciążeń (np Enemy5, Enemy6)
 
     public int getRemainingHealth() {
         return remainingHealth;

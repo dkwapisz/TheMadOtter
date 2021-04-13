@@ -18,11 +18,11 @@ import java.util.Random;
 
 public class Room {
 
-    private ArrayList<Door> door;
     private boolean clean;
     private boolean shop;
     private int roomId;
     private FloorGenerator actualFloor;
+    private ArrayList<Door> doors;
     private ArrayList<Enemy> enemies;
     private ArrayList<Item> items;
     private ArrayList<Bullet> heroBullets;
@@ -33,11 +33,11 @@ public class Room {
     private ArrayList<ImageView> animations = new ArrayList<>();
     private final Random random = new Random();
 
-    public Room(ArrayList<Door> door, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
+    public Room(ArrayList<Door> doors, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
         this.enemies = Objects.requireNonNullElseGet(enemies, ArrayList::new);
         this.blocks = Objects.requireNonNullElseGet(blocks, ArrayList::new);
         this.items = Objects.requireNonNullElseGet(items, ArrayList::new);
-        this.door = door;
+        this.doors = doors;
         this.roomId = roomId;
         this.actualFloor = actualFloor;
     }
@@ -222,7 +222,7 @@ public class Room {
     }
 
     public void openDoor() {
-        for (Door door : door) {
+        for (Door door : doors) {
             if (enemies.isEmpty() && door.isClosedDoors()) {
                 door.setClosedDoors(false);
                 door.addToLayer();
@@ -253,13 +253,21 @@ public class Room {
 
     public void explosionCollision(Hero hero) {
         if (explosions.size() != 0) {
-            for(Explosion explosion : explosions) {
-                if(hero.getSmallerBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+            for (Explosion explosion : explosions) {
+                if (hero.getSmallerBounds().intersects(explosion.getBounds().getBoundsInParent())) {
                     hero.healthDown(2);
                 }
-                for(Enemy enemy : enemies) {
-                    if(enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
+                for (Enemy enemy : enemies) {
+                    if (enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
                         enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - 30, 0));
+                    }
+                }
+                for (Door door : doors) {
+                    if (explosion.getBounds().intersects(door.getBounds().getBoundsInParent())) {
+                        door.setClosedDoors(false);
+                        try {
+                            door.addToLayer();
+                        } catch (IllegalArgumentException ignored) {}
                     }
                 }
             }
@@ -277,7 +285,7 @@ public class Room {
                     hero.setVelY(0);
                 }
                 if (block.isPrickly()){
-                    hero.healthDown(2);
+                    hero.healthDown(block.getDmg());
                 }
                 block.onTouch(hero);
             }else {
@@ -390,13 +398,13 @@ public class Room {
         double newVelX;
         double newVelY;
         for (Enemy enemy : enemies) {
-            vecLength = Math.hypot(hero.getX() - enemy.getX(), hero.getY() - enemy.getY());
-            newVelX = enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength;
-            newVelY = enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength;
+            vecLength = Math.hypot(hero.getX() + 16 - enemy.getX(), hero.getY() + 48 - enemy.getY());
+            newVelX = enemy.getFollowingVel()*(hero.getX() + 16 - enemy.getX())/vecLength;
+            newVelY = enemy.getFollowingVel()*(hero.getY() + 48 - enemy.getY())/vecLength;
             if (enemy.isFollowing()) {
                 for (Block block : blocks) {
-                    enemy.setVelX(enemy.getFollowingVel()*(hero.getX() - enemy.getX())/vecLength);
-                    enemy.setVelY(enemy.getFollowingVel()*(hero.getY() - enemy.getY())/vecLength);
+                    enemy.setVelX(enemy.getFollowingVel()*(hero.getX() + 16 - enemy.getX())/vecLength);
+                    enemy.setVelY(enemy.getFollowingVel()*(hero.getY() + 48 - enemy.getY())/vecLength);
                     Rectangle enemyBounds = enemy.getBounds();
                     Rectangle blockBounds = block.getBounds();
                     if(enemyBounds.intersects(blockBounds.getBoundsInParent()) && !enemy.isFlying() && !block.isToPass()) {
@@ -423,7 +431,7 @@ public class Room {
     public void updateEnemy(Hero hero) {
         if (!enemies.isEmpty()) {
             for (Enemy enemy : enemies) {
-                enemy.specificMovement();
+                enemy.specificBehaviour();
                 if (enemy.getX() + enemy.getVelX() < 30 || enemy.getX() + enemy.getVelX() > 770 - enemy.getImageStatic().getHeight()/4){
                     enemy.setVelX(-enemy.getVelX());
                 }
@@ -453,11 +461,11 @@ public class Room {
         enemyBullets = new ArrayList<>();
     }
 
-    public ArrayList<Door> getDoor() {
-        return door;
+    public ArrayList<Door> getDoors() {
+        return doors;
     }
-    public void setDoor(ArrayList<Door> door) {
-        this.door = door;
+    public void setDoors(ArrayList<Door> doors) {
+        this.doors = doors;
     }
 
     public boolean isClean() {
