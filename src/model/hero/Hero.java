@@ -19,6 +19,7 @@ import java.util.Random;
 public class Hero extends MovingObjects {
 
     private boolean shooting;
+    private boolean isDamaged;
     private boolean additionalData;
     private int remainingLives;
     private int money;
@@ -54,6 +55,7 @@ public class Hero extends MovingObjects {
         remainingLives = 20;
         getImageView().toFront();
         this.layer = layer;
+        setDamaged(false);
     }
 
     public void updateHero() {
@@ -397,9 +399,11 @@ public class Hero extends MovingObjects {
             public void stop() {
                 getImageView().setOpacity(1);
                 super.stop();
+                setDamaged(false);
             }
         };
         animationTimer.start();
+        setDamaged(true);
     }
     // F1
     public void turnOnAdditionalData() {
@@ -510,6 +514,13 @@ public class Hero extends MovingObjects {
     }
     public void setAdditionalData(boolean additionalData) {
         this.additionalData = additionalData;
+    }
+
+    public boolean isDamaged() {
+        return isDamaged;
+    }
+    public void setDamaged(boolean damaged) {
+        isDamaged = damaged;
     }
 
     public int getPoints() {

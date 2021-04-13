@@ -82,7 +82,7 @@ public class RNG {
         for(int i = 0; i < bitMap.getBoxLoc().size(); i++) {
             blocks.add(new Box(bitMap.getBoxLoc().get(i)[0], bitMap.getBoxLoc().get(i)[1], layer));
         }
-
+        blocks.add(new BushBlock(100,100,layer));
         if(roomId != (centerRoom)) {
             for (Block block : blocks) {
                 block.removeFromLayer();

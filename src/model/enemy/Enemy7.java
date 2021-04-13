@@ -16,7 +16,7 @@ public class Enemy7 extends Enemy{
     private final ArrayList<int[]> spotLoc;
 
     public Enemy7(double x, double y, Pane layer, ArrayList<int[]> spotLoc) {
-        super(x, y, "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", layer);
+        super(x, y, "graphics/enemies/teleporto.gif", "graphics/enemies/teleporto.gif", "/graphics/enemies/enemy7.png", "/graphics/enemies/enemy7.png", layer);
         this.spotLoc = spotLoc;
         setFollowing(false);
         setFlying(false);
@@ -25,7 +25,7 @@ public class Enemy7 extends Enemy{
         setBulletVelFactor(8);
         setCooldownShot(100);
         setRemainingHealth(20);
-        setBulletPath("graphics/items/bullets/ak47Bullet.png");
+        setBulletPath("graphics/items/bullets/EnemyBullets/teleportoBullet.png");
         setDmg(1);
     }
 

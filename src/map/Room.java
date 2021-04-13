@@ -279,6 +279,9 @@ public class Room {
                 if (block.isPrickly()){
                     hero.healthDown(2);
                 }
+                block.onTouch(hero);
+            }else {
+                block.stoppedTouching(hero);
             }
             for (Explosion explosion : explosions) {
                 if (blockBounds.intersects(explosion.getBounds().getBoundsInParent()) && !block.isToPass()) {
