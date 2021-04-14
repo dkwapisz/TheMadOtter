@@ -100,34 +100,43 @@ public class RNG {
     }
 
     public ArrayList<Enemy> enemiesGenerator(int roomId) {
+        if(bitMap.getEnemySpotLoc().size() == 0) {
+            return null;
+        }
         ArrayList<Enemy> enemies = new ArrayList<>();
-        if(roomId == 7) {
-            enemies.add(new Bat(500, 500, layer));
-            enemies.add(new Enemy5(300, 500, layer));
-            enemies.add(new Boomer(300, 300, layer));
-        }
-        if(roomId == 11) {
-            enemies.add(new Spider(500, 500, layer));
-            enemies.add(new Enemy2(300, 500, layer));
-            enemies.add(new Turret(200, 300, layer));
-            enemies.add(new Slime(400,500, layer,"SlimeKing"));
-        }
-        if(roomId == 13) {
-            enemies.add(new Slime(400,500, layer,"SlimeKing"));
-        }
-        if(roomId == 17) {
-            enemies.add(new Diglet(500, 500, layer, bitMap.getEnemySpotLoc()));
-            enemies.add(new Teleporto(300, 500, layer, bitMap.getEnemySpotLoc()));
-        }
-        if(roomId == 18) {
-            enemies.add(new Turret(500, 500, layer));
-            enemies.add(new Snake(500, 300, layer));
-            enemies.add(new Wasp(100, 700, layer));
-            enemies.add(new Fly(360, 700, layer));
-            enemies.add(new Crab(360, 700, layer));
+        int howMany = 5; // <--- jak dużo przeciwników w jednym pomieszczeniu
+
+        for (int i = 0; i < howMany; i++) {
+            enemies.add(getRandomEnemy());
         }
 
         return enemies;
+    }
+
+    private Enemy getRandomEnemy() {
+        int value = random.nextInt(13);
+        int randomLoc = random.nextInt(bitMap.getEnemySpotLoc().size());
+        int x = bitMap.getEnemySpotLoc().get(randomLoc)[0];
+        int y = bitMap.getEnemySpotLoc().get(randomLoc)[1];
+        //value = ...  <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
+        //x = ...      <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
+        //y = ...      <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
+        return switch (value) {
+            case 0 -> new Crab(x, y, layer);
+            case 1 -> new Turret(x, y, layer);
+            case 2 -> new Wasp(x, y, layer);
+            case 3 -> new Snake(x, y, layer);
+            case 4 -> new Spider(x, y, layer);
+            case 5 -> new Fly(x, y, layer);
+            case 6 -> new Enemy2(x, y, layer);
+            case 7 -> new Boomer(x, y, layer);
+            case 8 -> new Slime(x, y, layer, "SlimeKing");
+            case 9 -> new Bat(x, y, layer);
+            case 10 -> new Enemy5(x, y, layer);
+            case 11 -> new Diglet(x, y, layer, bitMap.getEnemySpotLoc());
+            case 12 -> new Teleporto(x, y, layer, bitMap.getEnemySpotLoc());
+            default -> throw new IllegalStateException("Can't find enemy with number: " + value);
+        };
     }
 
     public static int getShopRoomId(int centerRoom) {

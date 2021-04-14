@@ -24,6 +24,8 @@ public class FloorGenerator {
     private RNG rng;
     private final Random random = new Random();
 
+    private int mapLoading = 0;
+
     public FloorGenerator(int nrOfRooms, Pane layer, int floorId) {
         this.nrOfRooms = nrOfRooms;
         this.layer = layer;
@@ -119,6 +121,9 @@ public class FloorGenerator {
                     roomList.get(roomId).getBlocks().add(trapdoor);
                 }
                 roomId++;
+
+                mapLoading += 4;
+                System.out.println("Map loading: " + mapLoading + "%");
             }
         }
     }
@@ -162,7 +167,7 @@ public class FloorGenerator {
         choosedGun.add(gunList.get(gunA));
         choosedGun.add(gunList.get(gunB));
         choosedGun.get(0).setLocation(300 - (choosedGun.get(0).getImageStatic().getWidth() - 32)/2,300);
-        choosedGun.get(1).setLocation(500 - (choosedGun.get(0).getImageStatic().getWidth() - 32)/2,300);
+        choosedGun.get(1).setLocation(500 - (choosedGun.get(1).getImageStatic().getWidth() - 32)/2,300);
         ((Gun) choosedGun.get(0)).setBuyStandard(true);
         ((Gun) choosedGun.get(1)).setBuyHealth(true);
 

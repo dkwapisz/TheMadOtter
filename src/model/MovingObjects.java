@@ -25,7 +25,6 @@ public abstract class MovingObjects {
     private final ArrayList<Rectangle2D> frame = new ArrayList<>();
 
     public MovingObjects(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane layer) {
-        setLocation(x, y);
         this.layer = layer;
         loadImage(pathStatic);
         imageStatic = new Image(pathStatic);
@@ -34,12 +33,14 @@ public abstract class MovingObjects {
             imageStaticShot = new Image(pathStaticShot);
             imageMovingShot = new Image(pathMovingShot);
         }
+        setLocation(x, y);
         dimension = new javafx.geometry.Dimension2D(imageStatic.getWidth(), imageStatic.getHeight()/4);
     }
 
     public void setLocation(double x, double y) {
         setX(x);
         setY(y);
+        imageView.relocate(x, y);
     }
 
     private void loadFrames() {

@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class Sign extends Item {
 
@@ -15,6 +16,7 @@ public class Sign extends Item {
         this.layer = layer;
         information.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         information.setText(text);
+        information.setTextAlignment(TextAlignment.JUSTIFY);
         information.relocate(x - 20, y - 55); // trzeba ustawić, żeby tekst pojawiał się równo
     }
 
