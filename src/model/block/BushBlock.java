@@ -6,24 +6,21 @@ import javafx.scene.layout.Pane;
 import model.hero.Hero;
 
 public class BushBlock extends Block{
+    private boolean ifInBush;
     public BushBlock(double x, double y, Pane layer) {
         super(x, y, "graphics/blocks/bush.png", layer);
         setBreakable(false);
         setPrickly(false);
         setToPass(true);
+        setIfInBush(false);
     }
 
-    @Override
-    public void onTouch(Hero hero) {
-        if(!hero.isDamaged()) {
-            hero.getImageView().setOpacity(0.7);
-        }
-    }
-    @Override
-    public void stoppedTouching(Hero hero) {
-        if(!hero.isDamaged()) {
-            hero.getImageView().setOpacity(1);
-        }
+
+    public boolean isIfInBush() {
+        return ifInBush;
     }
 
+    public void setIfInBush(boolean ifInBush) {
+        this.ifInBush = ifInBush;
+    }
 }

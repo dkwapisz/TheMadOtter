@@ -15,9 +15,6 @@ public abstract class Block extends StaticObjects {
         super(x, y, pathStatic, layer);
     }
 
-    public void onTouch(Hero hero) {}
-    public void stoppedTouching(Hero hero) {}
-
     public void changeImage() {} // metoda szkieletowa dla bloków Breakable
     public int getHp() {return 0;} // metoda szkieletowa dla bloków Breakable
     public void setHp(int hp) {} // metoda szkieletowa dla bloków Breakable

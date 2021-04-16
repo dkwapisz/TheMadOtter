@@ -1,5 +1,6 @@
 package model.enemy;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 import map.FloorGenerator;
 import model.Bullet;
@@ -15,6 +16,7 @@ public abstract class Enemy extends MovingObjects {
     private boolean flying; // MUST HAVE
     private boolean shooting; // MUST HAVE
     private boolean explosive; // MUST HAVE
+    private boolean isPoisoned;
 
     private int followingVel = 0; // tylko dla przeciwników podążających za graczem - nie więcej niż 4!
     private String bulletPath = null; // tylko dla przeciwników strzelających, ścieżka do grafiki pocisku
@@ -29,6 +31,7 @@ public abstract class Enemy extends MovingObjects {
     public Enemy(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane layer) {
         super(x, y, pathStatic, pathMoving, pathStaticShot, pathMovingShot, layer);
         this.removeFromLayer();
+        setPoisoned(false);
     }
 
     public void shot(Hero hero, int velFactor) {
@@ -44,6 +47,44 @@ public abstract class Enemy extends MovingObjects {
             }
         }
     }
+
+    public void poisonDamage(int damage){
+        AnimationTimer animationTimer = new AnimationTimer(){
+            long lastUpdate = 0;
+            int calc = 0;
+            @Override
+            public void handle(long l) {
+                if ((l - lastUpdate) >= 500_000_000) {
+                    if (getImageView().getOpacity() == 1) {
+                        getImageView().setOpacity(0.3);
+                    } else if (getImageView().getOpacity() == 0.3) {
+                        getImageView().setOpacity(1);
+                    }
+                    setRemainingHealth(getRemainingHealth()-damage);
+                    calc ++;
+                    lastUpdate = l;
+                    System.out.println(getRemainingHealth());
+                    if(getRemainingHealth() <= 0){
+                        this.stop();
+
+                    }
+                }
+                if (calc == 10) {
+                    this.stop();
+                }
+            }
+
+            @Override
+            public void stop() {
+                getImageView().setOpacity(1);
+                super.stop();
+                setPoisoned(false);
+            }
+        };
+        animationTimer.start();
+        setPoisoned(true);
+    }
+
 
     public void specificBehaviour() {} // funkcja do przeciążeń (np Enemy5, Enemy6)
 
@@ -136,5 +177,12 @@ public abstract class Enemy extends MovingObjects {
     }
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public boolean isPoisoned() {
+        return isPoisoned;
+    }
+    public void setPoisoned(boolean poisoned) {
+        isPoisoned = poisoned;
     }
 }

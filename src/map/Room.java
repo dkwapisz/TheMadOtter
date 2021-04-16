@@ -9,6 +9,7 @@ import model.enemy.*;
 import model.hero.Hero;
 import model.item.Sign;
 import model.item.Item;
+import model.item.guns.PoisonDagger;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Room {
     private ArrayList<Explosion> explosions = new ArrayList<>();
     private ArrayList<BombFired> puttedBombs = new ArrayList<>();
     private ArrayList<ImageView> animations = new ArrayList<>();
+    private ArrayList<Enemy> PoisonedEnemies = new ArrayList<>();
     private final Random random = new Random();
 
     public Room(ArrayList<Door> doors, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
@@ -45,6 +47,7 @@ public class Room {
     public void checkCollision(Hero hero) {
         blockCollision(hero);
         enemyCollision(hero);
+        poisonEffect(hero); //Niepewne
         itemCollision(hero);
         heroBulletsCollision(hero);
         enemyBulletCollision(hero);
@@ -160,6 +163,9 @@ public class Room {
                     items.add(randomItem);
                 }
                 enemies.remove(object);
+                if(PoisonedEnemies.contains(object)){
+                    PoisonedEnemies.remove((object));
+                }
                 if(enemies.size() == 0) {
                     clean = true;
                 }
@@ -277,6 +283,7 @@ public class Room {
     public void blockCollision(Hero hero) {
         ArrayList<StaticObjects> toBeRemoved = new ArrayList<>();
         Rectangle heroBounds = hero.getSmallerBounds();
+        boolean ifInBush = false;
         for (Block block : blocks) {
             Rectangle blockBounds = block.getBounds();
             if (heroBounds.intersects(blockBounds.getBoundsInParent())) {
@@ -287,9 +294,10 @@ public class Room {
                 if (block.isPrickly()){
                     hero.healthDown(block.getDmg());
                 }
-                block.onTouch(hero);
-            }else {
-                block.stoppedTouching(hero);
+                if (block instanceof BushBlock){
+                    ifInBush = true;
+                }
+
             }
             for (Explosion explosion : explosions) {
                 if (blockBounds.intersects(explosion.getBounds().getBoundsInParent()) && !block.isToPass()) {
@@ -297,6 +305,13 @@ public class Room {
                 }
             }
         }
+        if(ifInBush){
+            hero.bushEffect();
+        }else if(hero.getImageView().getOpacity() == 0.5){
+            hero.getImageView().setOpacity(1);
+            hero.setHiding(false);
+        }
+
         removeStaticObjects(toBeRemoved, hero);
     }
 
@@ -370,6 +385,13 @@ public class Room {
                 if (bulletBounds.intersects(enemyBounds.getBoundsInParent())){
                     toBeRemoved.add(bullet);
                     enemy.setRemainingHealth(enemy.getRemainingHealth() - bullet.getDmg());
+
+                    if(hero.getActualGun() instanceof PoisonDagger && !enemy.isPoisoned()){
+                        enemy.poisonDamage(bullet.getDmg());
+                        getPoisonedEnemies().add(enemy);
+                    }
+
+
                     if (enemy.getRemainingHealth() <= 0){
                         toBeRemoved.add(enemy);
                         if(enemy instanceof Slime){
@@ -399,8 +421,13 @@ public class Room {
         double newVelY;
         for (Enemy enemy : enemies) {
             vecLength = Math.hypot(hero.getX() + 16 - enemy.getX(), hero.getY() + 48 - enemy.getY());
-            newVelX = enemy.getFollowingVel()*(hero.getX() + 16 - enemy.getX())/vecLength;
-            newVelY = enemy.getFollowingVel()*(hero.getY() + 48 - enemy.getY())/vecLength;
+            if(hero.isHiding() && !hero.isShooting()){
+                newVelX = 0;
+                newVelY = 0;
+            }else {
+                newVelX = enemy.getFollowingVel() * (hero.getX() + 16 - enemy.getX()) / vecLength;
+                newVelY = enemy.getFollowingVel() * (hero.getY() + 48 - enemy.getY()) / vecLength;
+            }
             if (enemy.isFollowing()) {
                 for (Block block : blocks) {
                     enemy.setVelX(enemy.getFollowingVel()*(hero.getX() + 16 - enemy.getX())/vecLength);
@@ -452,6 +479,41 @@ public class Room {
             }
         }
         openDoor();
+    }
+
+    public void poisonEffect(Hero hero) {
+        System.out.println(PoisonedEnemies);
+        if (!PoisonedEnemies.isEmpty()) {
+            ArrayList<Enemy> toRemove = new ArrayList<>();
+            ArrayList<Slime> slimes = new ArrayList<>();
+            ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
+            for (Enemy enemy : PoisonedEnemies) {
+                if(enemy.getRemainingHealth() <= 0){
+                    toBeRemoved.add(enemy);
+                    if(enemy instanceof Slime){
+                        slimes.add(((Slime) enemy));
+                    }
+                }
+                if(!enemy.isPoisoned()){
+                    toRemove.add(enemy);
+                }
+            }
+            if(!slimes.isEmpty()){
+                for (Slime slime: slimes) {
+                    if(slime.isSlimeKing()){
+                        enemies.addAll(slime.createMedium(slime.getX(), slime.getY()));
+                    }else if(slime.isMedium()){
+                        enemies.addAll(slime.createSmall(slime.getX(), slime.getY()));
+                    }
+                }
+            }
+            if(!toRemove.isEmpty()){
+                for (Enemy enemy: toRemove) {
+                    PoisonedEnemies.remove(enemy);
+                }
+            }
+            removeMovingObjects(toBeRemoved, hero);
+        }
     }
 
     public void makeHeroBulletList() {
@@ -543,6 +605,14 @@ public class Room {
     }
     public void setPuttedBombs(ArrayList<BombFired> puttedBombs) {
         this.puttedBombs = puttedBombs;
+    }
+
+    public ArrayList<Enemy> getPoisonedEnemies() {
+        return PoisonedEnemies;
+    }
+
+    public void setPoisonedEnemies(ArrayList<Enemy> poisonedEnemies) {
+        PoisonedEnemies = poisonedEnemies;
     }
 
     public ArrayList<ImageView> getAnimations() {

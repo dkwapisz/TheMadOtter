@@ -26,6 +26,9 @@ public class Hero extends MovingObjects {
     private int bombs;
     private int points;
 
+    //status
+    private boolean isHiding;
+
     private long cooldownShot;
     private long lastShot = 0;
     private long lastChange = 0;
@@ -56,6 +59,7 @@ public class Hero extends MovingObjects {
         getImageView().toFront();
         this.layer = layer;
         setDamaged(false);
+        setHiding(false);
     }
 
     public void updateHero() {
@@ -390,7 +394,6 @@ public class Hero extends MovingObjects {
                     lastUpdate = l;
                 }
                 if (l - timeInNano >= 1_800_000_000) {
-                    long b = System.currentTimeMillis();
                     this.stop();
                 }
             }
@@ -404,6 +407,14 @@ public class Hero extends MovingObjects {
         };
         animationTimer.start();
         setDamaged(true);
+    }
+
+    public void bushEffect(){
+        setHiding(true);
+        if(!isDamaged){
+            getImageView().setOpacity(0.5);
+        }
+
     }
     // F1
     public void turnOnAdditionalData() {
@@ -433,6 +444,7 @@ public class Hero extends MovingObjects {
             equipment.add(new SniperRifle(2000, 2000, layer));
             equipment.add(new Stg44(2000, 2000, layer));
             equipment.add(new Uzi(2000, 2000, layer));
+            equipment.add(new PoisonDagger(2000, 2000, layer));
             money += 100;
             bombs += 100;
             remainingLives = 20;
@@ -521,6 +533,13 @@ public class Hero extends MovingObjects {
     }
     public void setDamaged(boolean damaged) {
         isDamaged = damaged;
+    }
+
+    public boolean isHiding() {
+        return isHiding;
+    }
+    public void setHiding(boolean hiding) {
+        isHiding = hiding;
     }
 
     public int getPoints() {

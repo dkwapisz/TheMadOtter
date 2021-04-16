@@ -158,6 +158,7 @@ public class FloorGenerator {
         gunList.add(new SniperRifle(2000, 2000, layer));
         gunList.add(new Stg44(2000, 2000, layer));
         gunList.add(new Uzi(2000, 2000, layer));
+        gunList.add(new PoisonDagger(2000, 2000, layer));
 
         do {
             gunA = random.nextInt(gunList.size());
