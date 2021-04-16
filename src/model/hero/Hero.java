@@ -21,7 +21,7 @@ public class Hero extends MovingObjects {
     private boolean shooting;
     private boolean isDamaged;
     private boolean additionalData;
-    private int remainingLives;
+    private int remainingHealth;
     private int money;
     private int bombs;
     private int points;
@@ -55,7 +55,7 @@ public class Hero extends MovingObjects {
         equipment.add(new Pistol(layer));
         actualGun = equipment.get(0);
         cooldownShot = actualGun.getCooldownShot();
-        remainingLives = 20;
+        remainingHealth = 20;
         getImageView().toFront();
         this.layer = layer;
         setDamaged(false);
@@ -63,6 +63,7 @@ public class Hero extends MovingObjects {
     }
 
     public void updateHero() {
+        checkHealth();
         setShootingStatus(shooting);
         actualRoom.checkCollision(this);
         updateBullets();
@@ -95,14 +96,14 @@ public class Hero extends MovingObjects {
         else if (currentAction == HeroActions.SHOTLEFT) {
             getImageView().setViewport(getFrame().get(3));
             x = getX() + 2;
-            y = getY() + 20;
+            y = getY() + 21;
             velX = -1;
             velY = 0;
         }
         else if (currentAction == HeroActions.SHOTRIGHT) {
             getImageView().setViewport(getFrame().get(2));
             x = getX() + 61;
-            y = getY() + 20;
+            y = getY() + 21;
             velX = 1;
             velY = 0;
         }
@@ -111,7 +112,7 @@ public class Hero extends MovingObjects {
 
         if (time > lastShot + cooldownShot) {
             lastShot = time;
-            if(actualGun instanceof Shotgun) {
+            if (actualGun instanceof Shotgun) {
                 double newVelX = 0;
                 double newVelY = 0;
                 for(double i = -0.1; i<0.1;) {
@@ -128,8 +129,8 @@ public class Hero extends MovingObjects {
                     actualRoom.getHeroBullets().add(new Bullet(x, y, newVelX*actualGun.getBulletVel(), newVelY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
                 }
             }
-            else if (actualGun instanceof M16){
-                for(double i=1; i<1.3; i = i+0.1) {
+            else if (actualGun instanceof M16) {
+                for (double i=1; i<1.3; i = i+0.1) {
                     actualRoom.getHeroBullets().add(new Bullet(x, y, i*velX*actualGun.getBulletVel(), i*velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
                 }
             }
@@ -141,24 +142,24 @@ public class Hero extends MovingObjects {
 
     public void move() {
         int vel = 5;
-        if(currentAction == HeroActions.UP) {
+        if (currentAction == HeroActions.UP) {
             setVelY(-vel);
         }
-        if(currentAction == HeroActions.DOWN) {
+        if (currentAction == HeroActions.DOWN) {
             setVelY(vel);
         }
-        if(currentAction == HeroActions.RIGHT) {
+        if (currentAction == HeroActions.RIGHT) {
             setVelX(vel);
         }
-        if(currentAction == HeroActions.LEFT) {
+        if (currentAction == HeroActions.LEFT) {
             setVelX(-vel);
         }
     }
 
     private void updateBullets() {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-        if(actualRoom.getHeroBullets() != null) {
-            for(Bullet bullet : actualRoom.getHeroBullets()) {
+        if (actualRoom.getHeroBullets() != null) {
+            for (Bullet bullet : actualRoom.getHeroBullets()) {
                 bullet.updateLocation();
                 if (bullet.removeBullets()) {
                     toBeRemoved.add(bullet);
@@ -166,8 +167,8 @@ public class Hero extends MovingObjects {
             }
             actualRoom.removeMovingObjects(toBeRemoved, this);
         }
-        if(actualRoom.getEnemyBullets() != null) {
-            for(Bullet bullet : actualRoom.getEnemyBullets()) {
+        if (actualRoom.getEnemyBullets() != null) {
+            for (Bullet bullet : actualRoom.getEnemyBullets()) {
                 bullet.updateLocation();
                 if (bullet.removeBullets()) {
                     toBeRemoved.add(bullet);
@@ -212,8 +213,8 @@ public class Hero extends MovingObjects {
     }
 
     private void goToNextFloor() {
-        if(floor.getTrapdoor().isOpen() && actualRoom.getRoomId() == 12) {
-            if(this.getSmallerBounds().intersects(floor.getTrapdoor().getBounds().getBoundsInParent())) {
+        if (floor.getTrapdoor().isOpen() && actualRoom.getRoomId() == 12) {
+            if (this.getSmallerBounds().intersects(floor.getTrapdoor().getBounds().getBoundsInParent())) {
                 actualRoom.eraseEnemies(); // pokój ze starego piętra
                 actualRoom.eraseItems();
                 actualRoom.eraseBlocks();
@@ -228,6 +229,7 @@ public class Hero extends MovingObjects {
                 actualRoom.makeHeroBulletList();
                 this.getImageView().toFront();
                 points += 1000;
+                isHiding = false;
             }
         }
     }
@@ -281,15 +283,17 @@ public class Hero extends MovingObjects {
         actualRoom.eraseBlocks();
         actualRoom.eraseBullets();
         actualRoom.eraseExplosions();
-        actualRoom.erasePuttedBombs();
+        actualRoom.erasePutBombs();
         actualRoom.eraseAnimations(this);
+
+        isHiding = false;
 
         nextRoom.drawEnemies();
         nextRoom.drawBlocks();
         nextRoom.drawItems();
         nextRoom.makeHeroBulletList();
         nextRoom.makeEnemyBulletList();
-        if (!nextRoom.getEnemies().isEmpty()){
+        if (!nextRoom.getEnemies().isEmpty()) {
             for (Door door : nextRoom.getDoors()) {
                 door.removeFromLayer();
                 door.setClosedDoors(true);
@@ -299,13 +303,13 @@ public class Hero extends MovingObjects {
 
     public void addNewGun(Gun gun) {
         boolean isOwned = false;
-        for(Gun ownedGun : equipment) {
+        for (Gun ownedGun : equipment) {
             if (ownedGun.getClass().equals(gun.getClass())) {
                 isOwned = true;
                 break;
             }
         }
-        if(!isOwned) {
+        if (!isOwned) {
             equipment.add(gun);
             actualGun = gun;
         }
@@ -313,14 +317,14 @@ public class Hero extends MovingObjects {
 
     public void changeWeapon(boolean forward) {
         int length = equipment.size();
-        if(length == 1) {
+        if (length == 1) {
             return;
         }
         int selectedGun = equipment.indexOf(actualGun);
         long time = System.currentTimeMillis();
         if (time > lastChange + 250) {
             lastChange = time;
-            if(forward) {
+            if (forward) {
                 if (selectedGun + 1 == length) {
                     actualGun = equipment.get(0);
                 } else {
@@ -343,7 +347,7 @@ public class Hero extends MovingObjects {
             lastBomb = time;
             if (bombs > 0) {
                 BombFired newBomb = new BombFired(getX() + 16, getY() + 32, layer);
-                actualRoom.getPuttedBombs().add(newBomb);
+                actualRoom.getPutBombs().add(newBomb);
                 bombs--;
 
                 AnimationTimer animationTimer = new AnimationTimer() {
@@ -371,8 +375,8 @@ public class Hero extends MovingObjects {
 
     public void healthDown(int minus) {
         long time = System.currentTimeMillis();
-        if(time > lastEnemyTouch + 2000) {
-            setRemainingLives(getRemainingLives() - minus);
+        if (time > lastEnemyTouch + 2000) {
+            setRemainingHealth(Math.max(getRemainingHealth() - minus, 0));
             lastEnemyTouch = time;
             long timeInNano = System.nanoTime();
             damageAnimation(timeInNano);
@@ -411,11 +415,12 @@ public class Hero extends MovingObjects {
 
     public void bushEffect(){
         setHiding(true);
-        if(!isDamaged){
+        if (!isDamaged){
             getImageView().setOpacity(0.5);
         }
 
     }
+
     // F1
     public void turnOnAdditionalData() {
         long time = System.currentTimeMillis();
@@ -424,6 +429,7 @@ public class Hero extends MovingObjects {
             additionalData = !additionalData;
         }
     }
+
     // F2
     public void addAllGunsAndMoney() {
         long time = System.currentTimeMillis();
@@ -447,9 +453,11 @@ public class Hero extends MovingObjects {
             equipment.add(new PoisonDagger(2000, 2000, layer));
             money += 100;
             bombs += 100;
-            remainingLives = 20;
+            remainingHealth = 20;
+            actualGun = equipment.get(0);
         }
     }
+
     // F3
     public void killAllEnemies() {
         long time = System.currentTimeMillis();
@@ -465,11 +473,17 @@ public class Hero extends MovingObjects {
         }
     }
 
-    public int getRemainingLives() {
-        return remainingLives;
+    private void checkHealth() {
+        if (remainingHealth == 0) {
+            System.out.println("Game Over");
+        }
     }
-    public void setRemainingLives(int remainingLives) {
-        this.remainingLives = remainingLives;
+
+    public int getRemainingHealth() {
+        return remainingHealth;
+    }
+    public void setRemainingHealth(int remainingHealth) {
+        this.remainingHealth = remainingHealth;
     }
 
     public HeroActions getCurrentAction() {

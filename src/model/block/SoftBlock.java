@@ -1,5 +1,6 @@
 package model.block;
 
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
@@ -38,8 +39,22 @@ public class SoftBlock extends Block {
         layer.getChildren().add(destroyed);
         room.getAnimations().add(destroyed);
         destroyed.toBack();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(640), e -> layer.getChildren().remove(destroyed)));
-        timeline.play();
+
+        long time = System.nanoTime();
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (l - 640_000_000 > time) {
+                    this.stop();
+                }
+            }
+            @Override
+            public void stop() {
+                layer.getChildren().remove(destroyed);
+                super.stop();
+            }
+        };
+        animationTimer.start();
     }
 
     @Override

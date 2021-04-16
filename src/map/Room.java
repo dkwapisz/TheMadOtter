@@ -30,9 +30,9 @@ public class Room {
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<Block> blocks;
     private ArrayList<Explosion> explosions = new ArrayList<>();
-    private ArrayList<BombFired> puttedBombs = new ArrayList<>();
+    private ArrayList<BombFired> putBombs = new ArrayList<>();
     private ArrayList<ImageView> animations = new ArrayList<>();
-    private ArrayList<Enemy> PoisonedEnemies = new ArrayList<>();
+    private ArrayList<Enemy> poisonedEnemies = new ArrayList<>();
     private final Random random = new Random();
 
     public Room(ArrayList<Door> doors, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
@@ -54,6 +54,7 @@ public class Room {
         explosionCollision(hero);
         enemyFollow(hero);
         updateEnemy(hero);
+        checkEnemyHealth(hero);
         openTrapDoor();
     }
 
@@ -120,12 +121,12 @@ public class Room {
         }
     }
 
-    public void erasePuttedBombs() {
-        if (puttedBombs.size() != 0) {
-            for (BombFired bombFired : puttedBombs) {
+    public void erasePutBombs() {
+        if (putBombs.size() != 0) {
+            for (BombFired bombFired : putBombs) {
                 bombFired.removeFromLayer();
             }
-            puttedBombs.clear();
+            putBombs.clear();
         }
     }
 
@@ -142,18 +143,19 @@ public class Room {
         if (list == null) {
             return;
         }
-        for(MovingObjects object : list) {
+        for (MovingObjects object : list) {
             object.removeFromLayer();
-            if(object instanceof Bullet){
-                if(heroBullets.contains(object)) {
-                    if(((Bullet) object).getDmg() == 60) {
+            if (object instanceof Bullet){
+                if (heroBullets.contains(object)) {
+                    if (((Bullet) object).getDmg() == 60) {
                         explosions.add(new Explosion(object.getX() - object.getDimension().getWidth()/2, object.getY() - object.getDimension().getHeight()/2, object.getLayer(), this));
                     }
                     heroBullets.remove(object);
-                } else if (enemyBullets != null){
+                } else if (enemyBullets != null) {
                     enemyBullets.remove(object);
                 }
-            }if (object instanceof Enemy){
+            }
+            if (object instanceof Enemy) {
                 hero.setPoints(hero.getPoints() + ((Enemy) object).getPoints());
                 if (((Enemy) object).isExplosive()) {
                     explosions.add(new Explosion(object.getX(), object.getY(), object.getLayer(), this));
@@ -163,10 +165,10 @@ public class Room {
                     items.add(randomItem);
                 }
                 enemies.remove(object);
-                if(PoisonedEnemies.contains(object)){
-                    PoisonedEnemies.remove((object));
+                if (poisonedEnemies.contains(object)) {
+                    poisonedEnemies.remove((object));
                 }
-                if(enemies.size() == 0) {
+                if (enemies.size() == 0) {
                     clean = true;
                 }
             }
@@ -177,15 +179,15 @@ public class Room {
         if (list == null) {
             return;
         }
-        for(StaticObjects object : list) {
+        for (StaticObjects object : list) {
             object.removeFromLayer();
-            if(object instanceof Item){
+            if (object instanceof Item) {
                 hero.setPoints(hero.getPoints() + ((Item) object).getPoints());
                 items.remove(object);
             }
-            if(object instanceof Block){
+            if (object instanceof Block) {
                 if (object instanceof Barrel) {
-                    explosions.add(new Explosion(object.getX() - object.getBounds().getWidth()/2, object.getY() - object.getBounds().getHeight()/2, object.getLayer(), this));
+                    explosions.add(new Explosion(object.getX() - object.getBounds().getWidth() / 2, object.getY() - object.getBounds().getHeight() / 2, object.getLayer(), this));
                 }
                 else if (object instanceof Box) {
                     ((Box) object).destroyAnimation(this);
@@ -208,6 +210,13 @@ public class Room {
                         items.add(randomItem);
                     }
                 }
+                else if (object instanceof BushBlock) {
+                    ((BushBlock) object).destroyAnimation(this);
+                    Item randomItem = RNG.getRandomItem(object.getX(), object.getY(), 0.001, object.getLayer());
+                    if (randomItem != null) {
+                        items.add(randomItem);
+                    }
+                }
                 blocks.remove(object);
             }
         }
@@ -218,7 +227,7 @@ public class Room {
             bullet.removeFromLayer();
         }
         heroBullets.clear();
-        if(enemyBullets == null) {
+        if (enemyBullets == null) {
             return;
         }
         for (Bullet bullet : enemyBullets) {
@@ -283,31 +292,35 @@ public class Room {
     public void blockCollision(Hero hero) {
         ArrayList<StaticObjects> toBeRemoved = new ArrayList<>();
         Rectangle heroBounds = hero.getSmallerBounds();
-        boolean ifInBush = false;
+        boolean heroInBush = false;
         for (Block block : blocks) {
             Rectangle blockBounds = block.getBounds();
             if (heroBounds.intersects(blockBounds.getBoundsInParent())) {
-                if(!block.isToPass()) {
+                if (!block.isToPass()) {
                     hero.setVelX(0);
                     hero.setVelY(0);
                 }
-                if (block.isPrickly()){
+                if (block.isPrickly()) {
                     hero.healthDown(block.getDmg());
                 }
-                if (block instanceof BushBlock){
-                    ifInBush = true;
+                if (block instanceof BushBlock) {
+                    heroInBush = true;
                 }
 
             }
             for (Explosion explosion : explosions) {
-                if (blockBounds.intersects(explosion.getBounds().getBoundsInParent()) && !block.isToPass()) {
+                if (blockBounds.intersects(explosion.getBounds().getBoundsInParent()) && (!block.isToPass() || block instanceof BushBlock)) {
                     toBeRemoved.add(block);
+                }
+                else if (blockBounds.intersects(explosion.getBounds().getBoundsInParent()) && block instanceof BonFire) {
+                    ((BonFire) block).putOutFire();
                 }
             }
         }
-        if(ifInBush){
+        if (heroInBush) {
             hero.bushEffect();
-        }else if(hero.getImageView().getOpacity() == 0.5){
+        }
+        else if (hero.getImageView().getOpacity() == 0.5) {
             hero.getImageView().setOpacity(1);
             hero.setHiding(false);
         }
@@ -321,14 +334,13 @@ public class Room {
         for (Enemy enemy : enemies) {
             if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
                 hero.healthDown(enemy.getDmg());
-                if(enemy instanceof Boomer) {
+                if (enemy instanceof Boomer) {
                     enemy.setRemainingHealth(0);
-                    toBeRemoved.add(enemy);
                 }
             }
             if (!enemy.isFlying() && !enemy.isFollowing()) {
                 for (Block block : blocks) {
-                    if(enemy.getBounds().intersects(block.getBounds().getBoundsInParent()) && !block.isToPass()) {
+                    if (enemy.getBounds().intersects(block.getBounds().getBoundsInParent()) && !block.isToPass()) {
                         enemy.setVelX(-enemy.getVelX());
                         enemy.setVelY(-enemy.getVelY());
                     }
@@ -339,20 +351,20 @@ public class Room {
     }
 
     public void enemyBulletCollision(Hero hero) {
-        if(enemyBullets == null) {
+        if (enemyBullets == null) {
             return;
         }
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-        for(Bullet bullet : enemyBullets) {
+        for (Bullet bullet : enemyBullets) {
             Rectangle bulletBounds = bullet.getBounds();
             Rectangle heroBounds = hero.getSmallerBounds();
-            if(bulletBounds.intersects(heroBounds.getBoundsInParent())) {
+            if (bulletBounds.intersects(heroBounds.getBoundsInParent())) {
                 toBeRemoved.add(bullet);
                 hero.healthDown(bullet.getDmg());
             }
-            for(Block block : blocks) {
+            for (Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
-                if(bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
+                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
                     toBeRemoved.add(bullet);
                 }
             }
@@ -364,48 +376,46 @@ public class Room {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
         ArrayList<Slime> slimes = new ArrayList<>();
-        for(Bullet bullet : heroBullets){
+        for (Bullet bullet : heroBullets) {
             bullet.changeLayer();
             Rectangle bulletBounds = bullet.getBounds();
-            for(Block block : blocks) {
+            for (Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
-                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()){
+                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
                     toBeRemoved.add(bullet);
-                    if (block.isBreakable()){
+                    if (block.isBreakable()) {
                         block.setHp(block.getHp() - 1);
                         block.changeImage();
-                        if (block.getHp() <= 0 || bullet.getDmg() > 50){
+                        if (block.getHp() <= 0 || bullet.getDmg() > 50) {
                             toRemoveBlocks.add(block);
                         }
                     }
                 }
             }
-            for (Enemy enemy : enemies){
+            for (Enemy enemy : enemies) {
                 Rectangle enemyBounds = enemy.getBounds();
-                if (bulletBounds.intersects(enemyBounds.getBoundsInParent())){
+                if (bulletBounds.intersects(enemyBounds.getBoundsInParent())) {
                     toBeRemoved.add(bullet);
-                    enemy.setRemainingHealth(enemy.getRemainingHealth() - bullet.getDmg());
+                    enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - bullet.getDmg(), 0));
 
-                    if(hero.getActualGun() instanceof PoisonDagger && !enemy.isPoisoned()){
+                    if (hero.getActualGun() instanceof PoisonDagger && !enemy.isPoisoned()) {
                         enemy.poisonDamage(bullet.getDmg());
                         getPoisonedEnemies().add(enemy);
                     }
-
-
-                    if (enemy.getRemainingHealth() <= 0){
-                        toBeRemoved.add(enemy);
-                        if(enemy instanceof Slime){
+                    if (enemy.getRemainingHealth() <= 0) {
+                        if (enemy instanceof Slime) {
                             slimes.add(((Slime) enemy));
                         }
                     }
                 }
             }
         }
-        if(!slimes.isEmpty()){
+        if (!slimes.isEmpty()) {
             for (Slime slime: slimes) {
-                if(slime.isSlimeKing()){
+                if (slime.isSlimeKing()) {
                     enemies.addAll(slime.createMedium(slime.getX(), slime.getY()));
-                }else if(slime.isMedium()){
+                }
+                else if (slime.isMedium()) {
                     enemies.addAll(slime.createSmall(slime.getX(), slime.getY()));
                 }
             }
@@ -421,10 +431,10 @@ public class Room {
         double newVelY;
         for (Enemy enemy : enemies) {
             vecLength = Math.hypot(hero.getX() + 16 - enemy.getX(), hero.getY() + 48 - enemy.getY());
-            if(hero.isHiding() && !hero.isShooting()){
+            if (hero.isHiding() && !hero.isShooting()) {
                 newVelX = 0;
                 newVelY = 0;
-            }else {
+            } else {
                 newVelX = enemy.getFollowingVel() * (hero.getX() + 16 - enemy.getX()) / vecLength;
                 newVelY = enemy.getFollowingVel() * (hero.getY() + 48 - enemy.getY()) / vecLength;
             }
@@ -438,11 +448,11 @@ public class Room {
                         if(enemy.getUpBounds().intersects(block.getDownBounds().getBoundsInParent()) || enemy.getDownBounds().intersects(block.getUpBounds().getBoundsInParent())) {
                             newVelY = 0;
                         }
-                        else if(enemy.getLeftBounds().intersects(block.getRightBounds().getBoundsInParent()) || enemy.getRightBounds().intersects(block.getLeftBounds().getBoundsInParent())) {
+                        else if (enemy.getLeftBounds().intersects(block.getRightBounds().getBoundsInParent()) || enemy.getRightBounds().intersects(block.getLeftBounds().getBoundsInParent())) {
                             newVelX = 0;
                         }
                     } else {
-                        if((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
+                        if ((Math.abs(hero.getX() - enemy.getX()) < 2 && Math.abs(hero.getY() - enemy.getY()) < 2)) {
                             newVelX = 0;
                             newVelY = 0;
                         }
@@ -456,6 +466,7 @@ public class Room {
     }
 
     public void updateEnemy(Hero hero) {
+        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         if (!enemies.isEmpty()) {
             for (Enemy enemy : enemies) {
                 enemy.specificBehaviour();
@@ -466,7 +477,7 @@ public class Room {
                     enemy.setVelY(-enemy.getVelY());
                 }
                 enemy.updateLocation();
-                if(enemy.isShooting()) {
+                if (enemy.isShooting() && !hero.isHiding()) {
                     enemy.shot(hero, enemy.getBulletVelFactor());
                     if (enemy instanceof Turret) {
                         if (enemy.getBulletVelX() < 0) {
@@ -481,35 +492,45 @@ public class Room {
         openDoor();
     }
 
+    private void checkEnemyHealth(Hero hero) {
+        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
+        for (Enemy enemy : enemies) {
+            if (enemy.getRemainingHealth() <= 0) {
+                toBeRemoved.add(enemy);
+            }
+        }
+        removeMovingObjects(toBeRemoved, hero);
+    }
+
     public void poisonEffect(Hero hero) {
-        System.out.println(PoisonedEnemies);
-        if (!PoisonedEnemies.isEmpty()) {
+        //System.out.println(PoisonedEnemies);
+        if (!poisonedEnemies.isEmpty()) {
             ArrayList<Enemy> toRemove = new ArrayList<>();
             ArrayList<Slime> slimes = new ArrayList<>();
             ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-            for (Enemy enemy : PoisonedEnemies) {
-                if(enemy.getRemainingHealth() <= 0){
-                    toBeRemoved.add(enemy);
-                    if(enemy instanceof Slime){
+            for (Enemy enemy : poisonedEnemies) {
+                if (enemy.getRemainingHealth() <= 0) {
+                    if (enemy instanceof Slime) {
                         slimes.add(((Slime) enemy));
                     }
                 }
-                if(!enemy.isPoisoned()){
+                if (!enemy.isPoisoned()) {
                     toRemove.add(enemy);
                 }
             }
-            if(!slimes.isEmpty()){
-                for (Slime slime: slimes) {
-                    if(slime.isSlimeKing()){
+            if (!slimes.isEmpty()) {
+                for (Slime slime : slimes) {
+                    if (slime.isSlimeKing()) {
                         enemies.addAll(slime.createMedium(slime.getX(), slime.getY()));
-                    }else if(slime.isMedium()){
+                    }
+                    else if (slime.isMedium()) {
                         enemies.addAll(slime.createSmall(slime.getX(), slime.getY()));
                     }
                 }
             }
-            if(!toRemove.isEmpty()){
-                for (Enemy enemy: toRemove) {
-                    PoisonedEnemies.remove(enemy);
+            if (!toRemove.isEmpty()) {
+                for (Enemy enemy : toRemove) {
+                    poisonedEnemies.remove(enemy);
                 }
             }
             removeMovingObjects(toBeRemoved, hero);
@@ -600,19 +621,19 @@ public class Room {
         this.shop = shop;
     }
 
-    public ArrayList<BombFired> getPuttedBombs() {
-        return puttedBombs;
+    public ArrayList<BombFired> getPutBombs() {
+        return putBombs;
     }
-    public void setPuttedBombs(ArrayList<BombFired> puttedBombs) {
-        this.puttedBombs = puttedBombs;
+    public void setPutBombs(ArrayList<BombFired> putBombs) {
+        this.putBombs = putBombs;
     }
 
     public ArrayList<Enemy> getPoisonedEnemies() {
-        return PoisonedEnemies;
+        return poisonedEnemies;
     }
 
     public void setPoisonedEnemies(ArrayList<Enemy> poisonedEnemies) {
-        PoisonedEnemies = poisonedEnemies;
+        this.poisonedEnemies = poisonedEnemies;
     }
 
     public ArrayList<ImageView> getAnimations() {

@@ -112,7 +112,7 @@ public class FloorGenerator {
                         roomList.add(new Room(doors, roomId, rng.enemiesGenerator(roomId), null, rng.blockGenerator(roomId), this));
                     }
                 }
-                if(roomList.get(roomId).getEnemies().size() != 0) {
+                if (roomList.get(roomId).getEnemies().size() != 0) {
                     roomList.get(roomId).setClean(false);
                 } else {
                     roomList.get(roomId).setClean(true);

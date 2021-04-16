@@ -1,12 +1,10 @@
 package model;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import map.Room;
 
-public class Explosion extends StaticObjects{
+public class Explosion extends StaticObjects {
 
     Room actualRoom;
 
@@ -16,14 +14,34 @@ public class Explosion extends StaticObjects{
         generateAndRemove();
     }
 
-    public void generateAndRemove(){
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(800), e -> {
-                    actualRoom.getExplosions().remove(this);
-                    removeFromLayer();
-                })
-        );
-        timeline.play();
+    public void generateAndRemove() {
+        Explosion thisExplosion = this;
+        long time = System.nanoTime();
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (l - 800_000_000 > time) {
+                    this.stop();
+                }
+            }
+            @Override
+            public void stop() {
+                actualRoom.getExplosions().remove(thisExplosion);
+                removeFromLayer();
+                super.stop();
+            }
+        };
+        animationTimer.start();
     }
+
+//    public void generateAndRemove() {
+//        Timeline timeline = new Timeline(
+//                new KeyFrame(Duration.millis(800), e -> {
+//                    actualRoom.getExplosions().remove(this);
+//                    removeFromLayer();
+//                })
+//        );
+//        timeline.play();
+//    }
 
 }

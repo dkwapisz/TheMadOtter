@@ -1,5 +1,6 @@
 package model.block;
 
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
 public class BonFire extends Block {
@@ -10,6 +11,11 @@ public class BonFire extends Block {
         setPrickly(true);
         setToPass(true);
         setDmg(4);
+    }
+
+    public void putOutFire() {
+        setDmg(1);
+        getImageView().setImage(new Image("graphics/blocks/bonfire2.gif"));
     }
 
 }

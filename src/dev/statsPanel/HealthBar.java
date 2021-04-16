@@ -14,7 +14,7 @@ public class HealthBar {
 
     public HealthBar(Hero hero){
         this.hero = hero;
-        actualHealth = hero.getRemainingLives();
+        actualHealth = hero.getRemainingHealth();
         generateHealthBar();
     }
 
@@ -22,7 +22,7 @@ public class HealthBar {
         int x = 0;
         int y = 0;
         int key = 0;
-        for (int i = 0; i < hero.getRemainingLives()/2; i++) {
+        for (int i = 0; i < hero.getRemainingHealth()/2; i++) {
             ImageView health1 = new ImageView(new Image("graphics/statsPanel/halfHeart1.png"));
             ImageView health2 = new ImageView(new Image("graphics/statsPanel/halfHeart2.png"));
             this.map.put(key, health1);
@@ -41,16 +41,16 @@ public class HealthBar {
     }
 
     public void updateHealthBar() {
-        int healthDiff = hero.getRemainingLives() - actualHealth;
+        int healthDiff = hero.getRemainingHealth() - actualHealth;
         if (healthDiff < 0) { // strata hp
-            for (int i = hero.getRemainingLives(); i < 20; i++) {
+            for (int i = hero.getRemainingHealth(); i < 20; i++) {
                 this.hero.getLayer().getChildren().remove(map.get(i));
             }
         } else if (healthDiff > 0) { // zysk hp
-            for (int i = actualHealth; i < hero.getRemainingLives(); i++) {
+            for (int i = actualHealth; i < hero.getRemainingHealth(); i++) {
                 this.hero.getLayer().getChildren().add(map.get(i));
             }
         }
-        actualHealth = hero.getRemainingLives();
+        actualHealth = hero.getRemainingHealth();
     }
 }

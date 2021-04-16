@@ -14,11 +14,11 @@ public class Fish extends Item{
     @Override
     public boolean onTouch(Hero hero) {
         boolean picked = false;
-        if (hero.getRemainingLives() <= 19) {
-            if (hero.getRemainingLives() == 19){
-                hero.setRemainingLives(hero.getRemainingLives() + 1);
+        if (hero.getRemainingHealth() <= 19) {
+            if (hero.getRemainingHealth() == 19){
+                hero.setRemainingHealth(hero.getRemainingHealth() + 1);
             } else {
-                hero.setRemainingLives(hero.getRemainingLives() + 2);
+                hero.setRemainingHealth(hero.getRemainingHealth() + 2);
             }
             picked = true;
         }

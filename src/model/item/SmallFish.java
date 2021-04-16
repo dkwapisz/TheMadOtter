@@ -13,8 +13,8 @@ public class SmallFish extends Item{
     @Override
     public boolean onTouch(Hero hero) {
         boolean picked = false;
-        if (hero.getRemainingLives() < 20) {
-            hero.setRemainingLives(hero.getRemainingLives() + 1);
+        if (hero.getRemainingHealth() < 20) {
+            hero.setRemainingHealth(hero.getRemainingHealth() + 1);
             picked = true;
         }
         return picked;

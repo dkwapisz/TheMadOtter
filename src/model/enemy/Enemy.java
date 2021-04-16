@@ -1,11 +1,17 @@
 package model.enemy;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import map.FloorGenerator;
 import model.Bullet;
 import model.MovingObjects;
 import model.hero.Hero;
+
+import java.awt.*;
 
 public abstract class Enemy extends MovingObjects {
 
@@ -26,7 +32,6 @@ public abstract class Enemy extends MovingObjects {
     private double bulletVelX = 0; // atrybut pomocniczy, nigdzie nie ustawiać
     private double bulletVelY = 0; // atrybut pomocniczy, nigdzie nie ustawiać
     private long lastEnemyShot = 0; // atrybut pomocniczy, nigdzie nie ustawiać
-
 
     public Enemy(double x, double y, String pathStatic, String pathMoving, String pathStaticShot, String pathMovingShot, Pane layer) {
         super(x, y, pathStatic, pathMoving, pathStaticShot, pathMovingShot, layer);
@@ -49,7 +54,7 @@ public abstract class Enemy extends MovingObjects {
     }
 
     public void poisonDamage(int damage){
-        AnimationTimer animationTimer = new AnimationTimer(){
+        AnimationTimer animationTimer = new AnimationTimer() {
             long lastUpdate = 0;
             int calc = 0;
             @Override
@@ -60,13 +65,12 @@ public abstract class Enemy extends MovingObjects {
                     } else if (getImageView().getOpacity() == 0.3) {
                         getImageView().setOpacity(1);
                     }
-                    setRemainingHealth(getRemainingHealth()-damage);
-                    calc ++;
+                    setRemainingHealth(Math.max(getRemainingHealth() - damage, 0));
+                    calc++;
                     lastUpdate = l;
                     System.out.println(getRemainingHealth());
-                    if(getRemainingHealth() <= 0){
+                    if (getRemainingHealth() == 0){
                         this.stop();
-
                     }
                 }
                 if (calc == 10) {

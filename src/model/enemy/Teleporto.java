@@ -32,7 +32,7 @@ public class Teleporto extends Enemy{
     @Override
     public void specificBehaviour() {
         long time = System.currentTimeMillis();
-        if (time > lastChange + random.nextInt(3000)+2000) {
+        if (time > lastChange + random.nextInt(3000) + 2000) {
             lastChange = time;
             int[] loc = spotLoc.get(random.nextInt(spotLoc.size()));
             setLocation(loc[0], loc[1]);
@@ -43,7 +43,7 @@ public class Teleporto extends Enemy{
     @Override
     public void shot(Hero hero, int velFactor) {
         long time = System.currentTimeMillis();
-        if(up) {
+        if (up) {
             if (time > lastEnemyShot + getCooldownShot()) {
                 lastEnemyShot = time;
                 double vecLength;

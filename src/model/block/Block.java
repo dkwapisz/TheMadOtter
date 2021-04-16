@@ -2,7 +2,6 @@ package model.block;
 
 import javafx.scene.layout.Pane;
 import model.StaticObjects;
-import model.hero.Hero;
 
 public abstract class Block extends StaticObjects {
 

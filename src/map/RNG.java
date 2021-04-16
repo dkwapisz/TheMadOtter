@@ -104,20 +104,19 @@ public class RNG {
             return null;
         }
         ArrayList<Enemy> enemies = new ArrayList<>();
-        int howMany = 5; // <--- jak dużo przeciwników w jednym pomieszczeniu
+        int howMany = bitMap.getEnemySpotLoc().size();
 
         for (int i = 0; i < howMany; i++) {
-            enemies.add(getRandomEnemy());
+            enemies.add(getRandomEnemy(i));
         }
 
         return enemies;
     }
 
-    private Enemy getRandomEnemy() {
+    private Enemy getRandomEnemy(int nextLoc) {
         int value = random.nextInt(13);
-        int randomLoc = random.nextInt(bitMap.getEnemySpotLoc().size());
-        int x = bitMap.getEnemySpotLoc().get(randomLoc)[0];
-        int y = bitMap.getEnemySpotLoc().get(randomLoc)[1];
+        int x = bitMap.getEnemySpotLoc().get(nextLoc)[0];
+        int y = bitMap.getEnemySpotLoc().get(nextLoc)[1];
         //value = ...  <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
         //x = ...      <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
         //y = ...      <--- jakbyśmy chcieli konkretnego przeciwnika wytestować

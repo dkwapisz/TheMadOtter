@@ -1,13 +1,8 @@
 package model.item.guns;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import model.hero.Hero;
 import model.item.Item;
-import model.item.guns.Uzi;
-
-import java.awt.*;
 
 public abstract class Gun extends Item {
 
@@ -35,7 +30,7 @@ public abstract class Gun extends Item {
                 hero.setMoney(hero.getMoney() - priceStandard);
                 hero.addNewGun(this);
                 return true;
-            } else if (buyHealth && hero.getRemainingLives() >= priceHealth) {
+            } else if (buyHealth && hero.getRemainingHealth() >= priceHealth) {
                 hero.healthDown(priceHealth);
                 hero.addNewGun(this);
                 return true;

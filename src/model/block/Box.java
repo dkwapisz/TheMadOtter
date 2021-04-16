@@ -28,8 +28,22 @@ public class Box extends Block {
         layer.getChildren().add(destroyed);
         room.getAnimations().add(destroyed);
         destroyed.toBack();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(720), e -> layer.getChildren().remove(destroyed)));
-        timeline.play();
+
+        long time = System.nanoTime();
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (l - 720_000_000 > time) {
+                    this.stop();
+                }
+            }
+            @Override
+            public void stop() {
+                layer.getChildren().remove(destroyed);
+                super.stop();
+            }
+        };
+        animationTimer.start();
     }
 
     @Override

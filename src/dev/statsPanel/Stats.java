@@ -76,7 +76,7 @@ public class Stats {
                 "\nHow many guns: " + hero.getEquipment().size() +
                 "\nGun coold.: " + hero.getActualGun().getCooldownShot() + " [ms]" +
                 "\nBullet Vel: " + hero.getActualGun().getBulletVel() +
-                "\nHP: " + hero.getRemainingLives() +
+                "\nHP: " + hero.getRemainingHealth() +
                 "\nMoney: " + hero.getMoney() + " $" +
                 "\nBombs: " + hero.getBombs() +
                 "\nClean Room: " + hero.getActualRoom().isClean() +
@@ -85,7 +85,8 @@ public class Stats {
                 "\nShooting: " + hero.isShooting() +
                 "\nCurrent Action: " + hero.getCurrentAction().name() +
                 "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen() +
-                "\nShop: " + hero.getActualRoom().isShop());
+                "\nShop: " + hero.getActualRoom().isShop() +
+                "\nHiding: " + hero.isHiding());
     }
 
     private int getRof() {
