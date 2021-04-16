@@ -79,7 +79,7 @@ public class Hero extends MovingObjects {
         double velY = 0;
         cooldownShot = actualGun.getCooldownShot();
 
-        if(currentAction == HeroActions.SHOTUP) {
+        if (currentAction == HeroActions.SHOTUP) {
             getImageView().setViewport(getFrame().get(1));
             x = getX() + 32;
             y = getY() + 25;
@@ -116,12 +116,12 @@ public class Hero extends MovingObjects {
                 double newVelX = 0;
                 double newVelY = 0;
                 for(double i = -0.1; i<0.1;) {
-                    if(velX != 0) {
+                    if (velX != 0) {
                         newVelY = i + (random.nextDouble()-0.5)/5;
                         newVelX = velX + (random.nextDouble()-0.5)/10;
                         i = i + 0.02;
                     }
-                    if(velY != 0) {
+                    if (velY != 0) {
                         newVelY = velY + (random.nextDouble()-0.5)/10;
                         newVelX = i + (random.nextDouble()-0.5)/5;
                         i = i + 0.02;
@@ -413,7 +413,7 @@ public class Hero extends MovingObjects {
         setDamaged(true);
     }
 
-    public void bushEffect(){
+    public void bushEffect() {
         setHiding(true);
         if (!isDamaged){
             getImageView().setOpacity(0.5);

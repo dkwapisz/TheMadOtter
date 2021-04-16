@@ -15,20 +15,19 @@ public class RNG {
     private final int floorId;
     private final int centerRoom; // id pomiszczenia środkowego
     private final Random random;
-    //private ArrayList<BitMapLoader> usedBitMaps = new ArrayList<>();
 
-    public RNG(int centerRoom, int floorId, int roomId, Pane layer) {
+    public RNG(int centerRoom, int floorId, int roomId, Pane layer, ArrayList<int[]> bitMapCoord) {
         this.layer = layer;
         this.floorId = floorId;
         this.centerRoom = centerRoom;
         this.random = new Random();
-        loadBitMap(roomId);
+        loadBitMap(roomId, bitMapCoord);
     }
 
-    private void loadBitMap(int roomId) {
-        if(roomId != centerRoom) {
-            int randCol = random.nextInt(3);
-            int randRow = random.nextInt(3);
+    private void loadBitMap(int roomId, ArrayList<int[]> bitMapCoord) {
+        if (roomId != centerRoom) {
+            int randCol = bitMapCoord.get(roomId)[0];
+            int randRow = bitMapCoord.get(roomId)[1];
             bitMap = new BitMapLoader(randCol, randRow); // nie podajemy współrzędnych bitmapy, tylko w której kolumnie i rzędzie występuje (liczone od 0)
         }
     }

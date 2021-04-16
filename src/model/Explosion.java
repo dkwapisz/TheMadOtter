@@ -3,6 +3,7 @@ package model;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 import map.Room;
+import model.enemy.Enemy;
 
 public class Explosion extends StaticObjects {
 
@@ -26,6 +27,7 @@ public class Explosion extends StaticObjects {
             }
             @Override
             public void stop() {
+                endOfCollision();
                 actualRoom.getExplosions().remove(thisExplosion);
                 removeFromLayer();
                 super.stop();
@@ -34,14 +36,13 @@ public class Explosion extends StaticObjects {
         animationTimer.start();
     }
 
-//    public void generateAndRemove() {
-//        Timeline timeline = new Timeline(
-//                new KeyFrame(Duration.millis(800), e -> {
-//                    actualRoom.getExplosions().remove(this);
-//                    removeFromLayer();
-//                })
-//        );
-//        timeline.play();
-//    }
+    private void endOfCollision() {
+        if (actualRoom.getEnemies().size() != 0) {
+            for (Enemy enemy : actualRoom.getEnemies()) {
+                enemy.setExplosionCollision(false);
+            }
+        }
+    }
+
 
 }

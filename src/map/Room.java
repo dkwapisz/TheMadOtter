@@ -47,7 +47,7 @@ public class Room {
     public void checkCollision(Hero hero) {
         blockCollision(hero);
         enemyCollision(hero);
-        poisonEffect(hero); //Niepewne
+        poisonEffect(hero); // niepewne
         itemCollision(hero);
         heroBulletsCollision(hero);
         enemyBulletCollision(hero);
@@ -274,7 +274,10 @@ public class Room {
                 }
                 for (Enemy enemy : enemies) {
                     if (enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
-                        enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - 30, 0));
+                        if (!enemy.isExplosionCollision()) {
+                            enemy.setRemainingHealth(Math.max(enemy.getRemainingHealth() - 30, 0));
+                            enemy.setExplosionCollision(true);
+                        }
                     }
                 }
                 for (Door door : doors) {
@@ -466,7 +469,6 @@ public class Room {
     }
 
     public void updateEnemy(Hero hero) {
-        ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         if (!enemies.isEmpty()) {
             for (Enemy enemy : enemies) {
                 enemy.specificBehaviour();

@@ -90,15 +90,18 @@ public abstract class MovingObjects {
         this.addToLayer();
     }
 
-    public void directions(boolean shooting){
-        if(!shooting) {
-            if(velX > 0 && Math.abs(velX) > Math.abs(velY)){
+    public void directions(boolean shooting) {
+        if (!shooting) {
+            if (velX > 0 && Math.abs(velX) > Math.abs(velY)) {
                 imageView.setViewport(frame.get(2)); // PRAWO
-            }else if (velX < 0 && Math.abs(velX) > Math.abs(velY)){
+            }
+            else if (velX < 0 && Math.abs(velX) > Math.abs(velY)) {
                 imageView.setViewport(frame.get(3)); // LEWO
-            }else if (velY < 0 && Math.abs(velY) > Math.abs(velX)){
+            }
+            else if (velY < 0 && Math.abs(velY) > Math.abs(velX)) {
                 imageView.setViewport(frame.get(1)); // GÓRA
-            }else if (velY > 0 && Math.abs(velY) > Math.abs(velX)){
+            }
+            else if (velY > 0 && Math.abs(velY) > Math.abs(velX)) {
                 imageView.setViewport(frame.get(0)); // DÓŁ
             }
         }

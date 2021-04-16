@@ -8,10 +8,13 @@ import model.item.Sign;
 import model.item.guns.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 public class FloorGenerator {
 
+    private ArrayList<int[]> bitMapCoord = new ArrayList<>();
     private ArrayList<Room> roomList = new ArrayList<>();
     private int nrOfRooms;  //pierwiastek z liczby pokoi
     private int floorId;
@@ -21,7 +24,6 @@ public class FloorGenerator {
     private Door door4;
     private Trapdoor trapdoor;
     private Pane layer;
-    private RNG rng;
     private final Random random = new Random();
 
     private int mapLoading = 0;
@@ -30,6 +32,7 @@ public class FloorGenerator {
         this.nrOfRooms = nrOfRooms;
         this.layer = layer;
         this.floorId = floorId;
+        fillBitMapCoord();
         trapdoor = new Trapdoor(368, 368, layer);
         door1 = new Door(360, 0, "/graphics/map/floor1/doorH1.png", layer, 1);           // góra
         door2 = new Door(0, 360, "/graphics/map/floor1/doorV1.png", layer, 2);           // lewo
@@ -50,7 +53,7 @@ public class FloorGenerator {
         int roomId = 0;
         for(int i=0; i < nrOfRooms; i++) {
             for(int j=0; j < nrOfRooms; j++) {
-                this.rng = new RNG((nrOfRooms*nrOfRooms-1)/2, floorId, roomId, layer);
+                RNG rng = new RNG((nrOfRooms * nrOfRooms - 1) / 2, floorId, roomId, layer, bitMapCoord);
                 ArrayList<Door> doors = new ArrayList<>();
                 if((i == 0 || i == nrOfRooms-1) || (j == 0 || j == nrOfRooms-1)) {
                     if((i == 0 || i == nrOfRooms-1) && (j == 0 || j == nrOfRooms-1)) {
@@ -208,6 +211,18 @@ public class FloorGenerator {
         getTrapdoor().getImageView().setImage(new Image("/graphics/map/floor" + floorId + "/trapDoorClose" + floorId + ".png"));
         getTrapdoor().setOpenedTrapdoorImage(new Image("/graphics/map/floor" + floorId + "/trapDoorOpen" + floorId + ".png"));
 
+    }
+
+    private void fillBitMapCoord() {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int[] coord = new int[2];
+                coord[0] = i;
+                coord[1] = j;
+                bitMapCoord.add(coord);
+            }
+        }
+        Collections.shuffle(bitMapCoord);
     }
 
     public ArrayList<Room> getRoomList() {

@@ -23,6 +23,7 @@ public abstract class Enemy extends MovingObjects {
     private boolean shooting; // MUST HAVE
     private boolean explosive; // MUST HAVE
     private boolean isPoisoned;
+    private boolean explosionCollision;
 
     private int followingVel = 0; // tylko dla przeciwników podążających za graczem - nie więcej niż 4!
     private String bulletPath = null; // tylko dla przeciwników strzelających, ścieżka do grafiki pocisku
@@ -53,7 +54,7 @@ public abstract class Enemy extends MovingObjects {
         }
     }
 
-    public void poisonDamage(int damage){
+    public void poisonDamage(int damage) {
         AnimationTimer animationTimer = new AnimationTimer() {
             long lastUpdate = 0;
             int calc = 0;
@@ -62,7 +63,8 @@ public abstract class Enemy extends MovingObjects {
                 if ((l - lastUpdate) >= 500_000_000) {
                     if (getImageView().getOpacity() == 1) {
                         getImageView().setOpacity(0.3);
-                    } else if (getImageView().getOpacity() == 0.3) {
+                    }
+                    else if (getImageView().getOpacity() == 0.3) {
                         getImageView().setOpacity(1);
                     }
                     setRemainingHealth(Math.max(getRemainingHealth() - damage, 0));
@@ -188,5 +190,12 @@ public abstract class Enemy extends MovingObjects {
     }
     public void setPoisoned(boolean poisoned) {
         isPoisoned = poisoned;
+    }
+
+    public boolean isExplosionCollision() {
+        return explosionCollision;
+    }
+    public void setExplosionCollision(boolean explosionCollision) {
+        this.explosionCollision = explosionCollision;
     }
 }
