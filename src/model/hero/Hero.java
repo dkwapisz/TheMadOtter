@@ -20,14 +20,14 @@ public class Hero extends MovingObjects {
 
     private boolean shooting;
     private boolean isDamaged;
+    private boolean isHiding;
     private boolean additionalData;
+    private boolean paused;
+
     private int remainingHealth;
     private int money;
     private int bombs;
     private int points;
-
-    //status
-    private boolean isHiding;
 
     private long cooldownShot;
     private long lastShot = 0;
@@ -37,6 +37,7 @@ public class Hero extends MovingObjects {
     private long lastF1 = 0;
     private long lastF2 = 0;
     private long lastF3 = 0;
+    private long lastPause = 0;
 
     private ArrayList<Gun> equipment = new ArrayList<>();
     private HeroActions currentAction;
@@ -117,13 +118,13 @@ public class Hero extends MovingObjects {
                 double newVelY = 0;
                 for(double i = -0.1; i<0.1;) {
                     if (velX != 0) {
-                        newVelY = i + (random.nextDouble()-0.5)/5;
-                        newVelX = velX + (random.nextDouble()-0.5)/10;
+                        newVelY = i + (random.nextDouble() - 0.5)/5;
+                        newVelX = velX + (random.nextDouble() - 0.5)/10;
                         i = i + 0.02;
                     }
                     if (velY != 0) {
-                        newVelY = velY + (random.nextDouble()-0.5)/10;
-                        newVelX = i + (random.nextDouble()-0.5)/5;
+                        newVelY = velY + (random.nextDouble() - 0.5)/10;
+                        newVelX = i + (random.nextDouble() - 0.5)/5;
                         i = i + 0.02;
                     }
                     actualRoom.getHeroBullets().add(new Bullet(x, y, newVelX*actualGun.getBulletVel(), newVelY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
@@ -215,6 +216,10 @@ public class Hero extends MovingObjects {
     private void goToNextFloor() {
         if (floor.getTrapdoor().isOpen() && actualRoom.getRoomId() == 12) {
             if (this.getSmallerBounds().intersects(floor.getTrapdoor().getBounds().getBoundsInParent())) {
+                if (floor.getFloorId() + 1 == 5) {
+                    gameEnd();
+                    return;
+                }
                 actualRoom.eraseEnemies(); // pokój ze starego piętra
                 actualRoom.eraseItems();
                 actualRoom.eraseBlocks();
@@ -223,8 +228,8 @@ public class Hero extends MovingObjects {
                 for (Door door:getActualRoom().getDoors()) {
                     door.removeFromLayer();
                 }
-                floor = new FloorGenerator(5, layer, floor.getFloorId()+1);
-                actualRoom = floor.getRoomList().get((floor.getNrOfRooms()* floor.getNrOfRooms()-1)/2); // pokój z nowego piętra
+                floor = new FloorGenerator(5, layer, floor.getFloorId() + 1);
+                actualRoom = floor.getRoomList().get((floor.getNrOfRooms() * floor.getNrOfRooms() - 1)/2); // pokój z nowego piętra
                 currentAction = HeroActions.UP;
                 actualRoom.makeHeroBulletList();
                 this.getImageView().toFront();
@@ -473,6 +478,18 @@ public class Hero extends MovingObjects {
         }
     }
 
+    public void pauseGame() {
+        long time = System.currentTimeMillis();
+        if (time > lastPause + 250) {
+            lastPause = time;
+            paused = !paused;
+        }
+    }
+
+    public void gameEnd() {
+        System.out.println("You won!");
+    }
+
     private void checkHealth() {
         if (remainingHealth == 0) {
             System.out.println("Game Over");
@@ -568,5 +585,12 @@ public class Hero extends MovingObjects {
     }
     public void setEquipment(ArrayList<Gun> equipment) {
         this.equipment = equipment;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

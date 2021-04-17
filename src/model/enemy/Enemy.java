@@ -91,7 +91,6 @@ public abstract class Enemy extends MovingObjects {
         setPoisoned(true);
     }
 
-
     public void specificBehaviour() {} // funkcja do przeciążeń (np Enemy5, Enemy6)
 
     public int getRemainingHealth() {

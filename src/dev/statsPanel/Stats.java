@@ -86,7 +86,8 @@ public class Stats {
                 "\nCurrent Action: " + hero.getCurrentAction().name() +
                 "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen() +
                 "\nShop: " + hero.getActualRoom().isShop() +
-                "\nHiding: " + hero.isHiding());
+                "\nHiding: " + hero.isHiding() +
+                "\nPaused game: " + hero.isPaused());
     }
 
     private int getRof() {

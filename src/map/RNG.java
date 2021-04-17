@@ -130,7 +130,7 @@ public class RNG {
             case 7 -> new Boomer(x, y, layer);
             case 8 -> new Slime(x, y, layer, "SlimeKing");
             case 9 -> new Bat(x, y, layer);
-            case 10 -> new Enemy5(x, y, layer);
+            case 10 -> new DevilFly(x, y, layer);
             case 11 -> new Diglet(x, y, layer, bitMap.getEnemySpotLoc());
             case 12 -> new Teleporto(x, y, layer, bitMap.getEnemySpotLoc());
             default -> throw new IllegalStateException("Can't find enemy with number: " + value);
