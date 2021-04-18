@@ -418,9 +418,9 @@ public class Hero extends MovingObjects {
         setDamaged(true);
     }
 
-    public void bushEffect() {
-        setHiding(true);
-        if (!isDamaged){
+    public void bushEffect(){
+        if(!isDamaged){
+            setHiding(true);
             getImageView().setOpacity(0.5);
         }
 

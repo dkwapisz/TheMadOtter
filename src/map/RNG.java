@@ -28,6 +28,8 @@ public class RNG {
         if (roomId != centerRoom) {
             int randCol = bitMapCoord.get(roomId)[0];
             int randRow = bitMapCoord.get(roomId)[1];
+//            int randCol = 0;
+//            int randRow = 0; <---- mapa testowa (0, 0)
             bitMap = new BitMapLoader(randCol, randRow); // nie podajemy współrzędnych bitmapy, tylko w której kolumnie i rzędzie występuje (liczone od 0)
         }
     }

@@ -447,7 +447,7 @@ public class Room {
                     enemy.setVelY(enemy.getFollowingVel()*(hero.getY() + 48 - enemy.getY())/vecLength);
                     Rectangle enemyBounds = enemy.getBounds();
                     Rectangle blockBounds = block.getBounds();
-                    if(enemyBounds.intersects(blockBounds.getBoundsInParent()) && !enemy.isFlying() && !block.isToPass()) {
+                    if (enemyBounds.intersects(blockBounds.getBoundsInParent()) && !enemy.isFlying() && !block.isToPass()) {
                         if(enemy.getUpBounds().intersects(block.getDownBounds().getBoundsInParent()) || enemy.getDownBounds().intersects(block.getUpBounds().getBoundsInParent())) {
                             newVelY = 0;
                         }
