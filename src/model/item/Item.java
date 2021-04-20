@@ -15,7 +15,6 @@ public abstract class Item extends StaticObjects {
 
     public boolean onTouch(Hero hero) {return false;}
 
-
     public int getPoints() {
         return points;
     }

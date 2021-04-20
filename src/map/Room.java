@@ -19,10 +19,15 @@ import java.util.Random;
 
 public class Room {
 
+    private final Random random = new Random();
+
     private boolean clean;
     private boolean shop;
+
     private int roomId;
+
     private FloorGenerator actualFloor;
+
     private ArrayList<Door> doors;
     private ArrayList<Enemy> enemies;
     private ArrayList<Item> items;
@@ -33,7 +38,6 @@ public class Room {
     private ArrayList<BombFired> putBombs = new ArrayList<>();
     private ArrayList<ImageView> animations = new ArrayList<>();
     private ArrayList<Enemy> poisonedEnemies = new ArrayList<>();
-    private final Random random = new Random();
 
     public Room(ArrayList<Door> doors, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
         this.enemies = Objects.requireNonNullElseGet(enemies, ArrayList::new);
@@ -47,7 +51,7 @@ public class Room {
     public void checkCollision(Hero hero) {
         blockCollision(hero);
         enemyCollision(hero);
-        poisonEffect(hero); // niepewne
+        poisonEffect(hero);
         itemCollision(hero);
         heroBulletsCollision(hero);
         enemyBulletCollision(hero);
@@ -71,39 +75,39 @@ public class Room {
         }
     }
 
-    public void drawEnemies(){
+    public void drawEnemies() {
         for (Enemy enemy : enemies) {
             enemy.addToLayer();
         }
     }
 
-    public void eraseEnemies(){
+    public void eraseEnemies() {
         for (Enemy enemy : enemies) {
             enemy.removeFromLayer();
         }
     }
 
-    public void drawBlocks(){
+    public void drawBlocks() {
         for (Block block: blocks) {
             block.addToLayer();
             block.getImageView().toBack();
         }
     }
 
-    public void eraseBlocks(){
+    public void eraseBlocks() {
         for (Block block : blocks) {
             block.removeFromLayer();
         }
     }
 
-    public void drawItems(){
+    public void drawItems() {
         for (Item item : items) {
             item.addToLayer();
             item.getImageView().toBack();
         }
     }
 
-    public void eraseItems(){
+    public void eraseItems() {
         for (Item item : items) {
             item.removeFromLayer();
             if (item instanceof Sign) {
@@ -331,7 +335,7 @@ public class Room {
         removeStaticObjects(toBeRemoved, hero);
     }
 
-    public void enemyCollision(Hero hero){
+    public void enemyCollision(Hero hero) {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
         Rectangle heroBounds = hero.getSmallerBounds();
         for (Enemy enemy : enemies) {
@@ -633,7 +637,6 @@ public class Room {
     public ArrayList<Enemy> getPoisonedEnemies() {
         return poisonedEnemies;
     }
-
     public void setPoisonedEnemies(ArrayList<Enemy> poisonedEnemies) {
         this.poisonedEnemies = poisonedEnemies;
     }

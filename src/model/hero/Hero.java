@@ -638,4 +638,5 @@ public class Hero extends MovingObjects {
     public ArrayList<AnimationTimer> getPowerUpTimers() {
         return powerUpTimers;
     }
+
 }
