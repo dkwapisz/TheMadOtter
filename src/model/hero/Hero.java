@@ -23,11 +23,13 @@ public class Hero extends MovingObjects {
     private boolean isHiding;
     private boolean additionalData;
     private boolean paused;
+    private boolean godmode;
 
     private int remainingHealth;
     private int money;
     private int bombs;
     private int points;
+    private int dmgFactor;
 
     private long cooldownShot;
     private long lastShot = 0;
@@ -40,12 +42,15 @@ public class Hero extends MovingObjects {
     private long lastPause = 0;
 
     private ArrayList<Gun> equipment = new ArrayList<>();
+    private final ArrayList<AnimationTimer> powerUpTimers = new ArrayList<>();
     private HeroActions currentAction;
     private Room actualRoom;
     private FloorGenerator floor;
     private Gun actualGun;
     private final Random random = new Random();
     private final Pane layer;
+    private AnimationTimer stopWatch;
+
 
     public Hero(double x, double y, Pane layer) {
         super(x, y, "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", "graphics/hero/otterStaticShoting.gif", "graphics/hero/otterMovingShoting.gif",  layer);
@@ -61,6 +66,7 @@ public class Hero extends MovingObjects {
         this.layer = layer;
         setDamaged(false);
         setHiding(false);
+        dmgFactor = 1;
     }
 
     public void updateHero() {
@@ -127,16 +133,16 @@ public class Hero extends MovingObjects {
                         newVelX = i + (random.nextDouble() - 0.5)/5;
                         i = i + 0.02;
                     }
-                    actualRoom.getHeroBullets().add(new Bullet(x, y, newVelX*actualGun.getBulletVel(), newVelY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+                    actualRoom.getHeroBullets().add(new Bullet(x, y, newVelX*actualGun.getBulletVel(), newVelY*actualGun.getBulletVel(), dmgFactor*actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
                 }
             }
             else if (actualGun instanceof M16) {
                 for (double i=1; i<1.3; i = i+0.1) {
-                    actualRoom.getHeroBullets().add(new Bullet(x, y, i*velX*actualGun.getBulletVel(), i*velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+                    actualRoom.getHeroBullets().add(new Bullet(x, y, i*velX*actualGun.getBulletVel(), i*velY*actualGun.getBulletVel(), dmgFactor*actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
                 }
             }
             else {
-                actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
+                actualRoom.getHeroBullets().add(new Bullet(x, y, velX*actualGun.getBulletVel(), velY*actualGun.getBulletVel(), dmgFactor*actualGun.getDmg(), actualGun.getPathBullet(), actualGun.getPathBullet(), getLayer()));
             }
         }
     }
@@ -225,7 +231,7 @@ public class Hero extends MovingObjects {
                 actualRoom.eraseBlocks();
                 actualRoom.eraseBullets();
                 actualRoom.eraseExplosions();
-                for (Door door:getActualRoom().getDoors()) {
+                for (Door door : getActualRoom().getDoors()) {
                     door.removeFromLayer();
                 }
                 floor = new FloorGenerator(5, layer, floor.getFloorId() + 1);
@@ -379,12 +385,14 @@ public class Hero extends MovingObjects {
     }
 
     public void healthDown(int minus) {
-        long time = System.currentTimeMillis();
-        if (time > lastEnemyTouch + 2000) {
-            setRemainingHealth(Math.max(getRemainingHealth() - minus, 0));
-            lastEnemyTouch = time;
-            long timeInNano = System.nanoTime();
-            damageAnimation(timeInNano);
+        if (!godmode) {
+            long time = System.currentTimeMillis();
+            if (time > lastEnemyTouch + 2000) {
+                setRemainingHealth(Math.max(getRemainingHealth() - minus, 0));
+                lastEnemyTouch = time;
+                long timeInNano = System.nanoTime();
+                damageAnimation(timeInNano);
+            }
         }
     }
 
@@ -418,8 +426,8 @@ public class Hero extends MovingObjects {
         setDamaged(true);
     }
 
-    public void bushEffect(){
-        if(!isDamaged){
+    public void bushEffect() {
+        if (!isDamaged) {
             setHiding(true);
             getImageView().setOpacity(0.5);
         }
@@ -484,9 +492,20 @@ public class Hero extends MovingObjects {
             lastPause = time;
             paused = !paused;
         }
+        if (paused) {
+            stopWatch.stop();
+            for (AnimationTimer timer : powerUpTimers) {
+                timer.stop();
+            }
+        } else {
+            stopWatch.start();
+            for (AnimationTimer timer : powerUpTimers) {
+                timer.start();
+            }
+        }
     }
 
-    public void gameEnd() {
+    private void gameEnd() {
         System.out.println("You won!");
     }
 
@@ -495,6 +514,7 @@ public class Hero extends MovingObjects {
             System.out.println("Game Over");
         }
     }
+
 
     public int getRemainingHealth() {
         return remainingHealth;
@@ -592,5 +612,30 @@ public class Hero extends MovingObjects {
     }
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    public boolean isGodmode() {
+        return godmode;
+    }
+    public void setGodmode(boolean godmode) {
+        this.godmode = godmode;
+    }
+
+    public int getDmgFactor() {
+        return dmgFactor;
+    }
+    public void setDmgFactor(int dmgFactor) {
+        this.dmgFactor = dmgFactor;
+    }
+
+    public AnimationTimer getStopWatch() {
+        return stopWatch;
+    }
+    public void setStopWatch(AnimationTimer stopWatch) {
+        this.stopWatch = stopWatch;
+    }
+
+    public ArrayList<AnimationTimer> getPowerUpTimers() {
+        return powerUpTimers;
     }
 }

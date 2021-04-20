@@ -55,7 +55,7 @@ public class Stats {
         moneyLabel.setText(hero.getMoney() + " $");
         bombLabel.setText(String.valueOf(hero.getBombs()));
         floorLabel.setText(String.valueOf(hero.getFloor().getFloorId()));
-        dmgLabel.setText(String.valueOf(hero.getActualGun().getDmg()));
+        dmgLabel.setText(String.valueOf(hero.getActualGun().getDmg()*hero.getDmgFactor()));
         rofLabel.setText(String.valueOf(getRof()));
         pointLabel.setText(String.valueOf(hero.getPoints()));
 
@@ -72,7 +72,7 @@ public class Stats {
     public void updateAdditionalStats() {
         infoLabel.setVisible(hero.isAdditionalData());
         infoLabel.setText("Gun: " + hero.getActualGun().getGunName() +
-                "\nGun Dmg: " + hero.getActualGun().getDmg() +
+                "\nGun Dmg: " + (hero.getActualGun().getDmg()*hero.getDmgFactor()) +
                 "\nHow many guns: " + hero.getEquipment().size() +
                 "\nGun coold.: " + hero.getActualGun().getCooldownShot() + " [ms]" +
                 "\nBullet Vel: " + hero.getActualGun().getBulletVel() +
@@ -87,17 +87,19 @@ public class Stats {
                 "\nTrapdoor Open: " + hero.getFloor().getTrapdoor().isOpen() +
                 "\nShop: " + hero.getActualRoom().isShop() +
                 "\nHiding: " + hero.isHiding() +
-                "\nPaused game: " + hero.isPaused());
+                "\nPaused game: " + hero.isPaused() +
+                "\nGodMode: " + hero.isGodmode() +
+                "\nDmgFactor: " + hero.getDmgFactor());
     }
 
     private int getRof() {
         float rof;
         if (hero.getActualGun() instanceof Shotgun) {
-            rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) 10*hero.getActualGun().getDmg());
+            rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) 10*hero.getActualGun().getDmg()*hero.getDmgFactor());
         } else if (hero.getActualGun() instanceof M16) {
-            rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) 3*hero.getActualGun().getDmg());
+            rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) 3*hero.getActualGun().getDmg()*hero.getDmgFactor());
         } else {
-            rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) hero.getActualGun().getDmg());
+            rof = (60/((float) hero.getActualGun().getCooldownShot()/1000))*((float) hero.getActualGun().getDmg()*hero.getDmgFactor());
         }
         rof = Math.round(rof);
         return (int) rof;
@@ -134,6 +136,7 @@ public class Stats {
             }
         };
         timer.start();
+        hero.setStopWatch(timer);
     }
 
     private void changeFontColor() {

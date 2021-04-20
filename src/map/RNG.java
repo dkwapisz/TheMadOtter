@@ -37,14 +37,14 @@ public class RNG {
     public ArrayList<Item> itemsGenerator(int roomId) {
         ArrayList<Item> items = new ArrayList<>();
         if (floorId == 1) {
-            items.add(new Fish(700,100, layer));
-            items.add(new SmallFish(600,100, layer));
-            items.add(new Coin(700,200, layer));
-            items.add(new Sign(700,300, layer, "hello whats up"));
-            items.add(new Sign(600,300, layer, "JD JD JD"));
-            items.add(new Dollar(700,400, layer));
+            items.add(new BlueSphere(700,100, layer));
+            items.add(new GreenSphere(600,100, layer));
+            items.add(new RedSphere(700,200, layer));
+            items.add(new RedSphere(700,400, layer));
             items.add(new Bomb(700,500, layer));
             items.add(new BombPack(700,600, layer));
+            items.add(new Heart(700, 700, layer));
+            items.add(new Star(500, 700, layer));
         } else if (floorId == 2) {
             items.add(new Fish(700,100, layer));
         }
@@ -148,7 +148,7 @@ public class RNG {
         }
     }
 
-    public static Item getRandomItem(double x, double y, double itemChance, Pane layer) { // itemChance -> szansa, że wyleci jakiś item: (zakres 0.01 -> 1.0)
+    public static Item getRandomItem(double x, double y, double itemChance, Pane layer) { // itemChance -> szansa, że wyleci jakiś item: (zakres <0, 1>)
         Random random = new Random();
         int rng = random.nextInt((int) (100/itemChance)) + 1;
         if (rng < 20) {
@@ -163,6 +163,16 @@ public class RNG {
             return new Coin(x+4, y, layer);
         } else if (rng >= 81 && rng < 90) {
             return new Dollar(x+4, y, layer);
+        } else if (rng == 90) {
+            return new Heart(x, y, layer);
+        } else if (rng == 91) {
+            return new Star(x, y, layer);
+        } else if (rng == 92) {
+            return new RedSphere(x, y, layer);
+        } else if (rng == 93) {
+            return new GreenSphere(x, y, layer);
+        } else if (rng == 94) {
+            return new BlueSphere(x, y, layer);
         } else {
             return null;
         }
