@@ -28,7 +28,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane root = FXMLLoader.load(getClass().getResource("mainStage.fxml"));
+        Pane root = FXMLLoader.load(getClass().getResource("../fxml/mainStage.fxml"));
         primaryStage.setTitle("TheGame");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
