@@ -24,6 +24,7 @@ public class Hero extends MovingObjects {
     private boolean additionalData;
     private boolean paused;
     private boolean godmode;
+    private boolean gameWin;
 
     private int remainingHealth;
     private int money;
@@ -41,6 +42,7 @@ public class Hero extends MovingObjects {
     private long lastF3 = 0;
     private long lastPause = 0;
 
+    private String nickname = " ";
     private ArrayList<Gun> equipment = new ArrayList<>();
     private final ArrayList<AnimationTimer> powerUpTimers = new ArrayList<>();
     private HeroActions currentAction;
@@ -70,7 +72,7 @@ public class Hero extends MovingObjects {
     }
 
     public void updateHero() {
-        checkHealth();
+        isAlive();
         setShootingStatus(shooting);
         actualRoom.checkCollision(this);
         updateBullets();
@@ -223,7 +225,7 @@ public class Hero extends MovingObjects {
         if (floor.getTrapdoor().isOpen() && actualRoom.getRoomId() == 12) {
             if (this.getSmallerBounds().intersects(floor.getTrapdoor().getBounds().getBoundsInParent())) {
                 if (floor.getFloorId() + 1 == 5) {
-                    gameEnd();
+                    gameWin = true;
                     return;
                 }
                 actualRoom.eraseEnemies(); // pokój ze starego piętra
@@ -505,16 +507,16 @@ public class Hero extends MovingObjects {
         }
     }
 
-    private void gameEnd() {
-        System.out.println("You won!");
+    public boolean isAlive() {
+        return remainingHealth != 0;
     }
 
-    private void checkHealth() {
-        if (remainingHealth == 0) {
-            System.out.println("Game Over");
-        }
+    public boolean isGameWin() {
+        return gameWin;
     }
-
+    public void setGameWin(boolean gameWin) {
+        this.gameWin = gameWin;
+    }
 
     public int getRemainingHealth() {
         return remainingHealth;
@@ -637,6 +639,13 @@ public class Hero extends MovingObjects {
 
     public ArrayList<AnimationTimer> getPowerUpTimers() {
         return powerUpTimers;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 }

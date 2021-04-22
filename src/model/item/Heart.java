@@ -6,7 +6,7 @@ import model.hero.Hero;
 public class Heart extends Item {
 
     public Heart(double x, double y, Pane layer) {
-        super(x, y, "graphics/items/heart.png", layer);
+        super(x, y, "graphics/items/magicApple.gif", layer);
         setPoints(500);
     }
 
