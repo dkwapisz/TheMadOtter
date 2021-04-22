@@ -1,4 +1,4 @@
-package dev.controler;
+package dev.controller;
 
 public class LoseController {
 }

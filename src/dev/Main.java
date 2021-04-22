@@ -15,16 +15,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import model.hero.Hero;
 
-import static dev.controler.MenuController.highScores;
+import static dev.controller.MenuController.highScores;
 
 public class Main extends Application {
 
@@ -123,20 +120,20 @@ public class Main extends Application {
         }
     }
 
-    public void typeScore(int score){
+    public void typeScore(int points){
         ArrayList<String> tempScoreList = new ArrayList<>();
         int max = 0;
-        String zmienna = null;
-        for (String x : highScores) {
+        String tmp = null;
+        for (String score : highScores) {
             if (max > 0) {
-                tempScoreList.add(zmienna);
-                zmienna = x;
-            } else if (Integer.parseInt(x.split(":")[1]) < score){
-                max = score;
-                tempScoreList.add(hero.getNickname() + ":" + score + ":" + hero.getFloor().getFloorId());
-                zmienna = x;
+                tempScoreList.add(tmp);
+                tmp = score;
+            } else if (Integer.parseInt(score.split(":")[1]) < points){
+                max = points;
+                tempScoreList.add(hero.getNickname() + ":" + points + ":" + hero.getFloor().getFloorId());
+                tmp = score;
             } else {
-                tempScoreList.add(x);
+                tempScoreList.add(score);
             }
         }
         FileWriter writer;

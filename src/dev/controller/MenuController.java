@@ -1,7 +1,6 @@
-package dev.controler;
+package dev.controller;
 
 import dev.Main;
-import dev.Menu;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuController {
-    // NEW GAME, HELP, HIGH SCORE, SETTINGS, EXIT
+
     @FXML
     private TextField nickField;
 
@@ -49,7 +48,15 @@ public class MenuController {
             Stage stage = (Stage) newGameButton.getScene().getWindow();
             try {
                 Main.nick = nickField.getText();
-                main.start(stage);
+                if (Main.nick.length() > 15) {
+                    nickField.clear();
+                    nickField.setPromptText("Too long nickname");
+                } else if (Main.nick.length() == 0)  {
+                    nickField.clear();
+                    nickField.setPromptText("Please write your nickname");
+                } else {
+                    main.start(stage);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,7 +83,6 @@ public class MenuController {
         });
 
         settingsButton.setOnAction(event -> {
-
             Stage stage = (Stage) settingsButton.getScene().getWindow();
             try {
                 Pane root = FXMLLoader.load(getClass().getResource("/fxml/settings.fxml"));
@@ -111,24 +117,25 @@ public class MenuController {
             }
         });
     }
+
     public void setHighScores(){
         highScores = getHighestScores();
     }
 
     public ArrayList<String> getHighestScores(){
-        Scanner s = null;
+        Scanner scanner = null;
         try {
-            s = new Scanner(new File("src\\dev\\HighScore.txt"));
+            scanner = new Scanner(new File("src\\dev\\HighScore.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         ArrayList<String> list = new ArrayList<>();
         while (true){
-            assert s != null;
-            if (!s.hasNextLine()) break;
-            list.add(s.nextLine());
+            assert scanner != null;
+            if (!scanner.hasNextLine()) break;
+            list.add(scanner.nextLine());
         }
-        s.close();
+        scanner.close();
         return list;
     }
 }

@@ -57,8 +57,10 @@ public class RNG {
         return items;
     }
 
+
     public ArrayList<Block> blockGenerator(int roomId) {
         ArrayList<Block> blocks = new ArrayList<>();
+
 
         for(int i = 0; i < bitMap.getSolidBlocksLoc().size(); i++) {
             blocks.add(new SolidBlock(bitMap.getSolidBlocksLoc().get(i)[0], bitMap.getSolidBlocksLoc().get(i)[1], layer));

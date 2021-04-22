@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class EventHandling {
 
-
     private static char lastKeyPressed;
     private static char lastKeyReleased;
     private static ArrayList<KeyCode> inputList = new ArrayList<>();

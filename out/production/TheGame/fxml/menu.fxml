@@ -6,29 +6,37 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.controler.MenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.controller.MenuController">
    <children>
-      <TextField fx:id="nickField" layoutX="157.0" layoutY="106.0" prefHeight="14.0" prefWidth="300.0" />
-      <Button fx:id="newGameButton" alignment="CENTER" layoutX="257.0" layoutY="151.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Play">
+      <Button fx:id="newGameButton" alignment="CENTER" layoutX="100.0" layoutY="275.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" text="Play" textAlignment="CENTER">
          <font>
-            <Font size="13.0" />
+            <Font name="Forte" size="25.0" />
          </font></Button>
-      <Label layoutX="89.0" layoutY="109.0" text="Nickname:">
+      <TextField fx:id="nickField" alignment="CENTER" layoutX="100.0" layoutY="350.0" prefHeight="50.0" prefWidth="400.0" promptText="Enter your nickname">
          <font>
-            <Font size="13.0" />
-         </font></Label>
-      <Button fx:id="highScoreButton" layoutX="259.0" layoutY="212.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="High Score">
+            <Font name="Forte" size="26.0" />
+         </font></TextField>
+      <Button fx:id="highScoreButton" layoutX="100.0" layoutY="425.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" text="High Score" textAlignment="CENTER">
          <font>
-            <Font size="13.0" />
+            <Font name="Forte" size="25.0" />
          </font>
       </Button>
-      <Label layoutX="229.0" layoutY="31.0" text="The Mad Otter">
+      <Label layoutX="100.0" layoutY="100.0" prefHeight="100.0" prefWidth="400.0" text="The Mad Otter" underline="true">
          <font>
-            <Font size="24.0" />
+            <Font name="Forte" size="64.0" />
          </font>
       </Label>
-      <Button fx:id="settingsButton" layoutX="259.0" layoutY="273.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Setting" />
-      <Button fx:id="helpButton" layoutX="259.0" layoutY="341.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Help" />
-      <Button fx:id="exitButton" layoutX="259.0" layoutY="415.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Exit" />
+      <Button fx:id="settingsButton" layoutX="100.0" layoutY="500.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" text="Setting" textAlignment="CENTER">
+         <font>
+            <Font name="Forte" size="25.0" />
+         </font></Button>
+      <Button fx:id="helpButton" layoutX="100.0" layoutY="575.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" text="Help" textAlignment="CENTER">
+         <font>
+            <Font name="Forte" size="25.0" />
+         </font></Button>
+      <Button fx:id="exitButton" layoutX="100.0" layoutY="650.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" text="Exit" textAlignment="CENTER">
+         <font>
+            <Font name="Forte" size="25.0" />
+         </font></Button>
    </children>
 </AnchorPane>
