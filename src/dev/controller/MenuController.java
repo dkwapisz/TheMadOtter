@@ -52,7 +52,7 @@ public class MenuController {
             Stage stage = (Stage) newGameButton.getScene().getWindow();
             try {
                 Main.nick = nickField.getText();
-                if (Main.nick.length() > 15) {
+                if (Main.nick.length() > 9) {
                     nickField.clear();
                     nickField.setPromptText("Too long nickname");
                 } else if (Main.nick.length() == 0)  {
@@ -81,6 +81,7 @@ public class MenuController {
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+                stage.setResizable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -93,6 +94,7 @@ public class MenuController {
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+                stage.setResizable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -102,31 +104,22 @@ public class MenuController {
             Stage stage = (Stage) highScoreButton.getScene().getWindow();
             setHighScores();
             try {
-                setHighScores();
                 Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/highScore.fxml")));
-                int y = 60;
-                for (String score : highScores) {
-                    Label zmienna = new Label(score);
-                    zmienna.setStyle("-fx-font: 20 Forte");
-                    zmienna.setLayoutX(240);
-                    y = y + 30;
-                    zmienna.setLayoutY(y);
-                    root.getChildren().add(zmienna);
-                }
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+                stage.setResizable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public void setHighScores(){
+    public static void setHighScores(){
         highScores = getHighestScores();
     }
 
-    public ArrayList<String> getHighestScores(){
+    public static ArrayList<String> getHighestScores(){
         Scanner scanner = null;
         try {
             scanner = new Scanner(new File("src\\dev\\HighScore.txt"));

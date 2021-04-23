@@ -97,7 +97,7 @@ public class Main extends Application {
             timeline.stop();
             typeScore(hero.getPoints());
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/fxml/lose.fxml"));
+                Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lose.fxml")));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -106,10 +106,11 @@ public class Main extends Application {
             }
 
         } else if (hero.isGameWin()) {
+            hero.getFloor().setFloorId(5);
             timeline.stop();
             typeScore(hero.getPoints());
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/fxml/win.fxml"));
+                Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/win.fxml")));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();

@@ -18,6 +18,7 @@ public class Menu extends Application {
         stage.setScene(scene);
         stage.setTitle("The Mad Otter");
         stage.show();
+        stage.setResizable(false);
     }
 
 }

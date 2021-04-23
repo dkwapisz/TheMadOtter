@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("/graphics/menu/menu.png");
+    -fx-background-image: url("/graphics/menu/menuBoard.png");
 }
 
 #title {
@@ -8,7 +8,7 @@
     -fx-font-size: 64px;
 }
 
-.text-field {
+#nickField {
     -fx-background-color:
             linear-gradient(#835249 0%, #50332e 20%, #301e1b 100%),
             radial-gradient(center 50% 0%, radius 100%, #ad8988, #926c6a);
