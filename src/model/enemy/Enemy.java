@@ -1,17 +1,10 @@
 package model.enemy;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
-import map.FloorGenerator;
 import model.Bullet;
 import model.MovingObjects;
 import model.hero.Hero;
-
-import java.awt.*;
 
 public abstract class Enemy extends MovingObjects {
 

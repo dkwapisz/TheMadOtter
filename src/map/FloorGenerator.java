@@ -2,13 +2,12 @@ package map;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import model.block.*;
+import model.block.Trapdoor;
 import model.item.Item;
 import model.item.Sign;
 import model.item.guns.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 

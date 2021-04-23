@@ -14,9 +14,13 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class MenuController {
+
+    @FXML
+    private Label title;
 
     @FXML
     private TextField nickField;
@@ -73,7 +77,7 @@ public class MenuController {
         helpButton.setOnAction(event -> {
             Stage stage = (Stage) helpButton.getScene().getWindow();
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/fxml/help.fxml"));
+                Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/help.fxml")));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -85,7 +89,7 @@ public class MenuController {
         settingsButton.setOnAction(event -> {
             Stage stage = (Stage) settingsButton.getScene().getWindow();
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/fxml/settings.fxml"));
+                Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/settings.fxml")));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -99,7 +103,7 @@ public class MenuController {
             setHighScores();
             try {
                 setHighScores();
-                Pane root = FXMLLoader.load(getClass().getResource("/fxml/highScore.fxml"));
+                Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/highScore.fxml")));
                 int y = 60;
                 for (String score : highScores) {
                     Label zmienna = new Label(score);
@@ -138,4 +142,6 @@ public class MenuController {
         scanner.close();
         return list;
     }
+
+
 }

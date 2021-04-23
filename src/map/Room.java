@@ -2,16 +2,17 @@ package map;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-
 import model.*;
 import model.block.*;
-import model.enemy.*;
+import model.enemy.Boomer;
+import model.enemy.Enemy;
+import model.enemy.Slime;
+import model.enemy.Turret;
 import model.hero.Hero;
-import model.item.Sign;
 import model.item.Item;
+import model.item.Sign;
 import model.item.guns.PoisonDagger;
 
-import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -362,6 +363,7 @@ public class Room {
             return;
         }
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
+        ArrayList<StaticObjects> toBeRemovedBlocks = new ArrayList<>();
         for (Bullet bullet : enemyBullets) {
             Rectangle bulletBounds = bullet.getBounds();
             Rectangle heroBounds = hero.getSmallerBounds();
@@ -373,15 +375,23 @@ public class Room {
                 Rectangle blockBounds = block.getBounds();
                 if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
                     toBeRemoved.add(bullet);
+                    if (block.isBreakable()) {
+                        block.setHp(block.getHp() - 1);
+                        block.changeImage();
+                        if (block.getHp() <= 0) {
+                            toBeRemovedBlocks.add(block);
+                        }
+                    }
                 }
             }
         }
         removeMovingObjects(toBeRemoved, hero);
+        removeStaticObjects(toBeRemovedBlocks, hero);
     }
 
     public void heroBulletsCollision(Hero hero) {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-        ArrayList<StaticObjects> toRemoveBlocks = new ArrayList<>();
+        ArrayList<StaticObjects> toBeRemoveBlocks = new ArrayList<>();
         ArrayList<Slime> slimes = new ArrayList<>();
         for (Bullet bullet : heroBullets) {
             bullet.changeLayer();
@@ -394,7 +404,7 @@ public class Room {
                         block.setHp(block.getHp() - 1);
                         block.changeImage();
                         if (block.getHp() <= 0 || bullet.getDmg() > 50) {
-                            toRemoveBlocks.add(block);
+                            toBeRemoveBlocks.add(block);
                         }
                     }
                 }
@@ -428,7 +438,7 @@ public class Room {
             }
         }
         removeMovingObjects(toBeRemoved, hero);
-        removeStaticObjects(toRemoveBlocks, hero);
+        removeStaticObjects(toBeRemoveBlocks, hero);
     }
 
     public void enemyFollow(Hero hero) {

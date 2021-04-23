@@ -3,7 +3,6 @@ package model.enemy;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Slime extends Enemy {
 

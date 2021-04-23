@@ -6,7 +6,6 @@ import dev.statsPanel.Stats;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,12 +13,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.hero.Hero;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import model.hero.Hero;
+import java.util.Objects;
 
 import static dev.controller.MenuController.highScores;
 
@@ -38,11 +37,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane root = FXMLLoader.load(getClass().getResource("../fxml/mainStage.fxml"));
-        primaryStage.setTitle("TheGame");
+        Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../fxml/game.fxml")));
+        primaryStage.setTitle("The Mad Otter");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        primaryStage.getScene().getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
+        primaryStage.getScene().getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../fxml/stylesheet/game.css")).toExternalForm());
         primaryStage.setResizable(false);
         this.stage = primaryStage;
 

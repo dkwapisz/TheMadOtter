@@ -3,7 +3,6 @@ package model.hero;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-
 import map.Door;
 import map.FloorGenerator;
 import map.Room;
