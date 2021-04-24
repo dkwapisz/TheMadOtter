@@ -1,11 +1,16 @@
 .root {
-    -fx-background-image: url("/graphics/menu/lostBoard.png");
+    -fx-background-image: url("/graphics/menu/loseBoard.png");
+}
+
+.label {
+    -fx-text-fill: linear-gradient(#872716, #4c2503);
+    -fx-font-family: "Forte";
 }
 
 .button {
     -fx-background-color:
-            linear-gradient(#835249 0%, #50332e 20%, #301e1b 100%),
-            radial-gradient(center 50% 0%, radius 100%, #835249, #50332e);
+            linear-gradient(#c44028 0%, #872716 20%, #4c2503 100%),
+            radial-gradient(center 50% 0%, radius 100%, #872716, #4c2503);
     -fx-background-radius: 5,4,3,5;
     -fx-background-insets: 0,1,2,0;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );

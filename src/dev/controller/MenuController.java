@@ -47,12 +47,14 @@ public class MenuController {
     }
     
     public void initialize() {
+        helpButton.setDisable(true);
+        settingsButton.setDisable(true);
         newGameButton.setOnAction(event -> {
             Main main = new Main();
             Stage stage = (Stage) newGameButton.getScene().getWindow();
             try {
                 Main.nick = nickField.getText();
-                if (Main.nick.length() > 9) {
+                if (Main.nick.length() > 10) {
                     nickField.clear();
                     nickField.setPromptText("Too long nickname");
                 } else if (Main.nick.length() == 0)  {

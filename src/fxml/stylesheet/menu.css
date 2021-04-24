@@ -5,7 +5,6 @@
 #title {
     -fx-text-fill: linear-gradient(#835249, #301e1b);
     -fx-font-family: "Forte";
-    -fx-font-size: 64px;
 }
 
 #nickField {

@@ -134,9 +134,7 @@ public class HighScoreController {
                 e.printStackTrace();
             }
         });
-        clearButton.setOnAction(event -> {
-            clearHighScore();
-        });
+        clearButton.setOnAction(event -> clearHighScore());
         fillHighScore();
     }
 

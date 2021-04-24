@@ -1,5 +1,6 @@
 package dev.controller;
 
+import dev.Main;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,11 @@ import java.util.Objects;
 
 public class LoseController {
 
+    public static int pointsRef;
+    public static int floorRef;
+    public static int killsRef;
+    public static String killedByRef;
+
     @FXML
     private Button restartButton;
 
@@ -25,8 +31,36 @@ public class LoseController {
     @FXML
     private Label pointsLabel;
 
+    @FXML
+    private Label floorLabel;
+
+    @FXML
+    private Label pointsTitle;
+
+    @FXML
+    private Label floorTitle;
+
+    @FXML
+    private Label enemyKilledTitle;
+
+    @FXML
+    private Label enemyKilledLabel;
+
+    @FXML
+    private Label killedByTitle;
+
+    @FXML
+    private Label killedByLabel;
+
+    @FXML
+    private Label title;
+
 
     public void initialize() {
+        pointsLabel.setText(String.valueOf(pointsRef));
+        floorLabel.setText(String.valueOf(floorRef));
+        enemyKilledLabel.setText(String.valueOf(killsRef));
+        killedByLabel.setText(String.valueOf(killedByRef));
         exitButton.setOnAction(event -> {
             try {
                 Platform.exit();
@@ -46,7 +80,13 @@ public class LoseController {
             }
         });
         restartButton.setOnAction(event -> {
-            // restart game
+            Main main = new Main();
+            Stage stage = (Stage) restartButton.getScene().getWindow();
+            try {
+                main.start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 }

@@ -23,8 +23,13 @@ public class GreenSphere extends Item {
                 @Override
                 public void stop() {
                     if (!hero.isPaused()) {
-                        hero.setHiding(false);
-                        hero.getImageView().setOpacity(1);
+                        if (hero.isInBush()) {
+                            hero.setHiding(true);
+                            hero.getImageView().setOpacity(0.5);
+                        } else {
+                            hero.setHiding(false);
+                            hero.getImageView().setOpacity(1);
+                        }
                         hero.getPowerUpTimers().remove(this);
                         super.stop();
                     } else if (hero.isPaused() && !rewriteDone) {

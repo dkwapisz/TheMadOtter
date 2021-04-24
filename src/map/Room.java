@@ -170,6 +170,7 @@ public class Room {
                     items.add(randomItem);
                 }
                 enemies.remove(object);
+                hero.setKills(hero.getKills() + 1);
                 if (poisonedEnemies.contains(object)) {
                     poisonedEnemies.remove((object));
                 }
@@ -275,7 +276,7 @@ public class Room {
         if (explosions.size() != 0) {
             for (Explosion explosion : explosions) {
                 if (hero.getSmallerBounds().intersects(explosion.getBounds().getBoundsInParent())) {
-                    hero.healthDown(2);
+                    hero.healthDown(2, explosion);
                 }
                 for (Enemy enemy : enemies) {
                     if (enemy.getBounds().intersects(explosion.getBounds().getBoundsInParent())) {
@@ -300,7 +301,7 @@ public class Room {
     public void blockCollision(Hero hero) {
         ArrayList<StaticObjects> toBeRemoved = new ArrayList<>();
         Rectangle heroBounds = hero.getSmallerBounds();
-        boolean heroInBush = false;
+        hero.setInBush(false);
         for (Block block : blocks) {
             Rectangle blockBounds = block.getBounds();
             if (heroBounds.intersects(blockBounds.getBoundsInParent())) {
@@ -309,10 +310,10 @@ public class Room {
                     hero.setVelY(0);
                 }
                 if (block.isPrickly()) {
-                    hero.healthDown(block.getDmg());
+                    hero.healthDown(block.getDmg(), block);
                 }
                 if (block instanceof BushBlock) {
-                    heroInBush = true;
+                    hero.setInBush(true);
                 }
 
             }
@@ -325,7 +326,7 @@ public class Room {
                 }
             }
         }
-        if (heroInBush) {
+        if (hero.isInBush()) {
             hero.bushEffect();
         }
         else if (hero.getImageView().getOpacity() == 0.5) {
@@ -341,7 +342,7 @@ public class Room {
         Rectangle heroBounds = hero.getSmallerBounds();
         for (Enemy enemy : enemies) {
             if (heroBounds.intersects(enemy.getBounds().getBoundsInParent())) {
-                hero.healthDown(enemy.getDmg());
+                hero.healthDown(enemy.getDmg(), enemy);
                 if (enemy instanceof Boomer) {
                     enemy.setRemainingHealth(0);
                 }
@@ -369,17 +370,21 @@ public class Room {
             Rectangle heroBounds = hero.getSmallerBounds();
             if (bulletBounds.intersects(heroBounds.getBoundsInParent())) {
                 toBeRemoved.add(bullet);
-                hero.healthDown(bullet.getDmg());
+                hero.healthDown(bullet.getDmg(), bullet);
             }
             for (Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
-                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
-                    toBeRemoved.add(bullet);
+                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && (!block.isToPass() || block instanceof BonFire)) {
+                    if (!(block instanceof BonFire) || !((BonFire) block).isFireOut()) {
+                        toBeRemoved.add(bullet);
+                    }
                     if (block.isBreakable()) {
                         block.setHp(block.getHp() - 1);
                         block.changeImage();
-                        if (block.getHp() <= 0) {
+                        if (block.getHp() <= 0 && !(block instanceof BonFire)) {
                             toBeRemovedBlocks.add(block);
+                        } else if (block.getHp() <= 0 && (block instanceof BonFire)) {
+                            ((BonFire) block).putOutFire();
                         }
                     }
                 }
@@ -391,20 +396,24 @@ public class Room {
 
     public void heroBulletsCollision(Hero hero) {
         ArrayList<MovingObjects> toBeRemoved = new ArrayList<>();
-        ArrayList<StaticObjects> toBeRemoveBlocks = new ArrayList<>();
+        ArrayList<StaticObjects> toBeRemovedBlocks = new ArrayList<>();
         ArrayList<Slime> slimes = new ArrayList<>();
         for (Bullet bullet : heroBullets) {
             bullet.changeLayer();
             Rectangle bulletBounds = bullet.getBounds();
             for (Block block : blocks) {
                 Rectangle blockBounds = block.getBounds();
-                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && !block.isToPass()) {
-                    toBeRemoved.add(bullet);
+                if (bulletBounds.intersects(blockBounds.getBoundsInParent()) && (!block.isToPass() || block instanceof BonFire)) {
+                    if (!(block instanceof BonFire) || !((BonFire) block).isFireOut()) {
+                        toBeRemoved.add(bullet);
+                    }
                     if (block.isBreakable()) {
                         block.setHp(block.getHp() - 1);
                         block.changeImage();
-                        if (block.getHp() <= 0 || bullet.getDmg() > 50) {
-                            toBeRemoveBlocks.add(block);
+                        if ((block.getHp() <= 0 || bullet.getDmg() > 50) && !(block instanceof BonFire)) {
+                            toBeRemovedBlocks.add(block);
+                        } else if (block.getHp() <= 0 && (block instanceof BonFire)) {
+                            ((BonFire) block).putOutFire();
                         }
                     }
                 }
@@ -438,7 +447,7 @@ public class Room {
             }
         }
         removeMovingObjects(toBeRemoved, hero);
-        removeStaticObjects(toBeRemoveBlocks, hero);
+        removeStaticObjects(toBeRemovedBlocks, hero);
     }
 
     public void enemyFollow(Hero hero) {

@@ -24,12 +24,14 @@ public class Hero extends MovingObjects {
     private boolean paused;
     private boolean godmode;
     private boolean gameWin;
+    private boolean inBush;
 
     private int remainingHealth;
     private int money;
     private int bombs;
     private int points;
     private int dmgFactor;
+    private int kills;
 
     private long cooldownShot;
     private long lastShot = 0;
@@ -42,6 +44,7 @@ public class Hero extends MovingObjects {
     private long lastPause = 0;
 
     private String nickname = " ";
+    private String whoKills;
     private ArrayList<Gun> equipment = new ArrayList<>();
     private final ArrayList<AnimationTimer> powerUpTimers = new ArrayList<>();
     private HeroActions currentAction;
@@ -385,7 +388,7 @@ public class Hero extends MovingObjects {
         }
     }
 
-    public void healthDown(int minus) {
+    public void healthDown(int minus, Object dmgDealer) {
         if (!godmode) {
             long time = System.currentTimeMillis();
             if (time > lastEnemyTouch + 2000) {
@@ -394,6 +397,7 @@ public class Hero extends MovingObjects {
                 long timeInNano = System.nanoTime();
                 damageAnimation(timeInNano);
             }
+            whoKills = dmgDealer.getClass().getSimpleName();
         }
     }
 
@@ -428,7 +432,7 @@ public class Hero extends MovingObjects {
     }
 
     public void bushEffect() {
-        if (!isDamaged) {
+        if (!isDamaged && (getImageView().getOpacity() != 0.49)) {
             setHiding(true);
             getImageView().setOpacity(0.5);
         }
@@ -647,4 +651,24 @@ public class Hero extends MovingObjects {
         this.nickname = nickname;
     }
 
+    public boolean isInBush() {
+        return inBush;
+    }
+    public void setInBush(boolean inBush) {
+        this.inBush = inBush;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
+    public String getWhoKills() {
+        return whoKills;
+    }
+    public void setWhoKills(String whoKills) {
+        this.whoKills = whoKills;
+    }
 }

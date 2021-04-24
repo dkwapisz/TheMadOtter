@@ -31,7 +31,7 @@ public abstract class Gun extends Item {
                 hero.addNewGun(this);
                 return true;
             } else if (buyHealth && hero.getRemainingHealth() >= priceHealth) {
-                hero.healthDown(priceHealth);
+                hero.healthDown(priceHealth, "NotTheKiller");
                 hero.addNewGun(this);
                 return true;
             } else if (!buyStandard && !buyHealth) {

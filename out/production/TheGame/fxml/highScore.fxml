@@ -9,9 +9,9 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@stylesheet/highScore.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.controller.HighScoreController">
    <children>
-      <Label fx:id="scoreTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="32.0" prefHeight="100.0" prefWidth="500.0" text="High Score" textAlignment="CENTER">
+      <Label fx:id="scoreTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="14.0" prefHeight="150.0" prefWidth="500.0" text="High Score" textAlignment="CENTER">
          <font>
-            <Font name="Forte" size="96.0" />
+            <Font name="Forte" size="110.0" />
          </font>
       </Label>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="182.0" prefHeight="50.0" prefWidth="50.0" text="#" textAlignment="CENTER">

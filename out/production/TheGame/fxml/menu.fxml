@@ -21,9 +21,9 @@
             <Font name="Forte" size="25.0" />
          </font>
       </Button>
-      <Label fx:id="title" layoutX="100.0" layoutY="100.0" prefHeight="100.0" prefWidth="400.0" stylesheets="@stylesheet/game.css" text="The Mad Otter" underline="true">
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="95.0" prefHeight="100.0" prefWidth="500.0" stylesheets="@stylesheet/game.css" text="The Mad Otter" textAlignment="CENTER" underline="true">
          <font>
-            <Font name="Forte" size="64.0" />
+            <Font name="Forte" size="80.0" />
          </font>
       </Label>
       <Button fx:id="settingsButton" layoutX="100.0" layoutY="500.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" stylesheets="@stylesheet/game.css" text="Setting" textAlignment="CENTER">

@@ -3,8 +3,8 @@
     <option name="myName" value="Project Default" />
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <Languages>
-        <language minSize="14" name="Style Sheets" />
-        <language minSize="101" name="Java" />
+        <language minSize="16" name="Style Sheets" />
+        <language minSize="149" name="Java" />
       </Languages>
     </inspection_tool>
     <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">

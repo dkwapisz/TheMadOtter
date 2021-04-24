@@ -1,5 +1,7 @@
 package dev;
 
+import dev.controller.LoseController;
+import dev.controller.WinController;
 import dev.statsPanel.HealthBar;
 import dev.statsPanel.MiniMap;
 import dev.statsPanel.Stats;
@@ -96,6 +98,10 @@ public class Main extends Application {
         if (!hero.isAlive())  {
             timeline.stop();
             typeScore(hero.getPoints());
+            LoseController.pointsRef = hero.getPoints();
+            LoseController.floorRef = hero.getFloor().getFloorId();
+            LoseController.killsRef = hero.getKills();
+            LoseController.killedByRef = hero.getWhoKills();
             try {
                 Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lose.fxml")));
                 Scene scene = new Scene(root);
@@ -109,6 +115,9 @@ public class Main extends Application {
             hero.getFloor().setFloorId(5);
             timeline.stop();
             typeScore(hero.getPoints());
+            WinController.pointsRef = hero.getPoints();
+            WinController.floorRef = hero.getFloor().getFloorId();
+            WinController.killsRef = hero.getKills();
             try {
                 Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/win.fxml")));
                 Scene scene = new Scene(root);

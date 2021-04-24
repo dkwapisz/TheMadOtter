@@ -2,10 +2,6 @@
     -fx-background-image: url("/graphics/menu/highScoreBoard.png");
 }
 
-#scoreTitle {
-    -fx-font-size: 96px;
-}
-
 .label {
     -fx-text-fill: linear-gradient(#835249, #301e1b);
     -fx-font-family: "Forte";

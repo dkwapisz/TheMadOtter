@@ -61,40 +61,39 @@ public class RNG {
     public ArrayList<Block> blockGenerator(int roomId) {
         ArrayList<Block> blocks = new ArrayList<>();
 
-
-        for(int i = 0; i < bitMap.getSolidBlocksLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getSolidBlocksLoc().size(); i++) {
             blocks.add(new SolidBlock(bitMap.getSolidBlocksLoc().get(i)[0], bitMap.getSolidBlocksLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getSoftBlocksLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getSoftBlocksLoc().size(); i++) {
             blocks.add(new SoftBlock(bitMap.getSoftBlocksLoc().get(i)[0], bitMap.getSoftBlocksLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getSpikeBlockLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getSpikeBlockLoc().size(); i++) {
             blocks.add(new SpikeBlock(bitMap.getSpikeBlockLoc().get(i)[0], bitMap.getSpikeBlockLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getBarrelLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getBarrelLoc().size(); i++) {
             blocks.add(new Barrel(bitMap.getBarrelLoc().get(i)[0], bitMap.getBarrelLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getTempSpikeBlockLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getTempSpikeBlockLoc().size(); i++) {
             blocks.add(new TempSpikeBlock(bitMap.getTempSpikeBlockLoc().get(i)[0], bitMap.getTempSpikeBlockLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getBoxLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getBoxLoc().size(); i++) {
             blocks.add(new Box(bitMap.getBoxLoc().get(i)[0], bitMap.getBoxLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getBushLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getBushLoc().size(); i++) {
             blocks.add(new BushBlock(bitMap.getBushLoc().get(i)[0], bitMap.getBushLoc().get(i)[1], layer));
         }
 
-        for(int i = 0; i < bitMap.getBonfireLoc().size(); i++) {
+        for (int i = 0; i < bitMap.getBonfireLoc().size(); i++) {
             blocks.add(new BonFire(bitMap.getBonfireLoc().get(i)[0], bitMap.getBonfireLoc().get(i)[1], layer));
         }
 
-        if(roomId != (centerRoom)) {
+        if (roomId != (centerRoom)) {
             for (Block block : blocks) {
                 block.removeFromLayer();
             }
@@ -103,7 +102,7 @@ public class RNG {
     }
 
     public ArrayList<Enemy> enemiesGenerator(int roomId) {
-        if(bitMap.getEnemySpotLoc().size() == 0) {
+        if (bitMap.getEnemySpotLoc().size() == 0) {
             return null;
         }
         ArrayList<Enemy> enemies = new ArrayList<>();
@@ -130,7 +129,7 @@ public class RNG {
             case 3 -> new Snake(x, y, layer);
             case 4 -> new Spider(x, y, layer);
             case 5 -> new Fly(x, y, layer);
-            case 6 -> new Enemy2(x, y, layer);
+            case 6 -> new BombOwl(x, y, layer);
             case 7 -> new Boomer(x, y, layer);
             case 8 -> new Slime(x, y, layer, "SlimeKing");
             case 9 -> new Bat(x, y, layer);

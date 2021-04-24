@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class Menu extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
         Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../fxml/menu.fxml")));
