@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.hero.Hero;
+import model.hero.HeroActions;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,11 +40,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../fxml/game.fxml")));
+        Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/game.fxml")));
         primaryStage.setTitle("The Mad Otter");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        primaryStage.getScene().getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../fxml/stylesheet/game.css")).toExternalForm());
+        primaryStage.getScene().getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("/fxml/stylesheet/game.css")).toExternalForm());
         primaryStage.setResizable(false);
         this.stage = primaryStage;
 
@@ -65,8 +66,9 @@ public class Main extends Application {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         EventHandling.addEventHandlers(primaryStage.getScene());
-        this.timeline = timeline;
+        EventHandling.getInputList().clear();
 
+        this.timeline = timeline;
         this.miniMap = new MiniMap(hero);
         this.healthBar = new HealthBar(hero);
         this.stats = new Stats(hero);
@@ -147,7 +149,7 @@ public class Main extends Application {
         }
         FileWriter writer;
         try {
-            writer = new FileWriter("src\\dev\\HighScore.txt");
+            writer = new FileWriter("src/dev/controller/HighScore.txt");
             for (String str : tempScoreList) {
                 writer.write(str + System.lineSeparator());
             }

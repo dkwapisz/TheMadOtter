@@ -35,13 +35,13 @@ public abstract class Enemy extends MovingObjects {
 
     public void shot(Hero hero, int velFactor) {
         long time = System.currentTimeMillis();
-        if(this.shooting) {
+        if (this.shooting) {
             if (time > lastEnemyShot + cooldownShot) {
                 lastEnemyShot = time;
                 double vecLength;
-                vecLength = Math.hypot(hero.getX() - getX(), hero.getY() - getY());
-                bulletVelX = velFactor * (hero.getX() - getX()) / vecLength;
-                bulletVelY = velFactor * (hero.getY() - getY()) / vecLength;
+                vecLength = Math.hypot(hero.getX() + 16 - getX(), hero.getY() + 26 - getY());
+                bulletVelX = velFactor * (hero.getX() + 16 - getX()) / vecLength;
+                bulletVelY = velFactor * (hero.getY() + 26 - getY()) / vecLength;
                 hero.getActualRoom().getEnemyBullets().add(new Bullet(getX() + getDimension().getWidth() / 2, getY() + getDimension().getHeight() / 2, bulletVelX, bulletVelY, dmg, bulletPath, bulletPath, getLayer()));
             }
         }

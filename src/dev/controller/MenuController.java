@@ -42,6 +42,7 @@ public class MenuController {
 
     public static ArrayList<String> highScores = new ArrayList<>();
 
+
     public MenuController() {
         setHighScores();
     }
@@ -117,19 +118,19 @@ public class MenuController {
         });
     }
 
-    public static void setHighScores(){
+    public static void setHighScores() {
         highScores = getHighestScores();
     }
 
-    public static ArrayList<String> getHighestScores(){
+    public static ArrayList<String> getHighestScores() {
         Scanner scanner = null;
         try {
-            scanner = new Scanner(new File("src\\dev\\HighScore.txt"));
+            scanner = new Scanner(new File("src/dev/controller/HighScore.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         ArrayList<String> list = new ArrayList<>();
-        while (true){
+        while (true) {
             assert scanner != null;
             if (!scanner.hasNextLine()) break;
             list.add(scanner.nextLine());

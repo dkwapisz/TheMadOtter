@@ -141,7 +141,7 @@ public class HighScoreController {
     private void clearHighScore() {
         FileWriter writer;
         try {
-            writer = new FileWriter("src\\dev\\HighScore.txt");
+            writer = new FileWriter("src/dev/controller/HighScore.txt");
             for (int i = 0; i < 10; i++) {
                 writer.write("0:0:0" + System.lineSeparator());
             }

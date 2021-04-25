@@ -502,7 +502,7 @@ public class Room {
                     enemy.setVelY(-enemy.getVelY());
                 }
                 enemy.updateLocation();
-                if (enemy.isShooting() && !hero.isHiding()) {
+                if (enemy.isShooting() && (!hero.isHiding() || hero.isShooting())) {
                     enemy.shot(hero, enemy.getBulletVelFactor());
                     if (enemy instanceof Turret) {
                         if (enemy.getBulletVelX() < 0) {

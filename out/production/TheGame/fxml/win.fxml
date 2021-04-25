@@ -7,15 +7,15 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@stylesheet/win.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.controller.WinController">
    <children>
-      <Button fx:id="restartButton" layoutX="400.0" layoutY="520.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Restart game" />
-      <Button fx:id="exitButton" layoutX="400.0" layoutY="640.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Exit" />
-      <Button fx:id="menuButton" cancelButton="true" layoutX="400.0" layoutY="580.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Menu" />
+      <Button fx:id="restartButton" layoutX="400.0" layoutY="550.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Restart game" />
+      <Button fx:id="exitButton" layoutX="400.0" layoutY="670.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Exit" />
+      <Button fx:id="menuButton" cancelButton="true" layoutX="400.0" layoutY="610.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Menu" />
       <Label fx:id="pointsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="550.0" layoutY="350.0" prefHeight="30.0" prefWidth="150.0" text="(points)" textAlignment="CENTER">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="53.0" prefHeight="197.0" prefWidth="620.0" text="You win!" textAlignment="CENTER">
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="190.0" layoutY="30.0" prefHeight="197.0" prefWidth="620.0" text="You win!" textAlignment="CENTER">
          <font>
             <Font size="100.0" />
          </font>
@@ -45,7 +45,7 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <Label fx:id="smallTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="350.0" layoutY="250.0" prefHeight="50.0" prefWidth="300.0" text="Congratulation!" textAlignment="CENTER">
+      <Label fx:id="smallTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="350.0" layoutY="241.0" prefHeight="50.0" prefWidth="300.0" text="Congratulation!" textAlignment="CENTER">
          <font>
             <Font size="34.0" />
          </font>

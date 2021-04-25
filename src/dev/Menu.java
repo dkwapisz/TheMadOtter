@@ -13,7 +13,7 @@ public class Menu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../fxml/menu.fxml")));
+        Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/menu.fxml")));
         Scene scene = new Scene(root);
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/otterIcon.png"))));
         stage.setScene(scene);
