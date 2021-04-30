@@ -1,14 +1,21 @@
 package map;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.block.Trapdoor;
 import model.item.Item;
 import model.item.Sign;
 import model.item.guns.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Random;
 
 public class FloorGenerator {
@@ -27,7 +34,10 @@ public class FloorGenerator {
 
     private int mapLoading = 0;
 
-    public FloorGenerator(int nrOfRooms, Pane layer, int floorId) {
+    public FloorGenerator(int nrOfRooms, Pane layer, int floorId) throws IOException {
+
+
+
         this.nrOfRooms = nrOfRooms;
         this.layer = layer;
         this.floorId = floorId;
@@ -125,7 +135,6 @@ public class FloorGenerator {
                 roomId++;
 
                 mapLoading += 4;
-                System.out.println("Map loading: " + mapLoading + "%");
             }
         }
     }

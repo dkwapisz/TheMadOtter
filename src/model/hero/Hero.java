@@ -1,6 +1,12 @@
 package model.hero;
 
+import com.sun.javafx.tk.Toolkit;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import map.Door;
@@ -12,6 +18,7 @@ import model.Explosion;
 import model.MovingObjects;
 import model.item.guns.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -54,9 +61,10 @@ public class Hero extends MovingObjects {
     private final Random random = new Random();
     private final Pane layer;
     private AnimationTimer stopWatch;
+    private boolean toLoading;
 
 
-    public Hero(double x, double y, Pane layer) {
+    public Hero(double x, double y, Pane layer) throws IOException {
         super(x, y, "/graphics/hero/otterStatic.gif", "/graphics/hero/otterMoving.gif", "graphics/hero/otterStaticShoting.gif", "graphics/hero/otterMovingShoting.gif",  layer);
         floor = new FloorGenerator(5, layer, 1);  //nrOfRooms musi być nieparzyste (!!!)
         actualRoom = floor.getRoomList().get((floor.getNrOfRooms()* floor.getNrOfRooms()-1)/2);
@@ -80,7 +88,11 @@ public class Hero extends MovingObjects {
         updateBullets();
         updateLocation();
         doorCollision();
-        goToNextFloor();
+        try {
+            goToNextFloor();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void shot() {
@@ -223,13 +235,14 @@ public class Hero extends MovingObjects {
         }
     }
 
-    private void goToNextFloor() {
+    private void goToNextFloor() throws IOException {
         if (floor.getTrapdoor().isOpen() && actualRoom.getRoomId() == 12) {
             if (this.getSmallerBounds().intersects(floor.getTrapdoor().getBounds().getBoundsInParent())) {
                 if (floor.getFloorId() + 1 == 5) {
                     gameWin = true;
                     return;
                 }
+
                 actualRoom.eraseEnemies(); // pokój ze starego piętra
                 actualRoom.eraseItems();
                 actualRoom.eraseBlocks();
@@ -238,13 +251,28 @@ public class Hero extends MovingObjects {
                 for (Door door : getActualRoom().getDoors()) {
                     door.removeFromLayer();
                 }
-                floor = new FloorGenerator(5, layer, floor.getFloorId() + 1);
-                actualRoom = floor.getRoomList().get((floor.getNrOfRooms() * floor.getNrOfRooms() - 1)/2); // pokój z nowego piętra
-                currentAction = HeroActions.UP;
-                actualRoom.makeHeroBulletList();
-                this.getImageView().toFront();
-                points += 1000;
-                isHiding = false;
+
+                ImageView l = new ImageView(new Image("/graphics/test.png"));
+                layer.getChildren().add(l);
+                this.setPaused(true);
+                    Platform.runLater(()-> {
+                        try {
+                            floor = new FloorGenerator(5, layer, floor.getFloorId() + 1);
+                        } catch (IOException e) {
+                            System.out.println('y');
+                            e.printStackTrace();
+                        }
+                    });
+                    Platform.runLater(()-> {
+                        actualRoom = floor.getRoomList().get((floor.getNrOfRooms() * floor.getNrOfRooms() - 1) / 2); // pokój z nowego piętra
+                        currentAction = HeroActions.UP;
+                        actualRoom.makeHeroBulletList();
+                        this.getImageView().toFront();
+                        points += 1000;
+                        isHiding = false;
+                        layer.getChildren().remove(l);
+                        this.setPaused(false);
+                    });
             }
         }
     }
@@ -509,6 +537,7 @@ public class Hero extends MovingObjects {
             }
         }
     }
+
 
     public boolean isAlive() {
         return remainingHealth != 0;

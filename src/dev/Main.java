@@ -8,9 +8,11 @@ import dev.statsPanel.Stats;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -47,32 +49,45 @@ public class Main extends Application {
         primaryStage.getScene().getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("/fxml/stylesheet/game.css")).toExternalForm());
         primaryStage.setResizable(false);
         this.stage = primaryStage;
+        ImageView l = new ImageView(new Image("/graphics/test.png"));
+        root.getChildren().add(l);
+        new Thread(() -> {
+            Platform.runLater(()-> {
+                try {
+                    hero = new Hero(368, 568, root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                inputManager = new InputManager(hero);
+            });
+            Platform.runLater(()-> {
+                gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
+                gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
+                root.getChildren().add(gunReview);
 
-        hero = new Hero(368, 568, root);
-        inputManager = new InputManager(hero);
+                pauseLabel = new Label();
+                pauseLabel.setText("Game Paused");
+                pauseLabel.setStyle("-fx-font: 25 forte");
+                pauseLabel.relocate(35, 35);
+                pauseLabel.setVisible(false);
+                root.getChildren().add(pauseLabel);
+            });
+            Platform.runLater(()-> {
+                root.getChildren().remove(l);
+                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e -> gameLoop()));
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+                EventHandling.addEventHandlers(primaryStage.getScene());
+                EventHandling.getInputList().clear();
 
-        gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
-        gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
-        root.getChildren().add(gunReview);
+                this.timeline = timeline;
+                this.miniMap = new MiniMap(hero);
+                this.healthBar = new HealthBar(hero);
+                this.stats = new Stats(hero);
+                hero.setNickname(nick);
+            });
+        }).start();
 
-        pauseLabel = new Label();
-        pauseLabel.setText("Game Paused");
-        pauseLabel.setStyle("-fx-font: 25 forte");
-        pauseLabel.relocate(35, 35);
-        pauseLabel.setVisible(false);
-        root.getChildren().add(pauseLabel);
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e -> gameLoop()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-        EventHandling.addEventHandlers(primaryStage.getScene());
-        EventHandling.getInputList().clear();
-
-        this.timeline = timeline;
-        this.miniMap = new MiniMap(hero);
-        this.healthBar = new HealthBar(hero);
-        this.stats = new Stats(hero);
-        hero.setNickname(nick);
     }
 
     private void gameLoop() {
