@@ -117,7 +117,7 @@ public class FloorGenerator {
                     doors.add(door2);
                     doors.add(door3);
                     doors.add(door4);
-                    if(roomId == (nrOfRooms*nrOfRooms-1)/2) {
+                    if (roomId == (nrOfRooms*nrOfRooms-1)/2) {
                         roomList.add(new Room(doors, roomId, null, rng.itemsGenerator(roomId), null, this));
 
                     } else {

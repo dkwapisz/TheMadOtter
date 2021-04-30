@@ -37,19 +37,20 @@ public class RNG {
     public ArrayList<Item> itemsGenerator(int roomId) {
         ArrayList<Item> items = new ArrayList<>();
         if (floorId == 1) {
-            items.add(new BlueSphere(700,100, layer));
-            items.add(new GreenSphere(600,100, layer));
-            items.add(new RedSphere(700,200, layer));
-            items.add(new RedSphere(700,400, layer));
-            items.add(new Bomb(700,500, layer));
-            items.add(new BombPack(700,600, layer));
-            items.add(new Heart(700, 700, layer));
-            items.add(new Star(500, 700, layer));
-        } else if (floorId == 2) {
-            items.add(new Fish(700,100, layer));
+            items.add(new Coin(100,100, layer));
+            items.add(new Dollar(100,200, layer));
+            items.add(new SmallFish(100,300, layer));
+            items.add(new Fish(100,400, layer));
+            items.add(new Bomb(100,500, layer));
+            items.add(new BombPack(100,600, layer));
+            items.add(new Star(100,700, layer));
+            items.add(new BlueSphere(200,100, layer));
+            items.add(new GreenSphere(200,200, layer));
+            items.add(new RedSphere(200,600, layer));
+            items.add(new Heart(200,700, layer));
         }
 
-        if(roomId != (centerRoom)) {
+        if (roomId != (centerRoom)) {
             for (Item item : items) {
                 item.removeFromLayer();
             }
@@ -119,9 +120,6 @@ public class RNG {
         int value = random.nextInt(13);
         int x = bitMap.getEnemySpotLoc().get(nextLoc)[0];
         int y = bitMap.getEnemySpotLoc().get(nextLoc)[1];
-        //value = ...  <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
-        //x = ...      <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
-        //y = ...      <--- jakbyśmy chcieli konkretnego przeciwnika wytestować
         return switch (value) {
             case 0 -> new Crab(x, y, layer);
             case 1 -> new Turret(x, y, layer);

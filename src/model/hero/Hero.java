@@ -1,6 +1,7 @@
 package model.hero;
 
 import com.sun.javafx.tk.Toolkit;
+import dev.EventHandling;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -165,6 +166,7 @@ public class Hero extends MovingObjects {
 
     public void move() {
         int vel = 5;
+        System.out.println(getVelX() + " : " + getVelY());
         if (currentAction == HeroActions.UP) {
             setVelY(-vel);
         }
@@ -253,6 +255,9 @@ public class Hero extends MovingObjects {
                 }
 
                 ImageView l = new ImageView(new Image("/graphics/test.png"));
+                setVelX(0);
+                setVelY(0);
+                EventHandling.getInputList().clear();
                 layer.getChildren().add(l);
                 this.setPaused(true);
                     Platform.runLater(()-> {
@@ -265,13 +270,25 @@ public class Hero extends MovingObjects {
                     });
                     Platform.runLater(()-> {
                         actualRoom = floor.getRoomList().get((floor.getNrOfRooms() * floor.getNrOfRooms() - 1) / 2); // pokój z nowego piętra
+                        for (Door door : actualRoom.getDoors()) {
+                            door.setClosedDoors(true);
+                        }
                         currentAction = HeroActions.UP;
                         actualRoom.makeHeroBulletList();
                         this.getImageView().toFront();
                         points += 1000;
                         isHiding = false;
                         layer.getChildren().remove(l);
+                    });
+                    Platform.runLater(() -> {
                         this.setPaused(false);
+                        setLocation(250, 250);
+                        setVelX(0);
+                        setVelY(0);
+                        EventHandling.getInputList().clear();
+                        for (Door door : actualRoom.getDoors()) {
+                            door.setClosedDoors(false);
+                        }
                     });
             }
         }

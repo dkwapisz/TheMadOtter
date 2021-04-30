@@ -22,7 +22,7 @@ public class DevilFly extends Enemy {
         setVelX(randomVel[random.nextInt(3)]);
         setVelY(randomVel[random.nextInt(3)]);
         setRemainingHealth(30);
-        setDmg(2);
+        setDmg(1);
     }
 
     @Override

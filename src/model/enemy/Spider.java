@@ -15,7 +15,7 @@ public class Spider extends Enemy{
         setShooting(true);
         setExplosive(false);
         setFollowingVel(3);
-        setBulletVelFactor(8);
+        setBulletVelFactor(6);
         setCooldownShot(random.nextInt(1000) + 1000);
         setRemainingHealth(20);
         setBulletPath("graphics/items/bullets/enemyBullets/spiderBullet.png");

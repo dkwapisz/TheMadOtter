@@ -19,7 +19,7 @@ public class Slime extends Enemy {
             setFlying(false);
             setExplosive(false);
             setShooting(false);
-            setRemainingHealth(120);
+            setRemainingHealth(60);
             setFollowing(true);
             setFollowingVel(2);
             setDmg(2);
@@ -29,7 +29,7 @@ public class Slime extends Enemy {
             setFlying(false);
             setExplosive(false);
             setShooting(false);
-            setRemainingHealth(60);
+            setRemainingHealth(30);
             setFollowing(false);
             setDmg(1);
             setMedium(true);
