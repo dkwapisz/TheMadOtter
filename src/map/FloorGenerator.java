@@ -35,9 +35,6 @@ public class FloorGenerator {
     private int mapLoading = 0;
 
     public FloorGenerator(int nrOfRooms, Pane layer, int floorId) throws IOException {
-
-
-
         this.nrOfRooms = nrOfRooms;
         this.layer = layer;
         this.floorId = floorId;

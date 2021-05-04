@@ -48,7 +48,6 @@ public class MenuController {
     }
     
     public void initialize() {
-        helpButton.setDisable(true);
         settingsButton.setDisable(true);
         newGameButton.setOnAction(event -> {
             Main main = new Main();
