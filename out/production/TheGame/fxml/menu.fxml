@@ -26,7 +26,7 @@
             <Font name="Forte" size="80.0" />
          </font>
       </Label>
-      <Button fx:id="settingsButton" layoutX="100.0" layoutY="500.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" stylesheets="@stylesheet/game.css" text="Setting" textAlignment="CENTER">
+      <Button fx:id="settingsButton" layoutX="100.0" layoutY="500.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" stylesheets="@stylesheet/game.css" text="Settings" textAlignment="CENTER">
          <font>
             <Font name="Forte" size="25.0" />
          </font></Button>

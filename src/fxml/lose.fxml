@@ -45,7 +45,7 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <Label fx:id="killedByTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="250.0" prefHeight="50.0" prefWidth="300.0" text="You are killed by:" textAlignment="CENTER">
+      <Label fx:id="killedByTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="250.0" prefHeight="50.0" prefWidth="300.0" text="You were killed by:" textAlignment="CENTER">
          <font>
             <Font size="34.0" />
          </font>

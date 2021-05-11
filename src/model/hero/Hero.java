@@ -166,7 +166,6 @@ public class Hero extends MovingObjects {
 
     public void move() {
         int vel = 5;
-        System.out.println(getVelX() + " : " + getVelY());
         if (currentAction == HeroActions.UP) {
             setVelY(-vel);
         }
@@ -254,7 +253,7 @@ public class Hero extends MovingObjects {
                     door.removeFromLayer();
                 }
 
-                ImageView l = new ImageView(new Image("/graphics/test.png"));
+                ImageView l = new ImageView(new Image("graphics/loading.png"));
                 setVelX(0);
                 setVelY(0);
                 EventHandling.getInputList().clear();
@@ -347,6 +346,7 @@ public class Hero extends MovingObjects {
         actualRoom.eraseAnimations(this);
 
         isHiding = false;
+        nextRoom.newRoomTimer();
 
         nextRoom.drawEnemies();
         nextRoom.drawBlocks();

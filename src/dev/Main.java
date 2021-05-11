@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -44,49 +45,59 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/game.fxml")));
         primaryStage.setTitle("The Mad Otter");
+        ImageView imageView = new ImageView(new Image("graphics/loading.png"));
+        root.getChildren().add(imageView);
+
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         primaryStage.getScene().getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("/fxml/stylesheet/game.css")).toExternalForm());
         primaryStage.setResizable(false);
         this.stage = primaryStage;
-        ImageView l = new ImageView(new Image("/graphics/test.png"));
-        root.getChildren().add(l);
-        new Thread(() -> {
-            Platform.runLater(()-> {
-                try {
-                    hero = new Hero(368, 568, root);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                inputManager = new InputManager(hero);
-            });
-            Platform.runLater(()-> {
-                gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
-                gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
-                root.getChildren().add(gunReview);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    Platform.runLater(() -> {
+                        try {
+                            hero = new Hero(368, 568, root);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
 
-                pauseLabel = new Label();
-                pauseLabel.setText("Game Paused");
-                pauseLabel.setStyle("-fx-font: 25 forte");
-                pauseLabel.relocate(35, 35);
-                pauseLabel.setVisible(false);
-                root.getChildren().add(pauseLabel);
-            });
-            Platform.runLater(()-> {
-                root.getChildren().remove(l);
-                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e -> gameLoop()));
-                timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.play();
-                EventHandling.addEventHandlers(primaryStage.getScene());
-                EventHandling.getInputList().clear();
 
-                this.timeline = timeline;
-                this.miniMap = new MiniMap(hero);
-                this.healthBar = new HealthBar(hero);
-                this.stats = new Stats(hero);
-                hero.setNickname(nick);
+
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        inputManager = new InputManager(hero);
+                        gunReview = new ImageView(hero.getActualGun().getImageView().getImage());
+                        gunReview.relocate(900 - gunReview.getImage().getWidth()/2,700 + (62 - gunReview.getImage().getHeight())/2);
+                        root.getChildren().add(gunReview);
+
+                        pauseLabel = new Label();
+                        pauseLabel.setText("Game Paused");
+                        pauseLabel.setStyle("-fx-font: 25 forte");
+                        pauseLabel.relocate(35, 35);
+                        pauseLabel.setVisible(false);
+                        root.getChildren().add(pauseLabel);
+                        System.out.println("Done");
+                        root.getChildren().remove(imageView);
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), e -> gameLoop()));
+                        timeline.setCycleCount(Timeline.INDEFINITE);
+                        timeline.play();
+                        EventHandling.addEventHandlers(primaryStage.getScene());
+                        EventHandling.getInputList().clear();
+                        setTimeline(timeline);
+                        setMiniMap(new MiniMap(hero));
+                        setHealthBar(new HealthBar(hero));
+                        setStats(new Stats(hero));
+                        hero.setNickname(nick);
+                    }
             });
+            }
         }).start();
+
 
     }
 
@@ -180,4 +191,31 @@ public class Main extends Application {
         launch(args);
     }
 
+    public void setGunReview(ImageView gunReview) {
+        this.gunReview = gunReview;
+    }
+
+    public void setMiniMap(MiniMap miniMap) {
+        this.miniMap = miniMap;
+    }
+
+    public void setHealthBar(HealthBar healthBar) {
+        this.healthBar = healthBar;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
+    public void setPauseLabel(Label pauseLabel) {
+        this.pauseLabel = pauseLabel;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setTimeline(Timeline timeline) {
+        this.timeline = timeline;
+    }
 }

@@ -1,5 +1,6 @@
 package map;
 
+import dev.Main;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -291,5 +292,13 @@ public class FloorGenerator {
     }
     public void setFloorId(int floorId) {
         this.floorId = floorId;
+    }
+
+    public int getMapLoading() {
+        return mapLoading;
+    }
+
+    public void setMapLoading(int mapLoading) {
+        this.mapLoading = mapLoading;
     }
 }

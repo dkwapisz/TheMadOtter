@@ -1,5 +1,6 @@
 package map;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import model.*;
@@ -39,6 +40,7 @@ public class Room {
     private ArrayList<BombFired> putBombs = new ArrayList<>();
     private ArrayList<ImageView> animations = new ArrayList<>();
     private ArrayList<Enemy> poisonedEnemies = new ArrayList<>();
+    private boolean newRoomDelay;
 
     public Room(ArrayList<Door> doors, int roomId, ArrayList<Enemy> enemies, ArrayList<Item> items, ArrayList<Block> blocks, FloorGenerator actualFloor) {
         this.enemies = Objects.requireNonNullElseGet(enemies, ArrayList::new);
@@ -47,6 +49,8 @@ public class Room {
         this.doors = doors;
         this.roomId = roomId;
         this.actualFloor = actualFloor;
+        this.newRoomDelay = true;
+
     }
 
     public void checkCollision(Hero hero) {
@@ -503,7 +507,9 @@ public class Room {
                 }
                 enemy.updateLocation();
                 if (enemy.isShooting() && (!hero.isHiding() || hero.isShooting())) {
-                    enemy.shot(hero, enemy.getBulletVelFactor());
+                    if(!newRoomDelay) {
+                        enemy.shot(hero, enemy.getBulletVelFactor());
+                    }
                     if (enemy instanceof Turret) {
                         if (enemy.getBulletVelX() < 0) {
                             enemy.getImageView().setRotate(Math.toDegrees(-(Math.PI - (Math.atan(enemy.getBulletVelY() / enemy.getBulletVelX()) + Math.PI / 2))));
@@ -560,6 +566,26 @@ public class Room {
             }
             removeMovingObjects(toBeRemoved, hero);
         }
+    }
+
+    public void newRoomTimer(){
+        long timeInNano = System.nanoTime();
+        AnimationTimer animationTimer = new AnimationTimer(){
+            @Override
+            public void handle(long l) {
+                if (l - timeInNano >= 2_000_000_000) {
+                    this.stop();
+                }
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                setNewRoomDelay(false);
+
+            }
+        };
+        animationTimer.start();
     }
 
     public void makeHeroBulletList() {
@@ -665,5 +691,13 @@ public class Room {
     }
     public void setAnimations(ArrayList<ImageView> animations) {
         this.animations = animations;
+    }
+
+    public boolean isNewRoomDelay() {
+        return newRoomDelay;
+    }
+
+    public void setNewRoomDelay(boolean newRoomDelay) {
+        this.newRoomDelay = newRoomDelay;
     }
 }
