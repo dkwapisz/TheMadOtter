@@ -9,10 +9,24 @@
 - [Acknowledgments](#Acknowledgments)
 
 ## General
+"The Mad Otter" is a rougelike game based on "The Binding of Isaac" mechanics. As befits rougelike games, the game is very difficult. The game was created to:
+- better understanding of the JavaFX library
+- get better acquainted with the idea of object-oriented programming (creating a simple game engine)
+- experiment with mechanics based on simple RNG
 
 ## Features
+The game contains many interesting mechanics such as:
+- randomly generated map based on previously created templates
+- basic animation e.g. destruction of blocks
+- 15 different weapons like shotgun, rocket launcher, ak47
+- time-limited powerups
+- 13 various enemies with different behaviours
+- 4 floors with different textures
+- map and interface
 
 ## Technologies Used
+- JavaFX 15.0.1
+- FXML (SceneBuilder)
 
 ## Screenshots
 
