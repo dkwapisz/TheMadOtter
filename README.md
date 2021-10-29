@@ -29,6 +29,8 @@ The game contains many interesting mechanics such as:
 - FXML (SceneBuilder)
 
 ## Screenshots
+![screenshot1](https://github.com/dkwapisz/TheMadOtter/blob/ProjektJPWP2021/src/graphics/image1.png)
+![screenshot2](https://github.com/dkwapisz/TheMadOtter/blob/ProjektJPWP2021/src/graphics/image2.png)
 
 ## How to open 
 ### IntelliJ IDEA
